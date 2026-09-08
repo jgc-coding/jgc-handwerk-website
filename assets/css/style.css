@@ -123,6 +123,12 @@ p {
   text-wrap: pretty;
 }
 
+/* Browser geben <figure> von Haus aus 40px Seitenabstand — das verschiebt
+   sonst jede Bildkachel gegenueber dem Textraster. */
+figure {
+  margin: 0;
+}
+
 p:last-child {
   margin-bottom: 0;
 }
@@ -934,8 +940,9 @@ a:hover {
 .rail__track {
   display: flex;
   gap: clamp(1rem, 2vw, 1.5rem);
-  /* Erste Karte buendig zum Textblock, rechts laeuft die Bahn aus dem Bild */
-  padding-inline-start: max(var(--gutter), (100vw - var(--max)) / 2 + var(--gutter));
+  /* Erste Karte buendig zum Textblock, rechts laeuft die Bahn aus dem Bild.
+     100% statt 100vw, damit die Scrollleiste nicht mitzaehlt. */
+  padding-inline-start: max(var(--gutter), (100% - var(--max)) / 2 + var(--gutter));
   padding-inline-end: var(--gutter);
   will-change: transform;
 }

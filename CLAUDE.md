@@ -61,3 +61,7 @@ Analyse. `tools/pruefen.mjs` bricht ab, wenn doch ein externer Verweis hineinger
   Datenempfaenger nicht.
 - **Der Hoster steht in `datenschutz.html`.** Zieht die Seite von GitHub Pages auf einen
   anderen Server um, muss Abschnitt 2 dort mitgezogen werden.
+- **Vorschau-Sperre an zwei Stellen.** Solange die Seite auf der GitHub-Adresse liegt, halten
+  ein `noindex`-Tag in `index.html` und `robots.txt` sie aus den Suchmaschinen heraus — sonst
+  taucht sie neben der echten Seite auf jgc-handwerk.de auf und nimmt ihr Sichtbarkeit. Beim
+  Umzug auf die eigene Domain **beide** entfernen.

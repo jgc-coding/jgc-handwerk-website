@@ -12,6 +12,11 @@
     <meta name="theme-color" content="#fdfbf7" />
     <link rel="canonical" href="https://jgc-handwerk.de/" />
 
+    <!-- VORSCHAU-SPERRE: haelt diese Fassung aus den Suchmaschinen heraus, damit sie
+         nicht gegen die echte Seite auf jgc-handwerk.de antritt.
+         Beim Umzug auf die eigene Domain diese Zeile und robots.txt entfernen. -->
+    <meta name="robots" content="noindex, nofollow" />
+
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="de_DE" />
     <meta property="og:site_name" content="JGC Handwerk" />
@@ -439,7 +444,7 @@
 
         <div class="shell">
           <div class="compare-grid reveal-group">
-            <figure style="--i: 0; margin: 0">
+            <figure style="--i: 0">
               <div class="compare" data-compare tabindex="0" role="slider" aria-label="Vergleich Montage: vorher und nachher" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
                 <img src="assets/img/vn-montage-vorher.webp" alt="Montage, Zustand vorher" loading="lazy" />
                 <img class="compare__after" src="assets/img/vn-montage-nachher.webp" alt="Montage, Zustand nachher" loading="lazy" />
@@ -456,7 +461,7 @@
               <figcaption class="compare__caption">Montage — Regler ziehen</figcaption>
             </figure>
 
-            <figure style="--i: 1; margin: 0">
+            <figure style="--i: 1">
               <div class="compare" data-compare tabindex="0" role="slider" aria-label="Vergleich Hallenwand: vorher und nachher" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
                 <img src="assets/img/vn-hallenwand-vorher.webp" alt="Hallenwand, Zustand vorher" loading="lazy" />
                 <img class="compare__after" src="assets/img/vn-hallenwand-nachher.webp" alt="Hallenwand, Zustand nachher" loading="lazy" />

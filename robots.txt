@@ -1,0 +1,7 @@
+# VORSCHAU-SPERRE
+# Diese Fassung liegt auf einer Vorschau-Adresse und darf nicht in Suchmaschinen
+# auftauchen, sonst konkurriert sie mit der echten Seite auf jgc-handwerk.de.
+# Beim Umzug auf die eigene Domain: diese Datei ersetzen und das noindex-Tag in
+# index.html entfernen.
+User-agent: *
+Disallow: /
