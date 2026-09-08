@@ -1,0 +1,11 @@
+# Erzeugtes und Lokales
+node_modules/
+screenshots/
+.DS_Store
+Thumbs.db
+
+# Unbearbeitete Bildvorlagen: gross und jederzeit neu erzeugbar
+assets/img/_original/
+
+# Vollstaendige Code-Kopien
+.claude/worktrees/

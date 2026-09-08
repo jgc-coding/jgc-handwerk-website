@@ -1,0 +1,3 @@
+# Schnellpruefung fuer das Done-Gate (siehe C:\Projekte\Claude-Skills\hooks\donecheck.ps1)
+# Prueft: fehlende Dateien, Verweise auf fremde Server, Versionsabgleich mit CHANGELOG.
+node tools/pruefen.mjs
