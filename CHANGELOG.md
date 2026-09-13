@@ -4,6 +4,45 @@ Alle nennenswerten Änderungen an dieser Website. Format nach SemVer (MAJOR.MINO
 Die Version steht als Single Source of Truth in `assets/js/config.js` und erscheint in der
 Fußzeile.
 
+## 0.3.0 — 2026-09-13
+
+Feinschliff an Bewegung und Übergängen nach dem Vorbild fora.so und der Midsummer-Seite,
+dazu der Fehlerfix an der Projektbahn.
+
+**Projektbahn (Fehlerfix)**
+
+- Die Bildleiste springt nicht mehr, wenn der Seitwärtslauf endet und man weiterscrollt.
+  Ursache: Bahn und Gleis trugen als `reveal`-Elemente eine CSS-Transition auf `transform`;
+  ScrollTrigger setzt beim Lösen der Anheftung aber Positionen sofort, und die Transition
+  ließ die Leiste sichtbar nachschwingen. Die Einblendung übernehmen jetzt die einzelnen
+  Karten, gestaffelt und ohne Wirkung auf die Bahn selbst.
+- Die Bahn fährt nur noch über die ersten 82 Prozent der angehefteten Strecke und steht
+  die letzten 18 Prozent still — das letzte Bild ist jetzt wirklich in Ruhe zu sehen,
+  bevor die Seite weiterscrollt.
+
+**Hero**
+
+- Gestaffelter Auftritt beim Laden: Logo mit Goldschein, Kapsel-Etikett, Überschrift
+  Wort für Wort, dann Text, Knöpfe und die Vertrauensleiste Eintrag für Eintrag.
+- Die drei Gewerke in der Überschrift stehen jetzt in Goldbraun.
+- Zeiger-Parallaxe: Lichtschein, Holztextur und zwei neue feine Ringe (einer dreht
+  gestrichelt wie eine technische Zeichnung) weichen der Maus weich aus.
+- Beim Herausscrollen verlässt der Inhalt den Hero langsamer als die Seite und
+  verblasst — der Übergang zum ersten Abschnitt bekommt Tiefe.
+- Scroll-Hinweis am unteren Rand mit ablaufendem Lichtpunkt; verblasst beim ersten
+  Scrollen, auf schmalen Bildschirmen aus.
+
+**Übergänge der ganzen Seite**
+
+- Alle Abschnittsüberschriften und das Zitat im Über-mich-Bereich bauen sich beim
+  Eintreten Wort für Wort auf (mit Klartext-Absicherung für Vorleseprogramme).
+- Lesefaden: eine dünne Goldlinie am oberen Rand zeigt den Scroll-Fortschritt.
+- Leistungs-Reiter: das Bild des aktiven Panels setzt sich langsam zurecht, die
+  Beschriftung steigt nach.
+
+Alles respektiert weiterhin die ruhige Darstellung (`prefers-reduced-motion`) und
+funktioniert ohne JavaScript: dann steht die Seite einfach vollständig da.
+
 ## 0.2.0 — 2026-09-13
 
 Gabriels Rückmeldungen eingearbeitet: das Logo wie auf der alten Seite, ein Kontaktformular,

@@ -70,6 +70,192 @@
     });
   }
 
+  /* ---------- Hero: Auftritt und Parallaxe ------------------ */
+
+  function heroAuftritt() {
+    var hero = document.querySelector(".hero");
+    if (!hero) return;
+
+    // Auftritt ausloesen: zwei Frames warten, damit die Startwerte der
+    // Choreografie sicher gemalt sind, bevor die Uebergaenge loslaufen.
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        hero.classList.add("is-ready");
+      });
+    });
+
+    if (ruhig) return;
+
+    // Scrollweg als --sy an den Hero melden (Ebenen-Parallaxe und Ausblenden
+    // rechnet das CSS). Gebuendelt auf einen Frame, geschrieben nur am Hero
+    // selbst — nie an :root, das wuerde die ganze Seite neu stylen.
+    var angefragt = false;
+    var letzt = -1;
+    function messe() {
+      angefragt = false;
+      var grenze = hero.offsetHeight + 120;
+      var sy = Math.max(0, Math.min(window.scrollY, grenze));
+      if (sy !== letzt) {
+        letzt = sy;
+        hero.style.setProperty("--sy", String(sy));
+      }
+    }
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (!angefragt) {
+          angefragt = true;
+          requestAnimationFrame(messe);
+        }
+      },
+      { passive: true }
+    );
+    messe();
+
+    // Zeiger-Parallaxe nur mit echter Maus; geglaettet, damit die Ebenen
+    // dem Zeiger weich hinterherschwingen statt zu kleben.
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+    var zielX = 0, zielY = 0, mx = 0, my = 0, laeuft = false;
+
+    function takt() {
+      mx += (zielX - mx) * 0.08;
+      my += (zielY - my) * 0.08;
+      hero.style.setProperty("--mx", mx.toFixed(4));
+      hero.style.setProperty("--my", my.toFixed(4));
+      if (Math.abs(zielX - mx) + Math.abs(zielY - my) > 0.002) requestAnimationFrame(takt);
+      else laeuft = false;
+    }
+
+    function stosseAn() {
+      if (!laeuft) {
+        laeuft = true;
+        requestAnimationFrame(takt);
+      }
+    }
+
+    hero.addEventListener(
+      "pointermove",
+      function (e) {
+        zielX = (e.clientX / Math.max(1, window.innerWidth)) * 2 - 1;
+        zielY = (e.clientY / Math.max(1, window.innerHeight)) * 2 - 1;
+        stosseAn();
+      },
+      { passive: true }
+    );
+
+    hero.addEventListener("pointerleave", function () {
+      zielX = 0;
+      zielY = 0;
+      stosseAn();
+    });
+  }
+
+  /* ---------- Ueberschriften Wort fuer Wort ----------------- */
+
+  /** Zerlegt den Text eines Elements in .wort-Spannen; Leerraum bleibt als
+   *  normaler Text stehen, verschachtelte Elemente (Akzent-Spannen) werden
+   *  durchlaufen. Jedes Wort bekommt seine Verzoegerung als --wd. */
+  function zerlegeInWorte(el) {
+    var nummer = 0;
+    (function gehe(knoten) {
+      Array.prototype.slice.call(knoten.childNodes).forEach(function (kind) {
+        if (kind.nodeType === 3) {
+          var stueck = document.createDocumentFragment();
+          kind.textContent.split(/(\s+)/).forEach(function (teil) {
+            if (!teil) return;
+            if (/^\s+$/.test(teil)) {
+              stueck.appendChild(document.createTextNode(" "));
+              return;
+            }
+            var wort = document.createElement("span");
+            wort.className = "wort";
+            wort.textContent = teil;
+            wort.style.setProperty("--wd", Math.min(nummer * 60, 1100) + "ms");
+            nummer++;
+            stueck.appendChild(wort);
+          });
+          kind.replaceWith(stueck);
+        } else if (kind.nodeType === 1 && kind.tagName !== "BR") {
+          gehe(kind);
+        }
+      });
+    })(el);
+  }
+
+  function worte() {
+    var koepfe = Array.prototype.slice.call(document.querySelectorAll("[data-worte]"));
+    if (!koepfe.length) return;
+
+    // Ruhige Darstellung oder kein Beobachter: Text unangetastet lassen —
+    // ohne Spannen gibt es nichts einzublenden, alles bleibt sichtbar.
+    if (ruhig || !("IntersectionObserver" in window)) return;
+
+    koepfe.forEach(function (kopf) {
+      // Klartext fuer Vorleseprogramme festhalten, bevor der Satz zerfaellt
+      kopf.setAttribute("aria-label", kopf.textContent.replace(/\s+/g, " ").trim());
+      zerlegeInWorte(kopf);
+    });
+
+    var beobachter = new IntersectionObserver(
+      function (eintraege) {
+        eintraege.forEach(function (eintrag) {
+          if (!eintrag.isIntersecting) return;
+          eintrag.target.classList.add("ist-da");
+          beobachter.unobserve(eintrag.target);
+        });
+      },
+      { threshold: 0.2, rootMargin: "0px 0px -8% 0px" }
+    );
+
+    koepfe.forEach(function (kopf) {
+      if (kopf.getAttribute("data-worte") === "sofort") {
+        // Der Hero-Titel wartet nicht auf Sicht, sondern reiht sich in die
+        // Auftritts-Choreografie ein (nach Logo und Etikett).
+        setTimeout(function () {
+          kopf.classList.add("ist-da");
+        }, 480);
+      } else {
+        beobachter.observe(kopf);
+      }
+    });
+  }
+
+  /* ---------- Lesefaden am oberen Rand ---------------------- */
+
+  function scrollspur() {
+    var balken = document.getElementById("scrollspurBalken");
+    if (!balken) return;
+
+    var strecke = 1;
+    function missStrecke() {
+      strecke = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    }
+
+    var angefragt = false;
+    function male() {
+      angefragt = false;
+      var p = Math.max(0, Math.min(1, window.scrollY / strecke));
+      balken.style.transform = "scaleX(" + p.toFixed(4) + ")";
+    }
+
+    missStrecke();
+    male();
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (!angefragt) {
+          angefragt = true;
+          requestAnimationFrame(male);
+        }
+      },
+      { passive: true }
+    );
+    // Die Seitenhoehe aendert sich durch Bilder und die angeheftete Bahn
+    window.addEventListener("resize", function () { missStrecke(); male(); });
+    window.addEventListener("load", function () { missStrecke(); male(); });
+  }
+
   /* ---------- Einblenden beim Scrollen ---------------------- */
 
   function einblenden() {
@@ -225,6 +411,33 @@
     var gleis = document.getElementById("railTrack");
     if (!bahn || !gleis) return;
 
+    // Die Karten blenden gestaffelt ein, sobald die Bahn in die Naehe kommt —
+    // in beiden Betriebsarten. Bewusst NICHT ueber die reveal-Klassen: Bahn
+    // und Gleis werden von ScrollTrigger transformiert, eine CSS-Transition
+    // auf ihnen liess die Leiste beim Loesen der Anheftung springen.
+    var karten = Array.prototype.slice.call(gleis.querySelectorAll(".shot"));
+
+    function zeigeKarten() {
+      karten.forEach(function (karte, i) {
+        karte.style.setProperty("--sd", Math.min(i * 80, 640) + "ms");
+        karte.classList.add("ist-da");
+      });
+    }
+
+    if (ruhig || !("IntersectionObserver" in window)) {
+      zeigeKarten();
+    } else {
+      var waechter = new IntersectionObserver(
+        function (eintraege) {
+          if (!eintraege.some(function (e) { return e.isIntersecting; })) return;
+          zeigeKarten();
+          waechter.disconnect();
+        },
+        { rootMargin: "0px 0px 10% 0px", threshold: 0.05 }
+      );
+      waechter.observe(bahn);
+    }
+
     // Schmale Bildschirme und ruhige Darstellung: normal wischen statt scrollen
     var schmal = window.matchMedia("(max-width: 979px)");
     var gsapDa = typeof window.gsap !== "undefined" && typeof window.ScrollTrigger !== "undefined";
@@ -239,34 +452,45 @@
 
     window.gsap.registerPlugin(window.ScrollTrigger);
 
-    /** Wie weit die Bahn seitlich laufen muss, damit die letzte Karte sichtbar wird. */
+    /** Wie weit die Bahn seitlich laufen muss, damit die letzte Karte ganz im Bild steht. */
     function ueberstand() {
       return Math.max(0, gleis.scrollWidth - window.innerWidth + 32);
     }
 
-    /** Scrollstrecke: kuerzer als der Weg, damit die Bahn nicht die halbe Seite frisst.
-     *  Gedeckelt auf anderthalb Bildschirmhoehen. */
-    function strecke() {
-      return Math.min(ueberstand() * 0.75, window.innerHeight * 1.5);
+    /** Scrollstrecke der Fahrt: kuerzer als der Weg, damit die Bahn nicht die
+     *  halbe Seite frisst. Gedeckelt auf 1,4 Bildschirmhoehen. */
+    function fahrt() {
+      return Math.min(ueberstand() * 0.85, window.innerHeight * 1.4);
     }
 
-    window.gsap.to(gleis, {
-      x: function () {
-        return -ueberstand();
-      },
-      ease: "none",
+    // Die Bahn faehrt in den ersten 82 Prozent der angehefteten Strecke und
+    // STEHT die letzten 18 Prozent. Der Halt hat zwei Aufgaben: die letzte
+    // Karte ist wirklich in Ruhe zu sehen, und der weiche Nachlauf des Scrubs
+    // ist ausgeschwungen, bevor sich die Anheftung loest — genau an dieser
+    // Kante sprang die Leiste frueher.
+    var zeitplan = window.gsap.timeline({
       scrollTrigger: {
         trigger: bahn,
         start: "top 14%",
         end: function () {
-          return "+=" + strecke();
+          return "+=" + Math.round(fahrt() / 0.82);
         },
         pin: true,
-        scrub: 0.8,
+        scrub: 0.6,
         anticipatePin: 1,
         invalidateOnRefresh: true,
       },
     });
+
+    zeitplan
+      .to(gleis, {
+        x: function () {
+          return -ueberstand();
+        },
+        ease: "none",
+        duration: 0.82,
+      })
+      .to({}, { duration: 0.18 });
 
     // Bilder aendern die Hoehe nach dem Laden — Messpunkte neu berechnen
     window.addEventListener("load", function () {
@@ -535,7 +759,10 @@
   function los() {
     starte("Kopfzeile", kopfzeile);
     starte("Menue", menue);
+    starte("HeroAuftritt", heroAuftritt);
     starte("Einblenden", einblenden);
+    starte("Worte", worte);
+    starte("Scrollspur", scrollspur);
     starte("Navigation", navMarkierung);
     starte("Reiter", reiter);
     starte("Lichtfleck", lichtfleck);

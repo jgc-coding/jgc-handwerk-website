@@ -69,6 +69,9 @@
   <body>
     <a class="skip-link" href="#main">Zum Inhalt springen</a>
 
+    <!-- Lesefaden: zeigt oben als duenne Goldlinie, wie weit die Seite gelesen ist -->
+    <div class="scrollspur" aria-hidden="true"><span id="scrollspurBalken"></span></div>
+
     <!-- ============ Kopfzeile ============ -->
     <header class="header" id="header">
       <div class="header__inner">
@@ -107,27 +110,34 @@
       <!-- ============ Hero ============ -->
       <section class="hero" id="home">
         <div class="hero__glow" aria-hidden="true"></div>
+        <!-- Zwei feine Ringe schweben im Hintergrund und folgen leicht dem Zeiger -->
+        <div class="hero__ring hero__ring--a" aria-hidden="true"></div>
+        <div class="hero__ring hero__ring--b" aria-hidden="true"></div>
         <div class="hero__texture" aria-hidden="true"></div>
 
         <div class="shell hero__inner">
           <img
-            class="hero__mark reveal"
+            class="hero__mark"
+            data-intro
+            style="--h: 0"
             src="assets/img/logo-kreis.webp"
             alt="Logo JGC Handwerk"
             width="88"
             height="88"
           />
 
-          <p class="eyebrow reveal">ressourcen- und zeiteffizient</p>
+          <p class="eyebrow" data-intro style="--h: 1">ressourcen- und zeiteffizient</p>
 
-          <h1 class="h-display reveal">Ihr zuverlässiger Partner für Trockenbau, Montage und Zuarbeit.</h1>
+          <h1 class="h-display" data-worte="sofort">
+            Ihr zuverlässiger Partner für <span class="text-accent">Trockenbau, Montage und Zuarbeit.</span>
+          </h1>
 
-          <p class="lead hero__lead reveal">
+          <p class="lead hero__lead" data-intro style="--h: 3">
             Ich bin sowohl für Privatkunden als auch für Zimmereien als Subunternehmer in und rund um Freiburg tätig —
             als Handwerker mit ingenieurtechnischem Hintergrund und mehrjähriger Erfahrung.
           </p>
 
-          <div class="hero__actions reveal">
+          <div class="hero__actions" data-intro style="--h: 4">
             <a class="btn btn--lg" href="#kontakt">
               Anfrage senden
               <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
@@ -137,28 +147,28 @@
             <a class="btn btn--ghost btn--lg" href="#leistungen">Leistungen ansehen</a>
           </div>
 
-          <div class="trustbar reveal">
-            <span class="trustbar__item">
+          <div class="trustbar" data-intro style="--h: 5">
+            <span class="trustbar__item" style="--i: 0">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
                 <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" stroke-linecap="round" stroke-linejoin="round"/>
                 <circle cx="12" cy="10" r="3" />
               </svg>
               Freiburg und Umgebung
             </span>
-            <span class="trustbar__item">
+            <span class="trustbar__item" style="--i: 1">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
                 <path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
               Privatkunden und Zimmereien
             </span>
-            <span class="trustbar__item">
+            <span class="trustbar__item" style="--i: 2">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
                 <path d="M22 10 12 5 2 10l10 5 10-5Z" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
               Wirtschaftsingenieur (M.Sc.)
             </span>
-            <span class="trustbar__item">
+            <span class="trustbar__item" style="--i: 3">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
                 <path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M12 3l7 3v6c0 4.5-3 8.3-7 9-4-.7-7-4.5-7-9V6l7-3Z" stroke-linecap="round" stroke-linejoin="round"/>
@@ -166,6 +176,12 @@
               Handwerkskammer Freiburg
             </span>
           </div>
+
+          <!-- Leiser Hinweis, dass es unten weitergeht; verblasst beim ersten Scrollen -->
+          <a class="hero__hint" href="#willkommen">
+            <span>Scrollen</span>
+            <span class="hero__hint-linie" aria-hidden="true"></span>
+          </a>
         </div>
       </section>
 
@@ -174,7 +190,7 @@
         <div class="shell shell--narrow">
           <div class="section-head reveal">
             <p class="eyebrow">Willkommen</p>
-            <h2 class="h-section" id="willkommen-titel">
+            <h2 class="h-section" id="willkommen-titel" data-worte>
               Fachkenntnis aus der Praxis, verbunden mit <span class="text-accent">lösungsorientiertem Denken</span>.
             </h2>
           </div>
@@ -200,7 +216,7 @@
         <div class="shell">
           <div class="section-head reveal">
             <p class="eyebrow">Leistungen</p>
-            <h2 class="h-section" id="leistungen-titel">Fünf Gewerke, ein Ansprechpartner.</h2>
+            <h2 class="h-section" id="leistungen-titel" data-worte>Fünf Gewerke, ein Ansprechpartner.</h2>
             <p class="lead">
               Als Handwerker mit ingenieurtechnischem Hintergrund und mehrjähriger Erfahrung biete ich Ihnen folgende
               Leistungen an.
@@ -335,9 +351,9 @@
               <p class="eyebrow">Über mich</p>
               <h2 class="h-section visually-hidden" id="ueber-titel">Über mich</h2>
 
-              <p class="about__quote">
+              <p class="about__quote" data-worte>
                 Als Ingenieur den ganzen Tag am Schreibtisch sitzen?
-                <span>Nein, danke!</span>
+                <span class="about__quote-akzent">Nein, danke!</span>
               </p>
 
               <p>
@@ -381,13 +397,20 @@
         <div class="shell">
           <div class="section-head reveal">
             <p class="eyebrow">Auswahl</p>
-            <h2 class="h-section" id="projekte-titel">Bisherige Projekte.</h2>
+            <h2 class="h-section" id="projekte-titel" data-worte>Bisherige Projekte.</h2>
             <p class="lead">Ein Ausschnitt aus abgeschlossenen Arbeiten — Trockenbau, Dach, Innenausbau und Boden.</p>
           </div>
         </div>
 
-        <!-- Bahn: laeuft beim Scrollen seitwaerts (siehe main.js) -->
-        <div class="rail reveal" id="rail">
+        <!-- Bahn: laeuft beim Scrollen seitwaerts (siehe main.js).
+             WICHTIG: #rail und #railTrack duerfen keine reveal-Klasse und damit
+             keine CSS-Transition auf transform tragen. ScrollTrigger heftet
+             #rail an und schiebt #railTrack per Inline-Transform — eine
+             Transition laesst beides beim Setzen sichtbar nachschwingen
+             (die Bildleiste "springt" beim Verlassen der Anheftung).
+             Die Einblendung uebernehmen darum die einzelnen .shot-Karten,
+             gestaffelt von main.js. -->
+        <div class="rail" id="rail">
           <div class="rail__track" id="railTrack">
             <figure class="shot">
               <img src="assets/img/p-trockenbau.webp" alt="Trockenbau" loading="lazy" />
@@ -472,7 +495,7 @@
         <div class="shell">
           <div class="section-head reveal">
             <p class="eyebrow">Kontakt</p>
-            <h2 class="h-section" id="kontakt-titel">Erzählen Sie mir von Ihrem Projekt.</h2>
+            <h2 class="h-section" id="kontakt-titel" data-worte>Erzählen Sie mir von Ihrem Projekt.</h2>
             <p class="lead">
               Schreiben Sie mir gerne direkt an kontakt@jgc-handwerk.de, rufen Sie an oder nutzen Sie das
               Kontaktformular.

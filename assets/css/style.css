@@ -426,6 +426,27 @@ a:hover {
 
 /* ---------- 7. Kopfzeile ---------------------------------- */
 
+/* Lesefaden: duenne Goldlinie am oberen Rand, waechst mit dem Scrollweg.
+   Die Breite setzt main.js als Inline-Transform — hier darf darum keine
+   transition auf transform stehen, sonst zieht die Linie nach. */
+.scrollspur {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 130;
+  height: 2px;
+  pointer-events: none;
+}
+
+#scrollspurBalken {
+  display: block;
+  height: 100%;
+  width: 100%;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  background: linear-gradient(to right, var(--gold-600), var(--gold-400) 60%, var(--gold-300));
+  will-change: transform;
+}
+
 .header {
   position: fixed;
   inset: 0 0 auto;
@@ -545,6 +566,11 @@ a:hover {
 
 /* ---------- 8. Hero --------------------------------------- */
 
+/* Parallaxe: main.js schreibt drei Variablen an den Hero —
+   --mx/--my ist die geglaettete Zeigerposition (-1..1), --sy der Scrollweg
+   in Pixeln (ohne Einheit). Die Ebenen rechnen daraus ihre Verschiebung
+   ueber die translate-Eigenschaft; transform bleibt frei fuer die
+   laufenden Keyframe-Animationen derselben Elemente. */
 .hero {
   position: relative;
   min-height: min(100svh, 880px);
@@ -553,6 +579,9 @@ a:hover {
   padding-block: calc(var(--header-h) + 2.25rem) clamp(2.5rem, 5vw, 4rem);
   overflow: hidden;
   isolation: isolate;
+  --mx: 0;
+  --my: 0;
+  --sy: 0;
 }
 
 /* Warmer Lichtschein — das Gegenstueck zu Foras dunklem Verlauf */
@@ -568,6 +597,7 @@ a:hover {
     radial-gradient(120% 62% at 50% 100%, rgba(209, 178, 128, 0.5) 0%, rgba(230, 218, 200, 0.55) 45%, transparent 78%);
   animation: glow-drift 22s var(--ease-inout) infinite alternate;
   pointer-events: none;
+  translate: calc(var(--mx) * 24px) calc(var(--my) * 14px + var(--sy) * 0.22px);
 }
 
 @keyframes glow-drift {
@@ -579,10 +609,55 @@ a:hover {
   }
 }
 
-/* Holzfoto ganz leise darunter — die Herkunft der alten Seite */
+/* Zwei feine Ringe — ein Hauch technischer Zeichnung hinter dem Inhalt.
+   Der gestrichelte dreht langsam, beide weichen dem Zeiger leicht aus. */
+.hero__ring {
+  position: absolute;
+  z-index: -2;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero__ring--a {
+  width: clamp(320px, 40vw, 600px);
+  top: 4%;
+  left: clamp(-200px, -9vw, -90px);
+  border: 1px solid rgba(209, 178, 128, 0.5);
+  box-shadow: inset 0 0 80px rgba(209, 178, 128, 0.12);
+  animation: ring-schweben 17s var(--ease-inout) infinite alternate;
+  translate: calc(var(--mx) * -30px) calc(var(--my) * -16px + var(--sy) * 0.34px);
+}
+
+.hero__ring--b {
+  width: clamp(240px, 26vw, 420px);
+  right: clamp(-140px, -6vw, -60px);
+  bottom: 6%;
+  border: 1.5px dashed rgba(185, 154, 102, 0.55);
+  animation: ring-drehen 70s linear infinite;
+  translate: calc(var(--mx) * -46px) calc(var(--my) * -24px + var(--sy) * 0.16px);
+}
+
+@keyframes ring-schweben {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(2%, 4%, 0) scale(1.05);
+  }
+}
+
+@keyframes ring-drehen {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Holzfoto ganz leise darunter — die Herkunft der alten Seite.
+   Etwas groesser als der Hero, damit die Parallaxe keine Raender freilegt. */
 .hero__texture {
   position: absolute;
-  inset: 0;
+  inset: -4% -3%;
   z-index: -4;
   background: url("../img/holz.webp") center / cover no-repeat;
   opacity: 0.13;
@@ -590,14 +665,19 @@ a:hover {
   mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 70%, transparent);
   -webkit-mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 70%, transparent);
   pointer-events: none;
+  translate: calc(var(--mx) * -12px) calc(var(--sy) * 0.1px);
 }
 
+/* Der Inhalt verlaesst den Hero etwas langsamer als die Seite scrollt und
+   verblasst dabei — das gibt dem Uebergang zum ersten Abschnitt Tiefe. */
 .hero__inner {
   position: relative;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
+  translate: 0 calc(var(--sy) * 0.18px);
+  opacity: calc(1 - var(--sy) / 820);
 }
 
 /* Kreis-Logo als Blickfang; Kopf- und Fusszeile tragen den Schriftzug */
@@ -657,6 +737,123 @@ a:hover {
   height: 1.05em;
   color: var(--gold-500);
   flex: none;
+}
+
+/* ---------- 8b. Hero-Auftritt ------------------------------ */
+
+/* Gestaffelter Aufbau beim Laden. Die Startwerte gelten nur unter .js;
+   main.js setzt .is-ready an den Hero und loest damit die Kette aus.
+   --h bestimmt die Position in der Choreografie (steht im HTML). */
+.js .hero [data-intro] {
+  opacity: 0;
+  transform: translate3d(0, 30px, 0);
+  filter: blur(7px);
+  transition: opacity 0.85s var(--ease-inout), transform 0.95s var(--ease), filter 0.85s var(--ease-inout);
+  transition-delay: calc(0.1s + var(--h, 0) * 0.16s);
+}
+
+.js .hero.is-ready [data-intro] {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* Das Logo kommt zusaetzlich leicht vergroessert an und behaelt seinen
+   Schatten (die allgemeine Regel oben wuerde ihn mit filter: none loeschen). */
+.js .hero__mark[data-intro] {
+  transform: translate3d(0, 26px, 0) scale(0.86);
+  filter: blur(6px) drop-shadow(0 10px 26px rgba(89, 77, 70, 0.24));
+}
+
+.js .hero.is-ready .hero__mark[data-intro] {
+  transform: none;
+  filter: drop-shadow(0 10px 26px rgba(89, 77, 70, 0.24));
+  animation: mark-halo 1.7s var(--ease-inout) 1.15s 1;
+}
+
+/* Einmaliger Goldschein, sobald das Logo steht */
+@keyframes mark-halo {
+  0% {
+    filter: drop-shadow(0 10px 26px rgba(89, 77, 70, 0.24)) drop-shadow(0 0 0 rgba(209, 178, 128, 0));
+  }
+  45% {
+    filter: drop-shadow(0 10px 26px rgba(89, 77, 70, 0.24)) drop-shadow(0 0 30px rgba(209, 178, 128, 0.85));
+  }
+  100% {
+    filter: drop-shadow(0 10px 26px rgba(89, 77, 70, 0.24)) drop-shadow(0 0 0 rgba(209, 178, 128, 0));
+  }
+}
+
+/* Die Eintraege der Vertrauensleiste folgen einzeln, nachdem die Leiste
+   selbst (data-intro am Container) ihre Linie eingeblendet hat. */
+.js .hero .trustbar__item {
+  opacity: 0;
+  transform: translate3d(0, 14px, 0);
+  transition: opacity 0.7s var(--ease-inout), transform 0.8s var(--ease);
+  transition-delay: calc(1.08s + var(--i, 0) * 0.12s);
+}
+
+.js .hero.is-ready .trustbar__item {
+  opacity: 1;
+  transform: none;
+}
+
+/* Scroll-Hinweis unter der Vertrauensleiste; verblasst ueber --sy beim
+   ersten Scrollen. Bewusst im Textfluss statt am Sektionsrand — absolut
+   positioniert ueberlappte er auf flachen Fenstern die Leiste darueber. */
+.hero__hint {
+  margin-top: clamp(1.75rem, 3.5vw, 2.75rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  text-decoration: none;
+  font-family: Raleway, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--taupe-600);
+  opacity: calc(1 - var(--sy) / 130);
+}
+
+.js .hero__hint {
+  animation: hint-zeigen 1s var(--ease-inout) 2.1s backwards;
+}
+
+@keyframes hint-zeigen {
+  from {
+    opacity: 0;
+  }
+}
+
+.hero__hint-linie {
+  position: relative;
+  width: 1px;
+  height: 44px;
+  overflow: hidden;
+  background: linear-gradient(to bottom, rgba(185, 154, 102, 0.6), rgba(185, 154, 102, 0.08));
+}
+
+/* Ein Lichtpunkt laeuft die Linie hinab */
+.hero__hint-linie::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 16px;
+  background: var(--gold-600);
+  animation: hint-lauf 2.3s var(--ease-inout) infinite;
+}
+
+@keyframes hint-lauf {
+  0% {
+    transform: translateY(-18px);
+  }
+  100% {
+    transform: translateY(48px);
+  }
 }
 
 /* ---------- 9. Leistungen (Reiter wie bei Fora) ----------- */
@@ -806,6 +1003,32 @@ a:hover {
   line-height: 1.65;
 }
 
+/* Beim Reiterwechsel setzt sich das Bild langsam zurecht und die
+   Beschriftung steigt nach — beides nur solange das Panel aktiv ist. */
+.panel.is-active .panel__media img {
+  animation: panel-ruhe 7s var(--ease-inout) both;
+}
+
+@keyframes panel-ruhe {
+  from {
+    transform: scale(1.07);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.panel.is-active .panel__caption {
+  animation: caption-steigen 0.8s var(--ease) 0.15s backwards;
+}
+
+@keyframes caption-steigen {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+  }
+}
+
 .area-note {
   margin-top: clamp(2rem, 4vw, 3rem);
   display: flex;
@@ -873,7 +1096,9 @@ a:hover {
   margin: 0 0 1.5rem;
 }
 
-.about__quote span {
+/* Bewusst eine eigene Klasse: ein blankes "span" traefe auch die
+   .wort-Spannen der Wort-Einblendung und machte jedes Wort zum Block. */
+.about__quote-akzent {
   display: block;
   color: var(--accent-text);
   font-weight: 400;
@@ -960,6 +1185,21 @@ a:hover {
   overflow: hidden;
   box-shadow: var(--shadow-md);
   background: var(--sand-200);
+}
+
+/* Die Karten der Bahn blenden einzeln gestaffelt ein (Klasse und --sd setzt
+   main.js). Bewusst auf der Karte statt auf Bahn oder Gleis: die beiden
+   werden von ScrollTrigger transformiert und vertragen keine transition. */
+.js .shot {
+  opacity: 0;
+  transform: translate3d(0, 34px, 0) scale(0.96);
+  transition: opacity 0.7s var(--ease-inout), transform 0.9s var(--ease);
+  transition-delay: var(--sd, 0ms);
+}
+
+.js .shot.ist-da {
+  opacity: 1;
+  transform: none;
 }
 
 .shot img {
@@ -1457,6 +1697,27 @@ a:hover {
   transform: none;
 }
 
+/* Ueberschriften bauen sich Wort fuer Wort auf: main.js zerlegt Elemente
+   mit data-worte in .wort-Spannen und setzt je Wort die Verzoegerung --wd.
+   Ohne JavaScript gibt es keine Spannen — der Text steht dann einfach da. */
+.wort {
+  display: inline-block;
+}
+
+.js [data-worte] .wort {
+  opacity: 0;
+  transform: translate3d(0, 0.5em, 0);
+  filter: blur(6px);
+  transition: opacity 0.55s var(--ease-inout), transform 0.75s var(--ease), filter 0.65s var(--ease-inout);
+  transition-delay: var(--wd, 0ms);
+}
+
+.js [data-worte].ist-da .wort {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
 /* ---------- 16. Anpassung an Geraete ---------------------- */
 
 @media (max-width: 980px) {
@@ -1542,6 +1803,12 @@ a:hover {
   .trustbar__item {
     font-size: 0.82rem;
   }
+
+  /* Auf kleinen Bildschirmen sitzt die Vertrauensleiste nah am unteren
+     Rand — der Scroll-Hinweis wuerde sich mit ihr ueberlagern. */
+  .hero__hint {
+    display: none;
+  }
 }
 
 /* ---------- 17. Ruhige Darstellung ------------------------ */
@@ -1560,9 +1827,24 @@ a:hover {
   }
 
   .js .reveal,
-  .js .reveal-group > * {
+  .js .reveal-group > *,
+  .js .hero [data-intro],
+  .js .hero .trustbar__item,
+  .js [data-worte] .wort,
+  .js .shot {
     opacity: 1 !important;
     transform: none !important;
+    filter: none !important;
+  }
+
+  /* Das Logo behaelt seinen Schatten, auch wenn oben filter geloescht wird */
+  .js .hero__mark[data-intro] {
+    filter: drop-shadow(0 10px 26px rgba(89, 77, 70, 0.24)) !important;
+  }
+
+  /* Ohne Bewegung ergeben Zeiger-Parallaxe und Lichtpunkt keinen Sinn */
+  .hero__hint-linie::after {
+    display: none;
   }
 }
 
@@ -1571,7 +1853,10 @@ a:hover {
 @media print {
   .header,
   .nav,
+  .scrollspur,
   .hero__glow,
+  .hero__ring,
+  .hero__hint,
   .hero__texture,
   .rail,
   .form {
