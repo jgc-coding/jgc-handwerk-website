@@ -459,32 +459,15 @@ a:hover {
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 0.7rem;
   text-decoration: none;
   flex: none;
 }
 
+/* Schriftzug wie auf der alten Seite; waechst mit der Hoehe der Kopfzeile mit */
 .brand img {
-  width: 40px;
-  height: 40px;
-}
-
-.brand__name {
-  font-family: Raleway, sans-serif;
-  font-size: 1.05rem;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  color: var(--ink);
-  line-height: 1.1;
-}
-
-.brand__claim {
   display: block;
-  font-family: "Open Sans", sans-serif;
-  font-size: 0.7rem;
-  font-weight: 400;
-  letter-spacing: 0.04em;
-  color: var(--text-weak);
+  height: calc(var(--header-h) - 24px);
+  width: auto;
 }
 
 .nav {
@@ -617,10 +600,11 @@ a:hover {
   align-items: center;
 }
 
+/* Kreis-Logo als Blickfang; Kopf- und Fusszeile tragen den Schriftzug */
 .hero__mark {
-  width: clamp(56px, 7vw, 74px);
+  width: clamp(88px, 10vw, 128px);
   height: auto;
-  margin-bottom: clamp(1.1rem, 2.2vw, 1.6rem);
+  margin-bottom: clamp(1.25rem, 2.4vw, 1.8rem);
   filter: drop-shadow(0 10px 26px rgba(89, 77, 70, 0.24));
 }
 
@@ -1368,22 +1352,14 @@ a:hover {
 
 .footer__brand {
   display: inline-flex;
-  align-items: center;
-  gap: 0.7rem;
   margin-bottom: 1.25rem;
 }
 
+/* Heller Schriftzug auf dem dunklen Grund der Fusszeile */
 .footer__brand img {
-  width: 44px;
-  height: 44px;
-}
-
-.footer__brand strong {
-  font-family: Raleway, sans-serif;
-  font-size: 1.15rem;
-  font-weight: 500;
-  color: var(--sand-50);
-  letter-spacing: 0.02em;
+  display: block;
+  height: 64px;
+  width: auto;
 }
 
 .footer__list {

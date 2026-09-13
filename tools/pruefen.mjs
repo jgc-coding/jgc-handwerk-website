@@ -43,6 +43,7 @@ for (const seite of seiten) {
         "https://bewusstwerken.de", // vom Kunden gewuenschter Verweis
         "https://schema.org",
         "https://docs.github.com", // Quellenangabe im Datenschutztext
+        "https://all-inkl.com", // Quellenangabe im Datenschutztext
       ];
       const istLink = new RegExp(`href="${v.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"`).test(html);
       if (!erlaubt.some((e) => v.startsWith(e))) {

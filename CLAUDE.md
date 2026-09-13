@@ -13,6 +13,9 @@ Typografie, Kapsel-Etiketten, Glaskarten, Scroll-Einblendungen und ein Lichtflec
   `C:\Projekte\Claude-Skills\grundlagen\TECH-STACK.md`).
 - **GSAP 3.12.5 + ScrollTrigger**, lokal unter `assets/vendor/gsap/`.
 - **Schriften lokal**: Raleway und Open Sans als Variable Fonts in `assets/fonts/`.
+- **PHP (ab 7.4) nur fuer `formular/senden.php`**, den Empfaenger des Kontaktformulars. Laeuft
+  auf dem Webspace bei All-Inkl, nicht auf GitHub Pages; verschickt per `mail()` und speichert
+  nichts. Bewusst kein Formulardienst: so verlassen Anfragen nie den deutschen Hoster.
 - **Node 24** nur fuer die Werkzeuge in `tools/`, nicht fuer die Seite selbst.
 
 **Nichts wird von einem fremden Server nachgeladen.** Kein CDN, kein Google Fonts, keine
@@ -22,6 +25,11 @@ Analyse. `tools/pruefen.mjs` bricht ab, wenn doch ein externer Verweis hineinger
 
 - Vorschau: `node tools/server.mjs` → http://localhost:4173
 - Pruefen: `node tools/pruefen.mjs` (fehlende Dateien, fremde Server, Versionsabgleich)
+- Formular-Skript testen: `node tools/formular-test.mjs` — PHP in Docker, 13 Faelle; Mails
+  landen in `tools/formular-test/post/` statt im Postfach. Docker muss laufen, andere
+  PHP-Version per `PHP_IMAGE=php:8.5-cli`. Mit `--laufen` bleibt PHP fuer Browser-Tests an
+  (launch.json: `formular-test`, Port 8099). Ein Stopp ueber die Browser-Pane beendet nur
+  Node, der Container laeuft weiter: danach `docker rm -f jgc-formular-test`.
 - Sichtkontrolle: `node tools/screenshots.mjs <ordner> [breite] [hoehe]` — steuert das
   installierte Chrome fern und legt Bilder aller Abschnitte ab. Server muss laufen.
 - Schriften erneuern: `node tools/fonts-holen.mjs` (nur bei Schriftwechsel noetig)
@@ -38,6 +46,11 @@ Analyse. `tools/pruefen.mjs` bricht ab, wenn doch ein externer Verweis hineinger
   nicht. Fuer goldenen Text `--gold-600` (`#8c6d42`) verwenden.
 - Bilder als WebP in `assets/img/`; die unbearbeiteten Vorlagen liegen daneben in
   `_original/` und bleiben ausserhalb des Repos.
+- **Logo (Gabriels Entscheidung):** Kopf- und Fusszeile tragen den Schriftzug der alten Seite
+  (`logo-schriftzug.webp`, auf dunklem Grund `logo-schriftzug-hell.webp`), der Startbereich
+  das Kreis-Logo. Neu erzeugen aus `_original/logo-schriftzug-orig.png`: nur die Deckkraft
+  verkleinern und die Farbe neu setzen — wer das farbige Bild direkt skaliert, bekommt helle
+  Raender an den Buchstaben.
 
 ## Stolperfallen
 
@@ -54,13 +67,24 @@ Analyse. `tools/pruefen.mjs` bricht ab, wenn doch ein externer Verweis hineinger
   Heredoc schreiben, sondern mit dem Edit-Werkzeug.
 - Die Projektbahn (`#rail`) wird von ScrollTrigger angeheftet. Aendert sich die Kartenzahl
   oder -breite, aendert sich die Scrollstrecke der ganzen Seite mit.
-- **Formular und Datenschutztext haengen zusammen.** `JGC.formularEndpunkt` in
-  `assets/js/config.js` steuert den Versand: bei `null` prueft das Formular nur und sagt dem
-  Besucher offen, dass nichts verschickt wird. Wer dort einen Dienst eintraegt, muss ihn im
-  selben Zug in `datenschutz.html` aufnehmen — sonst nennt die Erklaerung einen
-  Datenempfaenger nicht.
-- **Der Hoster steht in `datenschutz.html`.** Zieht die Seite von GitHub Pages auf einen
-  anderen Server um, muss Abschnitt 2 dort mitgezogen werden.
+- **Das Formular-Skript liegt nicht auf GitHub.** `formular/senden.php` wird von Hand bei
+  All-Inkl hochgeladen (Ordner `formular` im Verzeichnis der Domain). Der Deploy-Workflow
+  bringt Aenderungen dort nicht hin — nach jeder Aenderung neu hochladen, sonst laeuft dort
+  der alte Stand weiter.
+- **Formular, Herkunft und Datenschutztext haengen zusammen.** `JGC.formularEndpunkt` in
+  `assets/js/config.js` zeigt auf das Skript (bei `null` prueft das Formular nur und sagt das
+  offen). Das Skript nimmt nur Einsendungen von Adressen in `ERLAUBTE_HERKUNFT` an: Zieht die
+  Website um, muss ihre neue Adresse dort hinein, sonst scheitert jede Anfrage mit 403. Wer
+  Empfaenger oder Weg der Daten aendert, zieht `datenschutz.html` im selben Zug mit.
+- **All-Inkl verschickt Skript-Mails nur mit echtem Absender.** `ABSENDER` in `senden.php` muss
+  ein Postfach im All-Inkl-Paket sein; es geht per `-f` an `mail()`.
+- **Zeigt die Domain auf GitHub Pages, erreicht die Formular-Adresse All-Inkl nicht mehr.** Das
+  Skript muss dann auf eine Subdomain bei All-Inkl, und `JGC.formularEndpunkt` zieht mit.
+- **Hoster und Formular-Empfaenger stehen in `datenschutz.html` Abschnitt 2** (GitHub Pages fuer
+  die Seite, All-Inkl fuer Formular und E-Mail). Zieht die Seite um, muss der Abschnitt mit.
+- `docker run` aus Git Bash mit Pfaden wie `/app` braucht `MSYS_NO_PATHCONV=1`, sonst macht
+  Bash daraus einen Windows-Pfad. `tools/formular-test.mjs` startet Docker direkt aus Node und
+  ist davon nicht betroffen.
 - **Vorschau-Sperre an zwei Stellen.** Solange die Seite auf der GitHub-Adresse liegt, halten
   ein `noindex`-Tag in `index.html` und `robots.txt` sie aus den Suchmaschinen heraus — sonst
   taucht sie neben der echten Seite auf jgc-handwerk.de auf und nimmt ihr Sichtbarkeit. Beim

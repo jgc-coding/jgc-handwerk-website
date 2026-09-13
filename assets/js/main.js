@@ -332,6 +332,10 @@
     var status = document.getElementById("formStatus");
     var konfig = window.JGC || {};
 
+    // Ab jetzt steht das Formular bereit. Das Skript auf dem Server lehnt Einsendungen ab,
+    // die schneller kommen, als ein Mensch tippen kann.
+    var bereitSeit = Date.now();
+
     var regeln = {
       nachname: function (w) {
         return w.trim().length >= 2 ? "" : "Bitte tragen Sie Ihren Nachnamen ein.";
@@ -348,7 +352,7 @@
         return w.trim().length >= 10 ? "" : "Bitte beschreiben Sie Ihre Anfrage in ein paar Worten.";
       },
       datenschutz: function (_, feld) {
-        return feld.checked ? "" : "Ohne diese Zustimmung darf ich Ihre Anfrage nicht speichern.";
+        return feld.checked ? "" : "Ohne diese Zustimmung kann ich Ihre Anfrage nicht bearbeiten.";
       },
     };
 
@@ -421,44 +425,92 @@
         return;
       }
 
-      versende(form, konfig.formularEndpunkt, zeige);
+      versende(form, konfig.formularEndpunkt, Math.round((Date.now() - bereitSeit) / 1000), zeige);
     });
   }
 
-  /** Versand an einen Formulardienst — erst aktiv, wenn ein Endpunkt hinterlegt ist. */
-  function versende(form, endpunkt, zeige) {
+  /** Zeigt die Meldungen, die das Skript auf dem Server zu einzelnen Feldern schickt. */
+  function zeigeFeldfehler(form, felder) {
+    var erstes = null;
+    Object.keys(felder).forEach(function (name) {
+      var feld = form.elements[name];
+      var anzeige = document.getElementById("err-" + name);
+      if (anzeige) anzeige.textContent = String(felder[name]);
+      if (!feld) return;
+      feld.setAttribute("aria-invalid", "true");
+      if (!erstes) erstes = feld;
+    });
+    if (erstes) erstes.focus();
+  }
+
+  /** Versand an das Formular-Skript bei All-Inkl (formular/senden.php).
+   *  sekunden = Dauer des Ausfuellens; das Skript lehnt Automaten-Tempo ab. */
+  function versende(form, endpunkt, sekunden, zeige) {
     var knopf = form.querySelector('button[type="submit"]');
-    var beschriftung = knopf ? knopf.textContent : "";
+    // innerHTML statt textContent: sonst verliert der Knopf nach dem Senden sein Pfeil-Symbol
+    var beschriftung = knopf ? knopf.innerHTML : "";
     if (knopf) {
       knopf.disabled = true;
       knopf.textContent = "Wird gesendet …";
     }
 
+    var daten = new FormData(form);
+    daten.append("dauer", String(sekunden));
+
+    // Bleibt die Antwort aus, sichtbar abbrechen statt den Knopf ewig haengen zu lassen.
+    var abbruch = typeof AbortController === "function" ? new AbortController() : null;
+    var wecker = abbruch
+      ? setTimeout(function () {
+          abbruch.abort();
+        }, 20000)
+      : null;
     var kennung = Math.random().toString(36).slice(2, 8);
 
     fetch(endpunkt, {
       method: "POST",
       headers: { Accept: "application/json" },
-      body: new FormData(form),
+      body: daten,
+      signal: abbruch ? abbruch.signal : undefined,
     })
       .then(function (antwort) {
-        if (!antwort.ok) throw new Error("HTTP " + antwort.status);
-        form.reset();
-        zeige("info", "Vielen Dank für Ihre Anfrage. Ich melde mich zeitnah bei Ihnen.");
+        return antwort
+          .json()
+          .catch(function () {
+            return {};
+          })
+          .then(function (inhalt) {
+            if (inhalt.id) kennung = String(inhalt.id);
+
+            if (antwort.ok && inhalt.ok) {
+              form.reset();
+              zeige("info", "Vielen Dank für Ihre Anfrage. Ich melde mich zeitnah bei Ihnen.");
+              return;
+            }
+
+            if (antwort.status === 422 && inhalt.felder) {
+              zeigeFeldfehler(form, inhalt.felder);
+              zeige("error", "Bitte prüfen Sie die rot markierten Felder.");
+              return;
+            }
+
+            throw new Error("HTTP " + antwort.status + (inhalt.grund ? " " + inhalt.grund : ""));
+          });
       })
       .catch(function (fehler) {
+        var ursache = fehler && fehler.name === "AbortError" ? "keine Antwort nach 20 s" : fehler.message;
         console.error(LOG + " [ERROR] Versand fehlgeschlagen (ID " + kennung + "):", fehler);
         zeige(
           "error",
           "Ihre Anfrage konnte gerade nicht gesendet werden. Bitte versuchen Sie es in einer Minute erneut " +
             "oder rufen Sie mich an unter 0176 43407143.",
-          "Technische Ursache: " + fehler.message + " · ID " + kennung
+          "Technische Ursache: " + ursache + " · ID " + kennung
         );
       })
       .finally(function () {
+        if (wecker) clearTimeout(wecker);
         if (knopf) {
           knopf.disabled = false;
-          knopf.textContent = beschriftung;
+          knopf.innerHTML = beschriftung;
         }
       });
   }

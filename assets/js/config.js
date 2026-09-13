@@ -5,13 +5,13 @@
 window.JGC = {
   /** Version der Seite. Single Source of Truth, erscheint in der Fusszeile.
    *  Beim Aendern: CHANGELOG.md mitziehen (tools/pruefen.mjs bewacht das). */
-  version: "0.1.0",
+  version: "0.2.0",
 
-  /** Zieladresse des Kontaktformulars.
-   *  null  = noch nicht angeschlossen; das Formular prueft die Eingaben,
-   *          zeigt aber ehrlich an, dass es nicht versendet.
-   *  Sonst = URL des Formulardienstes (z. B. https://formspree.io/f/xxxxxxx).
-   *  Wird hier eine URL eingetragen, muss der Dienst zusaetzlich in die
-   *  Datenschutzerklaerung aufgenommen werden. */
-  formularEndpunkt: null,
+  /** Zieladresse des Kontaktformulars: das PHP-Skript formular/senden.php bei All-Inkl.
+   *  null  = nicht angeschlossen; das Formular prueft nur und sagt dem Besucher offen,
+   *          dass nichts versendet wird.
+   *  Die Datei liegt NICHT auf GitHub Pages - sie muss bei All-Inkl hochgeladen sein.
+   *  Wer hier eine andere Adresse eintraegt, passt im selben Zug datenschutz.html an und
+   *  gibt die Adresse der Website in senden.php unter ERLAUBTE_HERKUNFT frei. */
+  formularEndpunkt: "https://jgc-handwerk.de/formular/senden.php",
 };

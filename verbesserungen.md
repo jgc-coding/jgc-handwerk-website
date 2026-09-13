@@ -1,59 +1,34 @@
 # Verbesserungen und offene Befunde
 
-Stand: 08.09.2026. Jeder Punkt hat eine Nummer, damit `weitermachen.md` und Commits darauf
-verweisen können, ohne die Beschreibung zu wiederholen.
+Stand: 13.09.2026. Jeder Punkt hat eine Nummer, damit `weitermachen.md` und Commits darauf
+verweisen können, ohne die Beschreibung zu wiederholen. Erledigtes steht im `CHANGELOG.md`
+(V1 und V2 mit Version 0.2.0).
 
 ---
 
-## V1 · Widersprüchliche Anschrift klären · hoch · S
+## V3 · Formular-Skript bei All-Inkl hochladen und live testen · hoch · S
 
-**Gefahr:** Auf deiner bestehenden Seite steht im Impressum eine andere Anschrift als in der
-Datenschutzerklärung — Hoyerswerda gegen Dresden. Wer dich anschreiben will oder muss,
-findet zwei Adressen und weiß nicht, welche gilt. Bei einer Abmahnung ist ein fehlerhaftes
-Impressum der klassische Angriffspunkt.
+**Gefahr:** Ab Version 0.2.0 schickt die Seite Anfragen an `formular/senden.php` bei All-Inkl.
+Liegt die Datei dort nicht, bekommt jeder Besucher beim Absenden eine Fehlermeldung — die
+Anfrage kommt nicht an, und nur wer anruft, erreicht dich.
 
-**Bezug:** Betrifft dich direkt. Ich habe für die neue Fassung durchgehend die
-Impressums-Adresse genommen (Hoyerswerda, steht auch im Footer deiner Live-Seite) — siehe
-[impressum.html](impressum.html) und [datenschutz.html](datenschutz.html). Empfehlung: beim
-Impressumsservice nachfragen, welche gilt, und die alte Seite ebenfalls korrigieren.
-
----
-
-## V2 · Leistungsbeschreibungen bestätigen · hoch · S
-
-**Gefahr:** Deine alte Seite listet die fünf Leistungen nur als Stichpunkte. Für die neue
-Darstellung habe ich je einen erklärenden Satz ergänzt, etwa „vom Ständerwerk bis zur fertig
-gespachtelten Fläche". Wenn du eine dieser Arbeiten gar nicht anbietest, verspricht die Seite
-etwas, das du nachher ablehnen musst.
-
-**Bezug:** Betrifft dich direkt. Die betroffenen Stellen sind in
-[index.html](index.html) mit `<!-- TEXT PRUEFEN -->` markiert, insgesamt zehn Sätze im
-Leistungsabschnitt. Empfehlung: einmal durchlesen und mir sagen, was weg oder anders soll.
-
----
-
-## V3 · Kontaktformular anschließen · hoch · S
-
-**Gefahr:** Das Formular prüft zwar alle Eingaben, verschickt aber nichts. Ginge die Seite so
-live, würden Anfragen ins Leere laufen. Aktuell sagt es dem Besucher das offen und verweist
-auf Telefon und E-Mail — als Dauerlösung ist das aber eine verlorene Anfrage nach der
-anderen.
-
-**Bezug:** Betrifft dich, sobald die Seite live geht. Ein Formulardienst wie Formspree wird in
-`JGC.formularEndpunkt` in [config.js](assets/js/config.js) eingetragen, das ist eine Zeile.
-Der Dienst muss dann zusätzlich in die Datenschutzerklärung.
+**Bezug:** Betrifft dich vor dem Veröffentlichen von 0.2.0. Das Skript ist lokal in 13 Fällen
+mit PHP 8.3 und 8.5 geprüft. Offen sind drei Schritte: den AVV mit All-Inkl bestätigen (die
+Datenschutzerklärung sagt, dass er besteht), die Datei in den Ordner `formular` der Domain
+laden, eine Test-Anfrage schicken. Erst danach veröffentlichen.
 
 ---
 
 ## V4 · Datenschutzerklärung fachlich prüfen lassen · mittel · S
 
-**Gefahr:** Ich habe die Erklärung an die neue Technik angepasst: GitHub statt All-Inkl als
-Hoster, keine Cookies, keine Besucherzählung, Schriften vom eigenen Server. Das beschreibt
-den tatsächlichen Zustand — ich bin aber kein Anwalt, und ein Fehler in diesem Text ist
-teurer als der Text selbst.
+**Gefahr:** Ich habe die Erklärung an die neue Technik angepasst: GitHub für die Seite, All-Inkl
+für Formular und E-Mail, keine Cookies, keine Besucherzählung, Schriften vom eigenen Server.
+Das beschreibt den tatsächlichen Zustand — ich bin aber kein Anwalt, und ein Fehler in diesem
+Text ist teurer als der Text selbst.
 
-**Bezug:** Betrifft dich vor dem Livegang. Wenn du ohnehin einen Impressumsservice nutzt,
-lässt sich der Text dort meist mitprüfen. Datei: [datenschutz.html](datenschutz.html).
+**Bezug:** Betrifft dich vor dem Livegang; am 13.09.2026 bestätigt. Sinnvoll erst nach V3, weil
+die Abschnitte zu All-Inkl und zum Kontaktformular neu sind. Datei:
+[datenschutz.html](datenschutz.html).
 
 ---
 
@@ -69,8 +44,23 @@ Standpunkt aufnehmen, dann wird der Regler zum stärksten Element der Seite.
 
 ---
 
+## V6 · Beim Umzug die Seite zu All-Inkl statt GitHub legen · mittel · M
+
+**Gefahr:** Solange die Seite bei GitHub liegt, geht bei jedem Besuch die IP-Adresse an ein
+US-Unternehmen. Das ist erlaubt und in der Erklärung genannt, aber angreifbarer als ein
+deutscher Hoster.
+
+**Bezug:** Betrifft dich beim Umzug auf jgc-handwerk.de. Bei All-Inkl läge alles in
+Deutschland, direkt neben dem Formular-Skript. Zeigt die Domain dagegen auf GitHub, muss das
+Skript auf eine Subdomain bei All-Inkl umziehen.
+
+---
+
 ## I1 · Ideen für später
 
+- **Dachdecker auch im Startbereich nennen.** Startbereich, Vertrauensleiste und die
+  Beschreibung für Suchmaschinen sprechen bisher nur von Zimmereien. Die Dachdecker stehen
+  nur im Reiter „Zuarbeit Dach- und Gaubenbau".
 - **Kundenstimmen.** Drei Sätze von zufriedenen Auftraggebern wirken bei Handwerksleistungen
   stärker als jede Selbstbeschreibung. Platz dafür wäre zwischen Projekten und Kontakt.
 - **Projekte mit Ort und Umfang beschriften.** „Trockenbau, Dachgeschoss, 40 m², Freiburg-Wiehre"

@@ -73,11 +73,7 @@
     <header class="header" id="header">
       <div class="header__inner">
         <a class="brand" href="#home" aria-label="JGC Handwerk — zum Seitenanfang">
-          <img src="assets/img/logo-kreis.webp" alt="" width="40" height="40" />
-          <span class="brand__name">
-            JGC Handwerk
-            <span class="brand__claim">ressourcen- und zeiteffizient</span>
-          </span>
+          <img src="assets/img/logo-schriftzug.webp" alt="" width="289" height="156" />
         </a>
 
         <button
@@ -217,8 +213,7 @@
                 <span class="tab__num">01</span>
                 <span>
                   <span class="tab__title">Trockenbau</span>
-                  <!-- TEXT PRUEFEN: Kurzbeschreibung, von Gabriel zu bestaetigen -->
-                  <span class="tab__hint">Wände, Decken und Vorsatzschalen im Innenausbau.</span>
+                  <span class="tab__hint">Wände und Decken im Innenausbau.</span>
                 </span>
               </button>
 
@@ -226,7 +221,6 @@
                 <span class="tab__num">02</span>
                 <span>
                   <span class="tab__title">Montageservice</span>
-                  <!-- TEXT PRUEFEN -->
                   <span class="tab__hint">Einbau genormter Baufertigteile und Montagearbeiten.</span>
                 </span>
               </button>
@@ -235,8 +229,7 @@
                 <span class="tab__num">03</span>
                 <span>
                   <span class="tab__title">Zuarbeit Dach- und Gaubenbau</span>
-                  <!-- TEXT PRUEFEN -->
-                  <span class="tab__hint">Unterstützung für Zimmereien auf dem Dach.</span>
+                  <span class="tab__hint">Unterstützung für Zimmereien und Dachdecker.</span>
                 </span>
               </button>
 
@@ -244,7 +237,6 @@
                 <span class="tab__num">04</span>
                 <span>
                   <span class="tab__title">Zuarbeit diverse Zimmerertätigkeiten</span>
-                  <!-- TEXT PRUEFEN -->
                   <span class="tab__hint">Als Subunternehmer für Zimmereibetriebe.</span>
                 </span>
               </button>
@@ -253,7 +245,6 @@
                 <span class="tab__num">05</span>
                 <span>
                   <span class="tab__title">Bodenverlegung</span>
-                  <!-- TEXT PRUEFEN -->
                   <span class="tab__hint">Verlegearbeiten für Innenräume.</span>
                 </span>
               </button>
@@ -265,8 +256,7 @@
                   <img src="assets/img/p-trockenbau.webp" alt="Trockenbauarbeiten von JGC Handwerk" loading="lazy" />
                   <div class="panel__caption">
                     <h3>Trockenbau</h3>
-                    <!-- TEXT PRUEFEN -->
-                    <p>Wände, Decken und Vorsatzschalen — vom Ständerwerk bis zur fertig gespachtelten Fläche.</p>
+                    <p>Wände und Decken — vom Ständerwerk bis zur fertig gespachtelten Fläche.</p>
                   </div>
                 </div>
               </div>
@@ -276,7 +266,6 @@
                   <img src="assets/img/vn-montage-nachher.webp" alt="Abgeschlossene Montagearbeiten" loading="lazy" />
                   <div class="panel__caption">
                     <h3>Montageservice</h3>
-                    <!-- TEXT PRUEFEN -->
                     <p>Einbau genormter Baufertigteile und Montagearbeiten für Privatkunden und Betriebe.</p>
                   </div>
                 </div>
@@ -287,8 +276,7 @@
                   <img src="assets/img/p-dach.webp" alt="Dacharbeiten von JGC Handwerk" loading="lazy" />
                   <div class="panel__caption">
                     <h3>Zuarbeit Dach- und Gaubenbau</h3>
-                    <!-- TEXT PRUEFEN -->
-                    <p>Zuverlässige Unterstützung für Zimmereien bei Dachaufbau und Gaubenbau.</p>
+                    <p>Zuverlässige Unterstützung für Zimmereien und Dachdecker bei Dachaufbau und Gaubenbau.</p>
                   </div>
                 </div>
               </div>
@@ -298,7 +286,6 @@
                   <img src="assets/img/p-dachausbau.webp" alt="Innenausbau im Dachgeschoss" loading="lazy" />
                   <div class="panel__caption">
                     <h3>Zuarbeit diverse Zimmerertätigkeiten</h3>
-                    <!-- TEXT PRUEFEN -->
                     <p>Als Subunternehmer im Einsatz — eingespielt in bestehende Abläufe auf der Baustelle.</p>
                   </div>
                 </div>
@@ -309,7 +296,6 @@
                   <img src="assets/img/p-boden.webp" alt="Bodenverlegearbeiten von JGC Handwerk" loading="lazy" />
                   <div class="panel__caption">
                     <h3>Bodenverlegung</h3>
-                    <!-- TEXT PRUEFEN -->
                     <p>Verlegearbeiten für Innenräume — sauber vorbereitet, sauber abgeschlossen.</p>
                   </div>
                 </div>
@@ -539,25 +525,25 @@
                 <div class="form__grid">
                   <div class="field">
                     <label for="vorname">Vorname</label>
-                    <input id="vorname" name="vorname" type="text" autocomplete="given-name" />
+                    <input id="vorname" name="vorname" type="text" autocomplete="given-name" maxlength="100" />
                     <span class="field__error" id="err-vorname" aria-live="polite"></span>
                   </div>
 
                   <div class="field">
                     <label for="nachname">Nachname <span class="req" aria-hidden="true">*</span></label>
-                    <input id="nachname" name="nachname" type="text" autocomplete="family-name" required />
+                    <input id="nachname" name="nachname" type="text" autocomplete="family-name" maxlength="100" required />
                     <span class="field__error" id="err-nachname" aria-live="polite"></span>
                   </div>
 
                   <div class="field">
                     <label for="email">E-Mail <span class="req" aria-hidden="true">*</span></label>
-                    <input id="email" name="email" type="email" autocomplete="email" required />
+                    <input id="email" name="email" type="email" autocomplete="email" maxlength="254" required />
                     <span class="field__error" id="err-email" aria-live="polite"></span>
                   </div>
 
                   <div class="field">
                     <label for="telefon">Telefon</label>
-                    <input id="telefon" name="telefon" type="tel" autocomplete="tel" />
+                    <input id="telefon" name="telefon" type="tel" autocomplete="tel" maxlength="40" />
                     <span class="field__error" id="err-telefon" aria-live="polite"></span>
                   </div>
 
@@ -566,6 +552,7 @@
                     <textarea
                       id="anfrage"
                       name="anfrage"
+                      maxlength="5000"
                       required
                       placeholder="Worum geht es? Art der Arbeiten, Ort und gewünschter Zeitraum helfen mir bei der Einschätzung."
                     ></textarea>
@@ -576,9 +563,9 @@
                     <label class="consent" for="datenschutz">
                       <input id="datenschutz" name="datenschutz" type="checkbox" required />
                       <span>
-                        Ich habe die <a href="datenschutz.html">Datenschutzerklärung</a> zur Kenntnis genommen. Ich
-                        stimme zu, dass meine Angaben zur Kontaktaufnahme und für Rückfragen dauerhaft gespeichert
-                        werden. <span class="req" aria-hidden="true">*</span>
+                        Ich stimme zu, dass meine Angaben zur Beantwortung meiner Anfrage verarbeitet und per E-Mail an
+                        JGC Handwerk übermittelt werden. Einzelheiten und mein Widerrufsrecht stehen in der
+                        <a href="datenschutz.html">Datenschutzerklärung</a>. <span class="req" aria-hidden="true">*</span>
                       </span>
                     </label>
                     <span class="field__error" id="err-datenschutz" aria-live="polite"></span>
@@ -615,8 +602,7 @@
         <div class="footer__grid">
           <div class="footer__brand-col">
             <div class="footer__brand">
-              <img src="assets/img/logo-kreis.webp" alt="" width="44" height="44" />
-              <strong>JGC Handwerk</strong>
+              <img src="assets/img/logo-schriftzug-hell.webp" alt="JGC Handwerk" width="356" height="192" />
             </div>
             <p>
               Johann Gabriel Chimento<br />

@@ -36,19 +36,34 @@ node tools/screenshots.mjs screenshots 1440 900
 Legt Bilder aller Abschnitte ab — steuert dafür das installierte Chrome fern. Der
 Vorschau-Server muss laufen. Für die mobile Ansicht `390 844` angeben.
 
+## Kontaktformular
+
+Das Formular schickt Anfragen an `formular/senden.php`. Dieses PHP-Skript läuft **nicht** auf
+GitHub Pages, sondern auf dem Webspace bei All-Inkl, und leitet jede Anfrage als E-Mail an
+kontakt@jgc-handwerk.de weiter. Nach jeder Änderung muss die Datei dort neu hochgeladen
+werden. Lokal lässt sie sich mit PHP in Docker prüfen:
+
+```bash
+node tools/formular-test.mjs
+```
+
+Der Test schickt gültige, fehlerhafte und böswillige Einsendungen an das Skript und fängt die
+Mails ab, statt sie zu verschicken.
+
 ## Aufbau
 
 ```
 index.html            Startseite (Hero, Leistungen, Über mich, Projekte, Kontakt)
 impressum.html        Impressum
 datenschutz.html      Datenschutzerklärung
+formular/senden.php   Empfänger des Kontaktformulars — läuft bei All-Inkl, nicht auf GitHub
 assets/css/style.css  Design-System; alle Farben und Abstände als CSS-Variablen
 assets/js/config.js   Version und Formular-Ziel — die einzige Stelle für diese Werte
 assets/js/main.js     Verhalten: Reiter, Einblendungen, Projektbahn, Formular
 assets/fonts/         Raleway und Open Sans, lokal (kein Google-Server)
 assets/vendor/gsap/   GSAP 3.12.5 mit ScrollTrigger, lokal
 assets/img/           Bilder als WebP
-tools/                Vorschau-Server, Prüfung, Screenshots, Schriften holen
+tools/                Vorschau-Server, Prüfung, Screenshots, Formular-Test, Schriften holen
 ```
 
 Die Seite lädt **nichts** von fremden Servern nach. Das ist Absicht und wird von
