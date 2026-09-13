@@ -6,9 +6,11 @@
  * Nimmt eine Anfrage aus dem Formular der Website entgegen, prueft sie ein zweites Mal
  * und schickt sie als E-Mail an das eigene Postfach. Gespeichert wird nichts.
  *
- * Ablage bei All-Inkl: Ordner "formular" im Verzeichnis der Domain, erreichbar unter
- * https://jgc-handwerk.de/formular/senden.php (= JGC.formularEndpunkt in assets/js/config.js).
- * Nach jeder Aenderung an dieser Datei muss sie dort neu hochgeladen werden.
+ * Ablage bei All-Inkl: direkt in den Ordner der Subdomain formular.jgc-handwerk.de, erreichbar
+ * unter https://formular.jgc-handwerk.de/senden.php (= JGC.formularEndpunkt in
+ * assets/js/config.js). Hochladen mit dem FTP-Nutzer, der nur diesen Ordner sieht - nicht mit
+ * dem Nutzer "formular", der gehoert zu formular.jgc-lumen.de. Nach jeder Aenderung an dieser
+ * Datei muss sie dort neu hochgeladen werden.
  *
  * Wer Empfaenger, Absender oder den Weg der Daten aendert, passt datenschutz.html im
  * selben Zug an.

@@ -39,8 +39,8 @@ Vorschau-Server muss laufen. Für die mobile Ansicht `390 844` angeben.
 ## Kontaktformular
 
 Das Formular schickt Anfragen an `formular/senden.php`. Dieses PHP-Skript läuft **nicht** auf
-GitHub Pages, sondern auf dem Webspace bei All-Inkl, und leitet jede Anfrage als E-Mail an
-kontakt@jgc-handwerk.de weiter. Nach jeder Änderung muss die Datei dort neu hochgeladen
+GitHub Pages, sondern bei All-Inkl unter `https://formular.jgc-handwerk.de/senden.php`, und
+leitet jede Anfrage als E-Mail an kontakt@jgc-handwerk.de weiter. Nach jeder Änderung muss die Datei dort neu hochgeladen
 werden. Lokal lässt sie sich mit PHP in Docker prüfen:
 
 ```bash

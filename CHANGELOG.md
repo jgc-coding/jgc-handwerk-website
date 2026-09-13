@@ -17,9 +17,9 @@ das wirklich versendet, und korrigierte Texte.
 
 **Kontaktformular**
 
-- Anfragen gehen an ein eigenes PHP-Skript (`formular/senden.php`) auf dem Webspace bei All-Inkl
-  und von dort als E-Mail an kontakt@jgc-handwerk.de. Es gibt keinen Formulardienst, und
-  gespeichert wird nichts.
+- Anfragen gehen an ein eigenes PHP-Skript (`formular/senden.php`) bei All-Inkl auf der
+  Subdomain formular.jgc-handwerk.de und von dort als E-Mail an kontakt@jgc-handwerk.de. Es gibt
+  keinen Formulardienst, und gespeichert wird nichts. Gleiches Muster wie bei JGC Lumen.
 - Das Skript prüft alle Eingaben ein zweites Mal, nimmt nur Einsendungen von der eigenen Website
   an und hält Automaten über Köderfeld und Zeitprüfung fern.
 - Fehler zeigen einen verständlichen Satz und darunter eine Diagnose-Zeile mit Kennung. Bleibt die

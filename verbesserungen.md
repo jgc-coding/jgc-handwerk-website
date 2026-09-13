@@ -8,14 +8,16 @@ verweisen können, ohne die Beschreibung zu wiederholen. Erledigtes steht im `CH
 
 ## V3 · Formular-Skript bei All-Inkl hochladen und live testen · hoch · S
 
-**Gefahr:** Ab Version 0.2.0 schickt die Seite Anfragen an `formular/senden.php` bei All-Inkl.
-Liegt die Datei dort nicht, bekommt jeder Besucher beim Absenden eine Fehlermeldung — die
-Anfrage kommt nicht an, und nur wer anruft, erreicht dich.
+**Gefahr:** Ab Version 0.2.0 schickt die Seite Anfragen an
+`https://formular.jgc-handwerk.de/senden.php`. Gibt es die Subdomain oder die Datei dort nicht,
+bekommt jeder Besucher beim Absenden eine Fehlermeldung — die Anfrage kommt nicht an, und nur
+wer anruft, erreicht dich.
 
 **Bezug:** Betrifft dich vor dem Veröffentlichen von 0.2.0. Das Skript ist lokal in 13 Fällen
-mit PHP 8.3 und 8.5 geprüft. Offen sind drei Schritte: den AVV mit All-Inkl bestätigen (die
-Datenschutzerklärung sagt, dass er besteht), die Datei in den Ordner `formular` der Domain
-laden, eine Test-Anfrage schicken. Erst danach veröffentlichen.
+mit PHP 8.3 und 8.5 geprüft. Offen sind vier Schritte im KAS, wie bei formular.jgc-lumen.de:
+die Subdomain `formular.jgc-handwerk.de` mit SSL anlegen, einen FTP-Nutzer nur für ihren Ordner
+anlegen, `senden.php` direkt in diesen Ordner laden und den AVV mit All-Inkl bestätigen. Danach
+eine Test-Anfrage, erst dann veröffentlichen.
 
 ---
 
@@ -44,15 +46,16 @@ Standpunkt aufnehmen, dann wird der Regler zum stärksten Element der Seite.
 
 ---
 
-## V6 · Beim Umzug die Seite zu All-Inkl statt GitHub legen · mittel · M
+## V6 · Hosting beim Umzug bewusst wählen: GitHub oder All-Inkl · mittel · M
 
 **Gefahr:** Solange die Seite bei GitHub liegt, geht bei jedem Besuch die IP-Adresse an ein
 US-Unternehmen. Das ist erlaubt und in der Erklärung genannt, aber angreifbarer als ein
 deutscher Hoster.
 
-**Bezug:** Betrifft dich beim Umzug auf jgc-handwerk.de. Bei All-Inkl läge alles in
-Deutschland, direkt neben dem Formular-Skript. Zeigt die Domain dagegen auf GitHub, muss das
-Skript auf eine Subdomain bei All-Inkl umziehen.
+**Bezug:** Betrifft dich beim Umzug auf jgc-handwerk.de. JGC Lumen liegt bereits bei GitHub,
+das Formular auf einer Subdomain bei All-Inkl — dasselbe Muster geht hier ohne Änderung am
+Formular. Soll alles in Deutschland liegen, kommt die Seite zu All-Inkl, und Abschnitt 2 der
+Datenschutzerklärung wird kürzer.
 
 ---
 

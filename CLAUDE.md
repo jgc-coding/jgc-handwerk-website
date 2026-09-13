@@ -14,8 +14,10 @@ Typografie, Kapsel-Etiketten, Glaskarten, Scroll-Einblendungen und ein Lichtflec
 - **GSAP 3.12.5 + ScrollTrigger**, lokal unter `assets/vendor/gsap/`.
 - **Schriften lokal**: Raleway und Open Sans als Variable Fonts in `assets/fonts/`.
 - **PHP (ab 7.4) nur fuer `formular/senden.php`**, den Empfaenger des Kontaktformulars. Laeuft
-  auf dem Webspace bei All-Inkl, nicht auf GitHub Pages; verschickt per `mail()` und speichert
-  nichts. Bewusst kein Formulardienst: so verlassen Anfragen nie den deutschen Hoster.
+  bei All-Inkl auf der Subdomain `formular.jgc-handwerk.de`, nicht auf GitHub Pages; verschickt
+  per `mail()` und speichert nichts. Bewusst kein Formulardienst: so verlassen Anfragen nie den
+  deutschen Hoster. Gleiches Muster wie die Stilprobe von JGC Lumen (`formular.jgc-lumen.de`),
+  in `TECH-STACK.md` als bewusste Abweichung eingetragen.
 - **Node 24** nur fuer die Werkzeuge in `tools/`, nicht fuer die Seite selbst.
 
 **Nichts wird von einem fremden Server nachgeladen.** Kein CDN, kein Google Fonts, keine
@@ -67,10 +69,13 @@ Analyse. `tools/pruefen.mjs` bricht ab, wenn doch ein externer Verweis hineinger
   Heredoc schreiben, sondern mit dem Edit-Werkzeug.
 - Die Projektbahn (`#rail`) wird von ScrollTrigger angeheftet. Aendert sich die Kartenzahl
   oder -breite, aendert sich die Scrollstrecke der ganzen Seite mit.
-- **Das Formular-Skript liegt nicht auf GitHub.** `formular/senden.php` wird von Hand bei
-  All-Inkl hochgeladen (Ordner `formular` im Verzeichnis der Domain). Der Deploy-Workflow
-  bringt Aenderungen dort nicht hin — nach jeder Aenderung neu hochladen, sonst laeuft dort
-  der alte Stand weiter.
+- **Das Formular-Skript liegt nicht auf GitHub.** `formular/senden.php` wird von Hand direkt in
+  den Ordner der Subdomain `formular.jgc-handwerk.de` geladen, mit einem FTP-Nutzer nur fuer
+  diesen Ordner. Der Deploy-Workflow bringt Aenderungen nicht dorthin — nach jeder Aenderung
+  neu hochladen, sonst laeuft dort der alte Stand weiter.
+- **Der FTP-Nutzer `formular` im KAS gehoert zu JGC Lumen** (Ordner `formular.jgc-lumen.de`).
+  Nicht fuer diese Seite verwenden und sein Passwort nicht aendern — das Hochlade-Skript der
+  Stilprobe-Automatik meldet sich vermutlich damit an.
 - **Formular, Herkunft und Datenschutztext haengen zusammen.** `JGC.formularEndpunkt` in
   `assets/js/config.js` zeigt auf das Skript (bei `null` prueft das Formular nur und sagt das
   offen). Das Skript nimmt nur Einsendungen von Adressen in `ERLAUBTE_HERKUNFT` an: Zieht die
@@ -78,8 +83,9 @@ Analyse. `tools/pruefen.mjs` bricht ab, wenn doch ein externer Verweis hineinger
   Empfaenger oder Weg der Daten aendert, zieht `datenschutz.html` im selben Zug mit.
 - **All-Inkl verschickt Skript-Mails nur mit echtem Absender.** `ABSENDER` in `senden.php` muss
   ein Postfach im All-Inkl-Paket sein; es geht per `-f` an `mail()`.
-- **Zeigt die Domain auf GitHub Pages, erreicht die Formular-Adresse All-Inkl nicht mehr.** Das
-  Skript muss dann auf eine Subdomain bei All-Inkl, und `JGC.formularEndpunkt` zieht mit.
+- **Beim Umzug der Hauptdomain bleibt die Subdomain bei All-Inkl.** Zeigt jgc-handwerk.de
+  spaeter auf GitHub Pages, nur die Eintraege der Hauptdomain und von `www` umstellen —
+  `formular` bleibt samt SSL-Zertifikat bei All-Inkl, so wie bei jgc-lumen.de.
 - **Hoster und Formular-Empfaenger stehen in `datenschutz.html` Abschnitt 2** (GitHub Pages fuer
   die Seite, All-Inkl fuer Formular und E-Mail). Zieht die Seite um, muss der Abschnitt mit.
 - `docker run` aus Git Bash mit Pfaden wie `/app` braucht `MSYS_NO_PATHCONV=1`, sonst macht
