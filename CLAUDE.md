@@ -69,6 +69,11 @@ Analyse. `tools/pruefen.mjs` bricht ab, wenn doch ein externer Verweis hineinger
   Heredoc schreiben, sondern mit dem Edit-Werkzeug.
 - Die Projektbahn (`#rail`) wird von ScrollTrigger angeheftet. Aendert sich die Kartenzahl
   oder -breite, aendert sich die Scrollstrecke der ganzen Seite mit.
+- **Keine CSS-Transition auf `transform` von Elementen, die ScrollTrigger anheftet oder
+  schiebt** (`#rail`, `#railTrack`, alles Gepinnte): die gesetzten Inline-Transforms werden
+  sonst animiert nachgezogen, und die Bildleiste springt sichtbar beim Loesen der Anheftung
+  (Fehler in 0.2.0, behoben in 0.3.0 — 577 px Nachlauf). Einblendungen gehoeren auf die
+  Karten oder Inhalte DARIN, nie auf die transformierten Container.
 - **Das Formular-Skript liegt nicht auf GitHub.** `formular/senden.php` wird von Hand direkt in
   den Ordner der Subdomain `formular.jgc-handwerk.de` geladen, mit einem FTP-Nutzer nur fuer
   diesen Ordner. Der Deploy-Workflow bringt Aenderungen nicht dorthin — nach jeder Aenderung
