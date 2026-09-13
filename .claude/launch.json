@@ -6,6 +6,12 @@
       "runtimeExecutable": "node",
       "runtimeArgs": ["tools/server.mjs"],
       "port": 4173
+    },
+    {
+      "name": "formular-test",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["tools/formular-test.mjs", "--laufen"],
+      "port": 8099
     }
   ]
 }
