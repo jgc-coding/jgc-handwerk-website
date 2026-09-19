@@ -56,6 +56,26 @@ fehlt noch).
    `.claude/worktrees/jgc-handwerk-website-feedback-9766c5` und
    `.claude/worktrees/website-hero-transitions-a730c7`.
 
+## Was Gabriel selbst tun muss
+
+Am 19.09.2026 von der Hub-Tafel hierher gezogen. Die Tafel nimmt seither nur
+noch, was Gabriel selbst eintraegt oder ausdruecklich beauftragt. Wo oben im
+Text von der Hub-Karte oder einem Hub-Sammelpunkt die Rede ist, sind diese
+Punkte gemeint.
+
+- [ ] Datenschutzerklaerung fachlich pruefen lassen (V4) (seit 2026-09-08)
+  - Vor dem Umzug auf die eigene Domain - Impressumsservice kann das meist mitpruefen
+- [ ] Formular bei All-Inkl einrichten (V3) (seit 2026-09-13)
+  - Subdomain formular.jgc-handwerk.de mit SSL anlegen
+  - FTP-Nutzer nur fuer den Ordner der Subdomain anlegen
+  - senden.php direkt in diesen Ordner hochladen
+  - AVV mit All-Inkl bestaetigen
+  - Selbsttest: formular.jgc-handwerk.de/senden.php im Browser oeffnen
+- [ ] Alte WordPress-Seite: Dresden-Anschrift in der Datenschutzerklaerung durch Hoyerswerda ersetzen (seit 2026-09-13)
+- [ ] Claude Rueckmeldung geben (2 Punkte) (seit 2026-09-13)
+  - Portraetfoto im Ueber-mich-Bereich freigeben oder entfernen lassen
+  - Nach dem Selbsttest Bescheid geben: OK fuer Test-Anfrage und Veroeffentlichen (V3)
+
 ## Aktuelle Stolperfallen/Workarounds
 
 - **`main` liegt ungepusht vor `origin/main`.** Jeder Push von `main` veröffentlicht 0.2.0
