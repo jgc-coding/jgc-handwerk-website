@@ -1,0 +1,440 @@
+/* ============================================================
+   Hero-Variante 1 — "Schichtholz"
+   Eine Schwarzwald-Landschaft aus sechs Holzebenen, wie ein
+   geschichtetes Laubsaegebild. Das Kreis-Logo geht dahinter auf.
+
+   Bewegung: variante-1.js schreibt drei Zahlen an den Hero —
+   --mx/--my = geglaettete Zeigerposition (-1..1), --sy = Scrollweg
+   in Pixeln. Jede Ebene rechnet daraus ueber die translate-Eigenschaft
+   ihre eigene Verschiebung; transform bleibt frei fuer den Auftritt.
+   ============================================================ */
+
+.v1-hero {
+  --mx: 0;
+  --my: 0;
+  --sy: 0;
+  /* Breite des Landschaftsbilds. Alle Masse der Szene haengen daran,
+     damit Sonne und Huegel auf jedem Bildschirm gleich zueinander stehen. */
+  --szene-b: max(110vw, 1100px);
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  overflow: hidden;
+  overflow: clip;
+  isolation: isolate;
+  background: var(--sand-50);
+}
+
+/* ---------- Himmel ----------------------------------------- */
+
+/* Die Rueckwand des Schaukastens: helles Holz unter einem warmen Schein */
+.v1-himmel {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(52% 44% at 50% 64%, rgba(240, 226, 201, 0.96), transparent 72%),
+    linear-gradient(to bottom, var(--sand-50) 0%, var(--sand-100) 46%, var(--gold-200) 100%);
+}
+
+.v1-himmel::after {
+  content: "";
+  position: absolute;
+  inset: -3%;
+  background: url("../../assets/img/holz.webp") center / cover no-repeat;
+  opacity: 0.11;
+  filter: saturate(0.7);
+  translate: calc(var(--mx) * 5px) calc(var(--sy) * 0.4px);
+}
+
+/* ---------- Text ------------------------------------------- */
+
+.v1-text {
+  position: relative;
+  z-index: 3;
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-top: calc(var(--header-h) + clamp(1.25rem, 4svh, 3.25rem));
+  padding-bottom: clamp(0.5rem, 2svh, 1.5rem);
+  translate: 0 calc(var(--sy) * 0.34px);
+  opacity: calc(1 - var(--sy) / 440);
+}
+
+.v1-text .eyebrow {
+  margin-bottom: clamp(0.9rem, 2.2svh, 1.4rem);
+}
+
+/* Die Schriftgroesse achtet auch auf die Bildschirmhoehe, damit auf flachen
+   Laptops noch Platz fuer die Landschaft bleibt. */
+.v1-titel {
+  max-width: 16.5em;
+  font-size: clamp(2.05rem, min(1rem + 3.2vw, 7.6svh), 3.9rem);
+}
+
+.v1-aktionen {
+  margin-top: clamp(1.25rem, 3.4svh, 2.1rem);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  justify-content: center;
+}
+
+/* ---------- Szene ------------------------------------------ */
+
+/* Das Bildfeld ist breiter als der Bildschirm und mittig ausgerichtet.
+   Der negative Abstand zieht es unter den Text: der obere Teil des Felds
+   ist leerer Himmel, die Sonne beginnt bei 28 Prozent seiner Hoehe. */
+.v1-szene {
+  position: relative;
+  z-index: 1;
+  flex: none;
+  left: 50%;
+  width: var(--szene-b);
+  aspect-ratio: 2400 / 1000;
+  margin-left: calc(var(--szene-b) / -2);
+  margin-top: calc(var(--szene-b) * -0.1167 + 1.4rem);
+  pointer-events: none;
+}
+
+/* Strahlenkranz: dreht sehr langsam hinter dem Logo */
+.v1-strahlen {
+  position: absolute;
+  left: 50%;
+  top: 47%;
+  width: 70%;
+  aspect-ratio: 1;
+  margin: -35% 0 0 -35%;
+  border-radius: 50%;
+  background: repeating-conic-gradient(from 0deg, rgba(209, 178, 128, 0.26) 0deg 3.5deg, transparent 3.5deg 15deg);
+  -webkit-mask-image: radial-gradient(closest-side, transparent 23%, #000 27%, transparent 96%);
+  mask-image: radial-gradient(closest-side, transparent 23%, #000 27%, transparent 96%);
+  animation: v1-drehen 160s linear infinite;
+  translate: calc(var(--mx) * 8px) calc(var(--my) * 5px + var(--sy) * 0.26px);
+}
+
+@keyframes v1-drehen {
+  to {
+    rotate: 360deg;
+  }
+}
+
+/* Das Logo als Sonne. Die Buchstaben der Bilddatei sind durchsichtig —
+   dahinter wandert ein heller Schein, der durch die Schrift faellt. */
+.v1-sonne {
+  position: absolute;
+  left: 50%;
+  top: 47%;
+  width: 15.8%;
+  aspect-ratio: 1;
+  margin: -7.9% 0 0 -7.9%;
+  translate: calc(var(--mx) * 8px) calc(var(--my) * 5px + var(--sy) * 0.26px);
+}
+
+.v1-sonne img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0.9vw 2.2vw rgba(47, 42, 38, 0.34));
+}
+
+.v1-sonne__licht {
+  position: absolute;
+  inset: 3%;
+  border-radius: 50%;
+  background: linear-gradient(112deg, var(--white) 0%, var(--gold-200) 38%, var(--white) 52%, var(--gold-300) 100%);
+  background-size: 260% 100%;
+  animation: v1-schein 11s var(--ease-inout) infinite alternate;
+}
+
+@keyframes v1-schein {
+  from {
+    background-position: 0% 0;
+  }
+  to {
+    background-position: 100% 0;
+  }
+}
+
+/* ---------- Holzebenen ------------------------------------- */
+
+/* Jede Ebene besteht aus drei deckungsgleichen Lagen mit derselben Maske:
+   weicher Schatten auf die Ebene dahinter, dunkle Schnittkante, Holzflaeche.
+   Die Holzflaeche sitzt ein paar Pixel tiefer — so bleibt oben ein Streifen
+   der Kante stehen und das Brett bekommt sichtbare Staerke. */
+.v1-ebene {
+  position: absolute;
+  inset: 0;
+  will-change: translate;
+}
+
+.v1-ebene__holz,
+.v1-ebene__kante,
+.v1-ebene__schatten i {
+  position: absolute;
+  inset: 0;
+  -webkit-mask: var(--maske) center / 100% 100% no-repeat;
+  mask: var(--maske) center / 100% 100% no-repeat;
+}
+
+.v1-ebene__schatten {
+  position: absolute;
+  inset: 0;
+  opacity: var(--schatten, 0.34);
+  filter: blur(calc(var(--szene-b) * 0.007));
+  transform: translate(calc(var(--mx) * 7px), calc(var(--szene-b) * -0.0042));
+}
+
+.v1-ebene__schatten i {
+  background: var(--taupe-900);
+}
+
+.v1-ebene__kante {
+  background: var(--kante);
+}
+
+.v1-ebene__holz {
+  top: calc(var(--szene-b) * 0.0021);
+  background-image: linear-gradient(var(--ton), var(--ton)), url("../../assets/img/holz.webp");
+  background-blend-mode: var(--mischung, multiply), normal;
+  background-size: auto, var(--maserung, 100%) auto;
+  background-position: center, var(--holz-x, 50%) var(--holz-y, 50%);
+}
+
+.v1-ebene--1 {
+  --maske: url("../../assets/img/hero/v1-ebene-1.svg");
+  --ton: rgba(250, 244, 233, 0.5);
+  --mischung: normal;
+  --kante: #a98f6c;
+  --schatten: 0.2;
+  --holz-y: 12%;
+  translate: calc(var(--mx) * -5px) calc(var(--my) * -3px + var(--sy) * 0.3px);
+}
+
+.v1-ebene--2 {
+  --maske: url("../../assets/img/hero/v1-ebene-2.svg");
+  --ton: rgba(250, 244, 233, 0.2);
+  --mischung: normal;
+  --kante: #7d6343;
+  --schatten: 0.28;
+  --holz-y: 78%;
+  --maserung: 118%;
+  translate: calc(var(--mx) * -11px) calc(var(--my) * -6px + var(--sy) * 0.22px);
+}
+
+.v1-ebene--3 {
+  --maske: url("../../assets/img/hero/v1-ebene-3.svg");
+  --ton: rgba(209, 178, 128, 0.22);
+  --kante: #5e4630;
+  --holz-y: 40%;
+  --holz-x: 30%;
+  --maserung: 128%;
+  translate: calc(var(--mx) * -19px) calc(var(--my) * -10px + var(--sy) * 0.14px);
+}
+
+.v1-ebene--4 {
+  --maske: url("../../assets/img/hero/v1-ebene-4.svg");
+  --ton: rgba(140, 127, 119, 0.92);
+  --kante: #3b2c1f;
+  --schatten: 0.4;
+  --holz-y: 96%;
+  --holz-x: 70%;
+  --maserung: 140%;
+  translate: calc(var(--mx) * -30px) calc(var(--my) * -15px + var(--sy) * 0.05px);
+}
+
+.v1-ebene--5 {
+  --maske: url("../../assets/img/hero/v1-ebene-5.svg");
+  --ton: rgba(111, 98, 90, 0.96);
+  --kante: #2e2219;
+  --schatten: 0.42;
+  --holz-y: 24%;
+  --holz-x: 20%;
+  --maserung: 150%;
+  translate: calc(var(--mx) * -38px) calc(var(--my) * -18px + var(--sy) * -0.03px);
+}
+
+.v1-ebene--6 {
+  --maske: url("../../assets/img/hero/v1-ebene-6.svg");
+  --ton: rgba(89, 77, 70, 0.97);
+  --kante: #1f1711;
+  --schatten: 0.5;
+  --holz-y: 62%;
+  --maserung: 165%;
+  /* steht etwas tiefer, weil sie beim Scrollen nach oben laeuft */
+  top: calc(var(--szene-b) * 0.03);
+  bottom: calc(var(--szene-b) * -0.03);
+  translate: calc(var(--mx) * -54px) calc(var(--my) * -25px + var(--sy) * -0.1px);
+}
+
+/* ---------- Abschluss unten -------------------------------- */
+
+/* Das dunkle Vordergrundholz laeuft weich in die folgende Flaeche aus.
+   Das unterste Viertel ist deckend: die vorderen Ebenen laufen beim Scrollen
+   nach oben, ihre Unterkante darf dabei nie sichtbar werden. */
+.v1-uebergang {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 2;
+  height: clamp(110px, 19svh, 200px);
+  background: linear-gradient(to bottom, rgba(64, 56, 51, 0), var(--taupe-800) 76%);
+  pointer-events: none;
+}
+
+/* Verlaengerung der beiden vorderen Ebenen nach unten, aus demselben Grund */
+.v1-ebene--5::after,
+.v1-ebene--6::after {
+  content: "";
+  position: absolute;
+  inset: calc(100% - 1px) 0 auto;
+  height: 22%;
+  background: var(--kante);
+}
+
+.v1-leiste {
+  position: absolute;
+  inset: auto 0 clamp(4.2rem, 8svh, 5.4rem);
+  z-index: 3;
+  margin: 0;
+  padding: 0 var(--gutter);
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem clamp(1.25rem, 3.2vw, 2.75rem);
+  font-family: Raleway, sans-serif;
+  font-size: 0.84rem;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  color: var(--gold-200);
+  text-shadow: 0 1px 10px rgba(36, 27, 20, 0.7);
+  opacity: calc(1 - var(--sy) / 300);
+}
+
+.v1-leiste li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.v1-leiste li::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold-400);
+  flex: none;
+}
+
+/* ---------- Auftritt beim Laden ---------------------------- */
+
+/* Startwerte gelten nur unter .js — ohne JavaScript steht das Bild sofort.
+   variante-1.js setzt .ist-bereit und loest damit die Kette aus: die Ebenen
+   ruecken von unten an ihren Platz, dann geht das Logo hinter dem Kamm auf. */
+.js .v1-hero [data-auftritt] {
+  opacity: 0;
+  transform: translate3d(0, 26px, 0);
+  filter: blur(6px);
+  transition: opacity 0.85s var(--ease-inout), transform 0.95s var(--ease), filter 0.85s var(--ease-inout);
+  transition-delay: calc(0.15s + var(--h, 0) * 0.17s);
+}
+
+.js .v1-hero.ist-bereit [data-auftritt] {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+.js .v1-ebene {
+  transform: translate3d(0, calc(var(--szene-b) * 0.012 * var(--n)), 0);
+  opacity: 0;
+  transition: transform 1.5s var(--ease), opacity 0.7s var(--ease-inout);
+  transition-delay: calc(0.05s + (6 - var(--n)) * 0.08s);
+}
+
+.v1-ebene--1 { --n: 1; }
+.v1-ebene--2 { --n: 2; }
+.v1-ebene--3 { --n: 3; }
+.v1-ebene--4 { --n: 4; }
+.v1-ebene--5 { --n: 5; }
+.v1-ebene--6 { --n: 6; }
+
+.js .v1-hero.ist-bereit .v1-ebene {
+  transform: none;
+  opacity: 1;
+}
+
+.js .v1-sonne,
+.js .v1-strahlen {
+  transform: translate3d(0, 58%, 0);
+  transition: transform 2.3s var(--ease) 0.55s;
+}
+
+.js .v1-strahlen {
+  transform: translate3d(0, 13%, 0);
+  opacity: 0;
+  transition: transform 2.3s var(--ease) 0.55s, opacity 1.8s var(--ease-inout) 1.2s;
+}
+
+.js .v1-hero.ist-bereit .v1-sonne,
+.js .v1-hero.ist-bereit .v1-strahlen {
+  transform: none;
+  opacity: 1;
+}
+
+/* ---------- Schmale Bildschirme ---------------------------- */
+
+@media (max-width: 760px) {
+  /* Kleineres Bildfeld: so passt mehr Landschaft auf den schmalen Schirm */
+  .v1-hero {
+    --szene-b: max(110vw, 960px);
+  }
+
+  .v1-aktionen .btn {
+    padding: 0.95rem 1.5rem;
+    font-size: 0.98rem;
+  }
+
+  /* Der Rohbau rueckt naeher an die Mitte, sonst steht er ausserhalb des
+     Bilds — aber nur so weit, dass er die Schrift im Logo nicht verdeckt. */
+  .v1-ebene--3 {
+    left: -5%;
+    right: 5%;
+  }
+
+  .v1-leiste {
+    font-size: 0.76rem;
+    gap: 0.3rem 1.1rem;
+  }
+
+  .v1-leiste li:nth-child(n + 3) {
+    display: none;
+  }
+}
+
+/* ---------- Ruhige Darstellung ----------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .v1-strahlen,
+  .v1-sonne__licht {
+    animation: none;
+  }
+
+  .js .v1-hero [data-auftritt],
+  .js .v1-ebene,
+  .js .v1-sonne,
+  .js .v1-strahlen {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  .v1-ebene {
+    will-change: auto;
+  }
+}

@@ -1,0 +1,215 @@
+/* ============================================================
+   Hero-Entwuerfe — gemeinsamer Rahmen der Vorschauseiten
+   Gehoert NICHT zum Hero selbst: Umschalter, Testflaechen zum
+   Scrollen und die Uebersichtsseite. Beim Einbau der gewaehlten
+   Variante in die Startseite entfaellt diese Datei.
+   ============================================================ */
+
+/* ---------- Testflaechen unter dem Hero -------------------- */
+
+.vt-flaeche {
+  position: relative;
+  min-height: 92vh;
+  display: grid;
+  place-items: center;
+  padding: clamp(4rem, 9vw, 7rem) var(--gutter);
+  text-align: center;
+}
+
+.vt-flaeche--dunkel {
+  background: var(--taupe-800);
+  color: var(--sand-200);
+}
+
+.vt-flaeche--gold {
+  background: var(--gold-200);
+}
+
+.vt-flaeche--hell {
+  background: var(--sand-100);
+}
+
+.vt-flaeche__titel {
+  font-family: Raleway, sans-serif;
+  font-weight: 200;
+  font-size: clamp(1.7rem, 1.1rem + 2.6vw, 3rem);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: inherit;
+  max-width: 22ch;
+  margin-inline: auto;
+}
+
+.vt-flaeche--dunkel .vt-flaeche__titel {
+  color: var(--sand-50);
+}
+
+.vt-flaeche__text {
+  margin: 1.1rem auto 0;
+  max-width: 46ch;
+  font-size: 0.98rem;
+  opacity: 0.78;
+}
+
+/* ---------- Umschalter zwischen den Entwuerfen ------------- */
+
+/* Sitzt unten links in der Ecke: die Mitte des unteren Rands gehoert den
+   Heroes selbst (Vertrauensleiste, Scroll-Hinweis). */
+.vt-schalter {
+  position: fixed;
+  left: 16px;
+  bottom: 16px;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: var(--r-pill);
+  background: rgba(47, 42, 38, 0.78);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  box-shadow: 0 10px 30px -8px rgba(47, 42, 38, 0.5);
+  font-family: Raleway, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.vt-schalter a {
+  padding: 0.5rem 0.95rem;
+  border-radius: var(--r-pill);
+  color: var(--sand-200);
+  text-decoration: none;
+  transition: background 0.3s var(--ease-inout), color 0.3s var(--ease-inout);
+}
+
+.vt-schalter a:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--white);
+}
+
+.vt-schalter a[aria-current="page"] {
+  background: var(--gold-400);
+  color: var(--taupe-900);
+}
+
+.vt-schalter a:focus-visible {
+  outline-color: var(--gold-300);
+}
+
+@media (max-width: 520px) {
+  .vt-schalter {
+    font-size: 0.76rem;
+  }
+
+  .vt-schalter a {
+    padding: 0.45rem 0.7rem;
+  }
+
+  .vt-schalter__lang {
+    display: none;
+  }
+}
+
+@media print {
+  .vt-schalter {
+    display: none;
+  }
+}
+
+/* ---------- Uebersichtsseite ------------------------------- */
+
+.vt-uebersicht {
+  min-height: 100svh;
+  padding: calc(var(--header-h) + clamp(2rem, 6vw, 4.5rem)) var(--gutter) clamp(5rem, 9vw, 7rem);
+  background:
+    radial-gradient(60% 40% at 50% 0%, var(--white), transparent 70%),
+    var(--sand-50);
+}
+
+.vt-uebersicht__kopf {
+  max-width: 62ch;
+  margin: 0 auto clamp(2.5rem, 5vw, 4rem);
+  text-align: center;
+}
+
+.vt-uebersicht__kopf .lead {
+  margin: 1.25rem auto 0;
+}
+
+.vt-karten {
+  max-width: var(--max);
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: clamp(1rem, 2.4vw, 1.75rem);
+}
+
+.vt-karte {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+}
+
+.vt-karte:hover {
+  color: inherit;
+}
+
+.vt-karte__bild {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-bottom: 1px solid var(--line-soft);
+  background: var(--sand-100);
+}
+
+.vt-karte__bild svg {
+  width: 100%;
+  height: 100%;
+}
+
+.vt-karte__text {
+  padding: clamp(1.25rem, 2.4vw, 1.75rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  flex: 1;
+}
+
+.vt-karte__nummer {
+  font-family: Raleway, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-600);
+}
+
+.vt-karte__technik {
+  margin-top: auto;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--line-soft);
+  font-size: 0.86rem;
+  color: var(--text-weak);
+}
+
+.vt-karte__weiter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: Raleway, sans-serif;
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--taupe-700);
+}
+
+.vt-karte__weiter svg {
+  width: 1em;
+  height: 1em;
+  transition: transform 0.35s var(--ease);
+}
+
+.vt-karte:hover .vt-karte__weiter svg {
+  transform: translateX(4px);
+}
