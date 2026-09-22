@@ -35,6 +35,10 @@ Analyse. `tools/pruefen.mjs` bricht ab, wenn doch ein externer Verweis hineinger
 - Sichtkontrolle: `node tools/screenshots.mjs <ordner> [breite] [hoehe]` — steuert das
   installierte Chrome fern und legt Bilder aller Abschnitte ab. Server muss laufen.
 - Schriften erneuern: `node tools/fonts-holen.mjs` (nur bei Schriftwechsel noetig)
+- Hero-Entwuerfe: `hero-varianten/index.html` (lokal http://localhost:4173/hero-varianten/) —
+  Alternativen fuer den Startbereich, jede auf eigener Seite mit Testflaeche zum Scrollen,
+  alle mit `noindex`. Die Holzebenen von Entwurf 1 erzeugt `node tools/hero-schichten.mjs`
+  aus festem Zufall neu (`assets/img/hero/`); `pruefen.mjs` prueft den Ordner mit.
 
 ## Konventionen
 
@@ -74,6 +78,15 @@ Analyse. `tools/pruefen.mjs` bricht ab, wenn doch ein externer Verweis hineinger
   sonst animiert nachgezogen, und die Bildleiste springt sichtbar beim Loesen der Anheftung
   (Fehler in 0.2.0, behoben in 0.3.0 — 577 px Nachlauf). Einblendungen gehoeren auf die
   Karten oder Inhalte DARIN, nie auf die transformierten Container.
+- **ScrollTrigger-Timelines beim Seitenaufbau: Startwerte mit `fromTo` setzen.** Laeuft beim
+  Aufbau noch ein CSS-Auftritt mit Deckkraft 0, schreibt GSAP diese 0 als Startwert fest und
+  das Element bleibt fuer immer unsichtbar (Leitsatz in Hero-Entwurf 2). Dazu Auftritte nur mit
+  `animation-fill-mode: backwards` — `both`/`forwards` schlagen Inline-Styles, GSAP kommt dann
+  nicht mehr an das Element heran.
+- **CSS-3D (`transform-style: preserve-3d`) wird von `opacity < 1`, `filter`, `overflow` und
+  `mask` aufgehoben.** Solche Eigenschaften und Auftritts-Animationen nur auf Blaettern
+  (Flaechen, Kanten), nie auf Modell oder Ebenen — sonst fallen die Ebenen flach zusammen
+  (Hero-Entwurf 3).
 - **Das Formular-Skript liegt nicht auf GitHub.** `formular/senden.php` wird von Hand direkt in
   den Ordner der Subdomain `formular.jgc-handwerk.de` geladen, mit einem FTP-Nutzer nur fuer
   diesen Ordner. Der Deploy-Workflow bringt Aenderungen nicht dorthin — nach jeder Aenderung

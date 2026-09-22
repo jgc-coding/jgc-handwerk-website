@@ -1,68 +1,76 @@
 # Weitermachen
 
-Stand: 13.09.2026 · Version 0.3.0 in `main`, **noch nicht veröffentlicht** · letzter Tag `v0.1.0`
+Stand: 22.09.2026 · Version 0.3.0 in `main`, **noch nicht veröffentlicht** · letzter Tag `v0.1.0`
+· Hero-Entwürfe im Branch `claude/handwerk-hero-sections-986d61` (Worktree
+`.claude/worktrees/handwerk-hero-sections-986d61`), **nicht in `main`**
 
 - **Vorschau:** https://jgc-coding.github.io/jgc-handwerk-website/ (zeigt noch 0.1.0)
 - **Repo:** https://github.com/jgc-coding/jgc-handwerk-website
-- **Lokal:** `node tools/server.mjs` → http://localhost:4173 (Port belegt? `PORT=4180` davor)
+- **Lokal:** `node tools/server.mjs` → http://localhost:4173 (Port belegt? `PORT=4180` davor);
+  Entwürfe unter http://localhost:4173/hero-varianten/
 
 ## Stand
 
-**0.3.0: Bewegungs-Feinschliff und Projektbahn-Fix** (Sitzung 13.09. abends, Details im
-`CHANGELOG.md`). Der von Gabriel gemeldete Sprung der Bildleiste ist behoben und die Ursache
-belegt: Bahn und Gleis trugen als reveal-Elemente eine CSS-Transition auf `transform`, die
-beim Lösen der ScrollTrigger-Anheftung nachzog (Kontrollmessung alt: 577 px Nachlauf, neu:
-0 px). Die Bahn hält jetzt am Ende 18 Prozent der Strecke still, damit das letzte Bild
-wirklich zu sehen ist. Dazu: gestaffelter Hero-Auftritt mit Wort-für-Wort-Überschrift,
-Zeiger- und Scroll-Parallaxe, zwei feine Hintergrund-Ringe, Scroll-Hinweis,
-Wort-Einblendung aller Abschnittsüberschriften, Lesefaden oben, lebendigere
-Leistungs-Panels. Vorbild fora.so und die Midsummer-Seite.
+**Drei Hero-Entwürfe** (Sitzung 21./22.09.), von Gabriel beauftragt als technisch
+anspruchsvollere Alternativen zum Startbereich, Vorbild fora.so und der Midsummer-Hero.
+Alles liegt getrennt in `hero-varianten/` (Übersicht, drei Seiten, eigenes CSS/JS je Entwurf,
+Testflächen zum Scrollen darunter, alle `noindex`); `index.html`, `style.css` und `main.js`
+sind unverändert, die Version bleibt 0.3.0.
 
-Davor (0.2.0): Gabriels Rückmeldungen V1 bis V4, Logo-Schriftzug, Kontaktformular an
-`formular/senden.php` für die Subdomain `formular.jgc-handwerk.de` (Muster JGC Lumen).
+1. **Schichtholz** — Schwarzwald aus sechs Holzebenen (Holzfoto als Oberfläche, SVG-Masken
+   aus `tools/hero-schichten.mjs`), Logo geht dahinter als Sonne auf, Zeiger- und
+   Scroll-Parallaxe ohne Bibliothek.
+2. **Bretterwand** — Holzwand wie auf der Live-Seite; ScrollTrigger heftet die Bühne an, die
+   Bretter (Teilung nach den echten Fugen im Foto) gleiten weg, das Logo reist an seinen Platz.
+3. **Schicht für Schicht** — Trockenbauwand als CSS-3D-Modell (Ständerwerk, Dämmung,
+   Beplankung, Oberfläche mit Logo), fügt sich beim Scrollen zusammen, Legende hakt ab, Maus
+   neigt das Modell.
 
-`main` steht lokal auf 0.3.0, ist aber **bewusst nicht gepusht**: Gabriel hat am 13.09.
-entschieden, erst nach der KAS-Einrichtung (V3) zu veröffentlichen.
+Geprüft: `pruefen.mjs` grün (prüft jetzt auch `hero-varianten/`); Headless-Chrome-Aufnahmen
+je Entwurf bei 1440×900 (mehrere Scrollstellungen, Mausversatz), 1366×700, 390×844, dazu
+ruhige Darstellung und ohne JavaScript; keine Konsolenfehler oder -warnungen.
+**Nicht geprüft:** das Bewegungsgefühl selbst (nur Standbilder), echte Geräte, Safari/Firefox
+(CSS-3D und `mask` sind dort die heiklen Stellen).
 
-Geprüft (0.3.0): `pruefen.mjs` grün; Bahn-Diagnose im Headless-Chrome (kein Nachlauf in
-beide Richtungen, letzte Karte komplett im Bild, Halt ruhig); Regressionscheck Reiter,
-Formularprüfung, Regler, Mobilmenü, ohne JavaScript, ruhige Darstellung — alles grün, keine
-Konsolenfehler; Screenshots 1440×900, 1366×700 und 390×844.
-**Nicht geprüft:** echte Geräte, Safari/Firefox, Mailzustellung bei All-Inkl (Subdomain
-fehlt noch).
+Davor: 0.3.0 Bewegungs-Feinschliff und Projektbahn-Fix (13.09.), 0.2.0 Rückmeldungen V1–V4,
+Logo-Schriftzug, Kontaktformular an `formular/senden.php` — Details im `CHANGELOG.md`.
+`main` ist bewusst nicht gepusht: erst nach der KAS-Einrichtung (V3) veröffentlichen.
 
 ## Offen
 
-- **V3 blockiert die Veröffentlichung:** Gabriel richtet Subdomain, SSL, FTP-Nutzer und AVV
-  im KAS ein und lädt `senden.php` hoch (Teilschritte auf der Hub-Karte „JGC Handwerk").
-- Gabriels Blick auf den neuen Hero und die Übergänge — Screenshots gingen per Telegram,
-  das echte Gefühl braucht den Browser (lokal oder nach dem Push die Vorschau).
+- **Gabriels Wahl unter den drei Entwürfen** (oder Mischung, z. B. Landschaft aus 1 mit dem
+  Zusammenbau aus 3). Erst danach Einbau in die Startseite.
+- **V3 blockiert die Veröffentlichung:** Subdomain, SSL, FTP-Nutzer und AVV im KAS, dann
+  `senden.php` hochladen.
+- Gabriels Blick auf den 0.3.0-Hero und die Übergänge im echten Browser.
 
 ## Nächste Schritte (Claude)
 
-1. Selbsttest ohne Mail: `https://formular.jgc-handwerk.de/senden.php` muss
+1. Gewählten Entwurf in `index.html` einbauen (CSS in `style.css` Abschnitt 8, JS in
+   `main.js` als eigener Baustein), Testflächen und Umschalter weglassen, `hero-varianten/`
+   samt `tools/hero-schichten.mjs` entfernen oder als Archiv behalten (Gabriel fragen),
+   Version 0.4.0 + CHANGELOG, Regressionscheck wie bei 0.3.0.
+2. Branch in `main` mergen (`git merge --ff-only` aus dem Hauptbaum), Worktree danach löschen.
+3. Selbsttest ohne Mail: `https://formular.jgc-handwerk.de/senden.php` muss
    `{"ok":false,"grund":"methode"}` zeigen. Ein Zertifikatsfehler heißt, SSL ist noch nicht aktiv.
-2. Mit Gabriels OK eine echte Test-Anfrage schicken: lokale Seite (`localhost:4173` ist als
-   Herkunft erlaubt) mit dem echten Endpunkt; Gabriel bestätigt den Eingang. Scheitert es,
-   Status und Kennung aus der Antwort nehmen und das PHP-Fehlerlog im KAS ansehen.
-3. Mit Gabriels OK `git push origin main` (Deploy), auf der Vorschau Version 0.3.0 und einen
-   Formularversand prüfen, Tags `v0.2.0` und `v0.3.0` setzen und pushen.
-4. V4: Gabriel lässt die Datenschutzerklärung prüfen, sinnvoll nach Schritt 3.
-5. Umzug auf die eigene Domain (V6): Hosting wählen, `noindex` und `robots.txt` entfernen,
-   Datenschutz Abschnitt 2 anpassen, `og:image` auf die gültige Adresse.
-6. Porträtfoto entfernen, falls Gabriel es nicht veröffentlicht haben will (offen seit 0.1.0).
-7. Aufräumen, sobald die jeweilige Sitzung zu ist — beide Stände stecken in `main`, die
-   Worktrees samt Branches sind dann verlustfrei löschbar:
-   `.claude/worktrees/jgc-handwerk-website-feedback-9766c5` und
+4. Mit Gabriels OK eine echte Test-Anfrage schicken (lokale Seite ist als Herkunft erlaubt);
+   scheitert es, Status und Kennung aus der Antwort nehmen und das PHP-Fehlerlog im KAS ansehen.
+5. Mit Gabriels OK `git push origin main` (Deploy), Version und Formularversand auf der
+   Vorschau prüfen, Tags `v0.2.0`, `v0.3.0` (und `v0.4.0`) setzen und pushen.
+6. V4 Datenschutz prüfen lassen, V6 Umzug auf die eigene Domain (`noindex` und `robots.txt`
+   entfernen, Datenschutz Abschnitt 2, `og:image`), Porträtfoto klären (offen seit 0.1.0).
+7. Aufräumen der alten Worktrees, sobald die Sitzungen zu sind (Stände stecken in `main`):
+   `.claude/worktrees/jgc-handwerk-website-feedback-9766c5`,
    `.claude/worktrees/website-hero-transitions-a730c7`.
 
 ## Was Gabriel selbst tun muss
 
-Am 19.09.2026 von der Hub-Tafel hierher gezogen. Die Tafel nimmt seither nur
-noch, was Gabriel selbst eintraegt oder ausdruecklich beauftragt. Wo oben im
-Text von der Hub-Karte oder einem Hub-Sammelpunkt die Rede ist, sind diese
-Punkte gemeint.
+Am 19.09.2026 von der Hub-Tafel hierher gezogen. Die Tafel nimmt seither nur noch, was
+Gabriel selbst eintraegt oder ausdruecklich beauftragt.
 
+- [ ] Hero-Entwurf auswaehlen (seit 2026-09-22): lokal `node tools/server.mjs` im Worktree
+  starten und http://localhost:4173/hero-varianten/ ansehen — langsam scrollen, Maus bewegen,
+  auch am Handy (Adresse des Rechners im WLAN statt localhost)
 - [ ] Datenschutzerklaerung fachlich pruefen lassen (V4) (seit 2026-09-08)
   - Vor dem Umzug auf die eigene Domain - Impressumsservice kann das meist mitpruefen
 - [ ] Formular bei All-Inkl einrichten (V3) (seit 2026-09-13)
@@ -80,16 +88,21 @@ Punkte gemeint.
 
 - **`main` liegt ungepusht vor `origin/main`.** Jeder Push von `main` veröffentlicht 0.2.0
   und 0.3.0 mit — auch das `/save-state clean` einer anderen Sitzung. Vorher V3 abschließen.
-- **Wer an Bahn (`#rail`/`#railTrack`) oder Hero-Ebenen arbeitet:** niemals CSS-Transitionen
-  auf `transform` dieser Elemente legen — ScrollTrigger setzt Positionen als Inline-Transform,
-  eine Transition lässt sie sichtbar nachspringen (der behobene 0.3.0-Fehler). Karten und
-  Inhalte einblenden, nie die transformierten Container.
+- **Der Entwurfs-Branch enthält `hero-varianten/`.** Beim Merge in `main` geht der Ordner mit
+  ins Deploy (harmlos: `noindex`, keine Verlinkung), beim Einbau der Wahl wieder entfernen.
+- **Wer an Bahn, Bretterwand oder 3D-Modell arbeitet:** keine CSS-Transitionen auf `transform`
+  der von ScrollTrigger bewegten Elemente; Startwerte in Timelines mit `fromTo`; Auftritte nur
+  mit `animation-fill-mode: backwards`; bei CSS-3D nie `opacity`/`filter`/`overflow` auf
+  Modell oder Ebenen (Details in `CLAUDE.md`, Stolperfallen).
+- **Der Vorschau-Server der Browser-Pane stirbt zwischen den Zügen** — Headless-Aufnahmen
+  liefern dann „Website nicht erreichbar“. Vor jeder Aufnahme-Serie `curl` auf die Seite.
 - **Port 4173 kann von einer anderen Sitzung belegt sein** — der neue Server stirbt dann mit
   EADDRINUSE und man prüft unbemerkt den alten Stand. Gegenprobe ist die Version im Footer;
   Ausweg `PORT=4180 node tools/server.mjs` und Werkzeuge mit `BASIS=http://localhost:4180`.
 - **Sichtkontrollen nie über die Browser-Pane**, sondern mit
   `node tools/screenshots.mjs <ordner> [breite] [hoehe]`; Hero-Endzustände brauchen längere
-  Wartezeit als die 900 ms des Werkzeugs (Choreografie läuft ~2,5 s).
+  Wartezeit als die 900 ms des Werkzeugs (Choreografie läuft ~2,5 s). Für die Entwürfe
+  braucht es Aufnahmen bei mehreren Scrollstellungen — das Werkzeug kennt nur Sprungziele.
 - **Umlaute aus Python erscheinen in Git Bash als Ersatzzeichen** — `PYTHONIOENCODING=utf-8`
   setzen, bevor man an einen Kodierungsfehler glaubt.
 - **Zugangsdaten und Hochlade-Skript der Stilprobe von JGC Lumen** liegen im privaten Repo

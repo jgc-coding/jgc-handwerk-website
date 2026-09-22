@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hero-Entwurf 3: Schicht für Schicht — JGC Handwerk</title>
+    <meta name="description" content="Entwurf für den Startbereich von JGC Handwerk: der Aufbau einer Trockenbauwand schwebt auseinandergezogen im Raum und fügt sich beim Scrollen zusammen." />
+    <!-- Entwurfsseite: bleibt aus den Suchmaschinen heraus -->
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#fdfbf7" />
+
+    <link rel="icon" href="../assets/img/favicon-32.png" sizes="32x32" />
+    <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/raleway-latin.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/open-sans-latin.woff2" crossorigin />
+    <!-- "js" schaltet Einblendungen frei, "bewegt" die Scroll-Szene. Beides schon hier im
+         Kopf, damit die Seite nicht erst im Ruhe-Layout erscheint und dann umspringt.
+         Ohne JavaScript oder mit reduzierter Bewegung steht die Wand halb geoeffnet still. -->
+    <script>
+      document.documentElement.classList.add("js");
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.classList.add("bewegt");
+      }
+    </script>
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="css/gemeinsam.css" />
+    <link rel="stylesheet" href="css/variante-3.css" />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+
+    <!-- ============ Kopfzeile (wie auf der Startseite) ============ -->
+    <header class="header" id="header">
+      <div class="header__inner">
+        <a class="brand" href="../index.html" aria-label="JGC Handwerk — zur Startseite">
+          <img src="../assets/img/logo-schriftzug.webp" alt="" width="289" height="156" />
+        </a>
+
+        <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menü öffnen">
+          <span></span><span></span><span></span>
+        </button>
+
+        <nav class="nav" id="nav" aria-label="Hauptnavigation">
+          <a class="nav__link" href="#home">Home</a>
+          <a class="nav__link" href="../index.html#leistungen">Leistungen</a>
+          <a class="nav__link" href="../index.html#ueber-mich">Über mich</a>
+          <a class="nav__link" href="../index.html#projekte">Projekte</a>
+          <a class="nav__link" href="../index.html#kontakt">Kontakt</a>
+          <a class="btn header__cta" href="tel:+4917643407143">
+            <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+              <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            0176 43407143
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- ============ Hero-Variante 3: Schicht fuer Schicht ============
+           Links der Text, rechts der Aufbau einer Trockenbauwand als echtes
+           3D-Modell aus vier Ebenen: Staenderwerk, Daemmung, Beplankung,
+           Oberflaeche mit dem Logo. Die Buehne bleibt beim Scrollen stehen
+           (ScrollTrigger), waehrenddessen ruecken die Ebenen zusammen und die
+           Legende hakt jede Schicht ab. Der Zeiger neigt das Modell.
+           WICHTIG: keine CSS-Transition auf transform von .v3-modell, .v3-schicht
+           und .v3-buehne — GSAP setzt dort Inline-Transforms (siehe CLAUDE.md). -->
+      <section class="v3-hero" id="home" aria-labelledby="v3-titel">
+        <div class="v3-buehne" id="v3Buehne">
+          <div class="v3-raster" aria-hidden="true"></div>
+          <div class="v3-licht" aria-hidden="true"></div>
+
+          <div class="shell v3-inhalt">
+            <div class="v3-text">
+              <p class="eyebrow" data-auftritt style="--h: 0">ressourcen- und zeiteffizient</p>
+
+              <h1 class="h-display v3-titel" id="v3-titel" data-auftritt style="--h: 1">
+                Ihr zuverlässiger Partner für <span class="text-accent">Trockenbau, Montage und Zuarbeit.</span>
+              </h1>
+
+              <p class="lead v3-lead" data-auftritt style="--h: 2">
+                Handwerk mit ingenieurtechnischem Hintergrund — für Privatkunden und Zimmereien in und rund um
+                Freiburg.
+              </p>
+
+              <div class="v3-aktionen" data-auftritt style="--h: 3">
+                <a class="btn btn--lg" href="../index.html#kontakt">
+                  Anfrage senden
+                  <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                    <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </a>
+                <a class="btn btn--ghost btn--lg" href="../index.html#leistungen">Leistungen ansehen</a>
+              </div>
+
+              <!-- Die Nummern sind die Reihenfolge auf der Baustelle; die Zeilen
+                   haken ab, sobald die jeweilige Schicht im Modell sitzt. -->
+              <ol class="v3-legende" data-auftritt style="--h: 4" aria-label="So entsteht eine Trockenbauwand">
+                <li class="v3-legende__zeile" data-schicht="0">
+                  <span class="v3-legende__nr">01</span>
+                  <span class="v3-legende__name">Ständerwerk</span>
+                  <span class="v3-legende__info">lot- und fluchtgerecht gestellt</span>
+                </li>
+                <li class="v3-legende__zeile" data-schicht="1">
+                  <span class="v3-legende__nr">02</span>
+                  <span class="v3-legende__name">Dämmung</span>
+                  <span class="v3-legende__info">Mineralwolle gegen Schall und Kälte</span>
+                </li>
+                <li class="v3-legende__zeile" data-schicht="2">
+                  <span class="v3-legende__nr">03</span>
+                  <span class="v3-legende__name">Beplankung</span>
+                  <span class="v3-legende__info">Gipskarton, verschraubt und verspachtelt</span>
+                </li>
+                <li class="v3-legende__zeile" data-schicht="3">
+                  <span class="v3-legende__nr">04</span>
+                  <span class="v3-legende__name">Oberfläche</span>
+                  <span class="v3-legende__info">glatt und streichfertig</span>
+                </li>
+              </ol>
+            </div>
+
+            <!-- Das Modell. Die Zeiger-Neigung liegt auf .v3-kippen (CSS-Variablen),
+                 die Scroll-Bewegung auf .v3-modell und den .v3-schicht-Ebenen (GSAP) —
+                 so kommen sich beide nicht in die Quere. -->
+            <div class="v3-szene" aria-hidden="true">
+              <div class="v3-kippen">
+                <div class="v3-modell" id="v3Modell">
+                  <div class="v3-schicht v3-schicht--staender" style="--n: 0">
+                    <div class="v3-schicht__kante"></div>
+                    <div class="v3-schicht__flaeche">
+                      <i class="v3-raehm v3-raehm--oben"></i>
+                      <i class="v3-raehm v3-raehm--unten"></i>
+                      <i class="v3-staender" style="--k: 0"></i>
+                      <i class="v3-staender" style="--k: 1"></i>
+                      <i class="v3-staender" style="--k: 2"></i>
+                      <i class="v3-staender" style="--k: 3"></i>
+                      <span class="v3-tag">01</span>
+                    </div>
+                  </div>
+
+                  <div class="v3-schicht v3-schicht--daemmung" style="--n: 1">
+                    <div class="v3-schicht__flaeche">
+                      <i class="v3-wolle" style="--k: 0"></i>
+                      <i class="v3-wolle" style="--k: 1"></i>
+                      <i class="v3-wolle" style="--k: 2"></i>
+                      <span class="v3-tag">02</span>
+                    </div>
+                  </div>
+
+                  <div class="v3-schicht v3-schicht--platte" style="--n: 2">
+                    <div class="v3-schicht__kante"></div>
+                    <div class="v3-schicht__flaeche">
+                      <i class="v3-fuge"></i>
+                      <i class="v3-schrauben" style="--k: 0"></i>
+                      <i class="v3-schrauben" style="--k: 1"></i>
+                      <i class="v3-schrauben" style="--k: 2"></i>
+                      <i class="v3-schrauben" style="--k: 3"></i>
+                      <span class="v3-tag">03</span>
+                    </div>
+                  </div>
+
+                  <div class="v3-schicht v3-schicht--oberflaeche" style="--n: 3">
+                    <div class="v3-schicht__kante"></div>
+                    <div class="v3-schicht__flaeche">
+                      <div class="v3-logo" id="v3Logo">
+                        <img src="../assets/img/logo-kreis.webp" alt="" width="565" height="566" />
+                      </div>
+                      <span class="v3-tag">04</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="v3-hinweis" aria-hidden="true">
+            <span>Scrollen</span>
+            <span class="v3-hinweis__linie"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ Testflaechen: nur zum Scrollen ============ -->
+      <section class="vt-flaeche vt-flaeche--gold" aria-label="Testfläche">
+        <div>
+          <h2 class="vt-flaeche__titel">Testfläche zum Scrollen</h2>
+          <p class="vt-flaeche__text">
+            Hier folgt später der Abschnitt „Willkommen“. Scrollen Sie langsam zurück nach oben, dann zieht sich die
+            Wand wieder auseinander.
+          </p>
+        </div>
+      </section>
+      <section class="vt-flaeche vt-flaeche--dunkel" aria-label="Zweite Testfläche">
+        <div>
+          <h2 class="vt-flaeche__titel">Und noch eine dunkle Fläche</h2>
+          <p class="vt-flaeche__text">Nur damit genug Weg zum Scrollen bleibt.</p>
+        </div>
+      </section>
+    </main>
+
+    <nav class="vt-schalter" aria-label="Zwischen den Hero-Entwürfen wechseln">
+      <a href="index.html">Übersicht</a>
+      <a href="variante-1.html">1<span class="vt-schalter__lang"> · Schichtholz</span></a>
+      <a href="variante-2.html">2<span class="vt-schalter__lang"> · Bretterwand</span></a>
+      <a href="variante-3.html" aria-current="page">3<span class="vt-schalter__lang"> · Schicht für Schicht</span></a>
+    </nav>
+
+    <script src="../assets/vendor/gsap/gsap.min.js"></script>
+    <script src="../assets/vendor/gsap/ScrollTrigger.min.js"></script>
+    <script src="../assets/js/config.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="js/variante-3.js"></script>
+  </body>
+</html>

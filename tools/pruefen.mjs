@@ -18,7 +18,18 @@ const WURZEL = fileURLToPath(new URL("..", import.meta.url));
 const fehler = [];
 const warnungen = [];
 
+// Die Seiten im Projektordner, dazu die Hero-Entwuerfe im Unterordner
+// (relative Verweise werden vom Ordner der jeweiligen Seite aus aufgeloest)
 const seiten = readdirSync(WURZEL).filter((d) => d.endsWith(".html"));
+for (const ordner of ["hero-varianten"]) {
+  try {
+    for (const d of readdirSync(join(WURZEL, ordner))) {
+      if (d.endsWith(".html")) seiten.push(ordner + "/" + d);
+    }
+  } catch {
+    /* Ordner fehlt — dann gibt es dort nichts zu pruefen */
+  }
+}
 if (seiten.length === 0) fehler.push("Keine HTML-Seite im Projektordner gefunden.");
 
 /* ---- 1. + 2. + 4. je Seite ------------------------------------ */
