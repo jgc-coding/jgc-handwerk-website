@@ -27,6 +27,10 @@
   --sand-200: #f1e9dd;
   --sand-300: #e6dac8;
 
+  /* Holz der Bretterwand im Hero: Hirnholz und Schraubenkoepfe an den Brettenden */
+  --holz-800: #3a2a1c;
+  --holz-900: #2a1d12;
+
   --text: #4a4a4a; /* Fliesstext der bestehenden Seite */
   --text-weak: #77706b;
   --white: #fff;
@@ -564,146 +568,155 @@ a:hover {
   transform: translateY(-6px) rotate(-45deg);
 }
 
-/* ---------- 8. Hero --------------------------------------- */
+/* ---------- 8. Hero: Bretterwand -------------------------- */
 
-/* Parallaxe: main.js schreibt drei Variablen an den Hero —
-   --mx/--my ist die geglaettete Zeigerposition (-1..1), --sy der Scrollweg
-   in Pixeln (ohne Einheit). Die Ebenen rechnen daraus ihre Verschiebung
-   ueber die translate-Eigenschaft; transform bleibt frei fuer die
-   laufenden Keyframe-Animationen derselben Elemente. */
+/* Das Holzfoto wird zur Wand aus acht Brettern; die Teilung folgt den
+   echten Fugen im Foto. Beim Scrollen bleibt die Buehne stehen, die
+   Bretter gleiten weg und geben den Inhalt frei.
+
+   Zwei Betriebsarten:
+   - Ruhe (ohne JavaScript, ruhige Darstellung): die Wand ist ein Band
+     oben, der Inhalt steht sichtbar darunter.
+   - Bewegt (.js.bewegt am <html>): die Wand bedeckt die ganze Buehne,
+     main.js (Baustein Bretterwand) steuert das Oeffnen ueber GSAP.
+
+   WICHTIG: keine CSS-Transition auf transform von .hero__brett,
+   .hero__logo und .hero__buehne — GSAP setzt dort Inline-Transforms,
+   eine Transition laesst sie sichtbar nachziehen (Stolperfalle aus
+   CLAUDE.md). */
+
 .hero {
   position: relative;
-  min-height: min(100svh, 880px);
-  display: flex;
-  align-items: center;
-  padding-block: calc(var(--header-h) + 2.25rem) clamp(2.5rem, 5vw, 4rem);
-  overflow: hidden;
-  isolation: isolate;
+  background: var(--sand-50);
+}
+
+/* Auf Holz braucht die Kopfzeile von Anfang an ihren hellen Glasgrund */
+.bewegt .header:not(.is-stuck) {
+  background: rgba(253, 251, 247, 0.8);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+}
+
+/* Masse der Wand. --wand-b/--wand-h sind Breite und Hoehe der Wand; der
+   Baustein Bretterwand traegt die gemessenen Pixelwerte ein, die Angaben
+   hier sind der Rueckfall. --bgw/--bgh ist die Groesse, in der das Foto die
+   Wand ganz bedeckt (Seitenverhaeltnis 1,4985) — etwas breiter als noetig,
+   weil die Bretter seitlich ueberstehen. --logo ist der Durchmesser des
+   Logos vor der Wand. */
+.hero__buehne {
+  --wand-b: 100vw;
+  --wand-h: clamp(260px, 42svh, 440px);
+  --ueber: 0.04; /* seitlicher Ueberstand der Bretter, als Anteil der Wandbreite */
+  --bgw: max(calc(var(--wand-b) * (1 + 2 * var(--ueber))), calc(var(--wand-h) * 1.4985));
+  --bgh: calc(var(--bgw) / 1.4985);
+  --logo: clamp(150px, min(24vw, 30svh), 210px);
   --mx: 0;
   --my: 0;
-  --sy: 0;
-}
-
-/* Warmer Lichtschein — das Gegenstueck zu Foras dunklem Verlauf */
-.hero__glow {
-  position: absolute;
-  inset: -20% -10% auto;
-  height: 130%;
-  z-index: -3;
-  background:
-    radial-gradient(64% 50% at 50% -4%, rgba(255, 255, 255, 0.98), transparent 72%),
-    radial-gradient(52% 42% at 14% 16%, rgba(240, 226, 201, 0.95), transparent 66%),
-    radial-gradient(56% 46% at 88% 22%, rgba(209, 178, 128, 0.62), transparent 68%),
-    radial-gradient(120% 62% at 50% 100%, rgba(209, 178, 128, 0.5) 0%, rgba(230, 218, 200, 0.55) 45%, transparent 78%);
-  animation: glow-drift 22s var(--ease-inout) infinite alternate;
-  pointer-events: none;
-  translate: calc(var(--mx) * 24px) calc(var(--my) * 14px + var(--sy) * 0.22px);
-}
-
-@keyframes glow-drift {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  100% {
-    transform: translate3d(-2.5%, 1.5%, 0) scale(1.07);
-  }
-}
-
-/* Zwei feine Ringe — ein Hauch technischer Zeichnung hinter dem Inhalt.
-   Der gestrichelte dreht langsam, beide weichen dem Zeiger leicht aus. */
-.hero__ring {
-  position: absolute;
-  z-index: -2;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.hero__ring--a {
-  width: clamp(320px, 40vw, 600px);
-  top: 4%;
-  left: clamp(-200px, -9vw, -90px);
-  border: 1px solid rgba(209, 178, 128, 0.5);
-  box-shadow: inset 0 0 80px rgba(209, 178, 128, 0.12);
-  animation: ring-schweben 17s var(--ease-inout) infinite alternate;
-  translate: calc(var(--mx) * -30px) calc(var(--my) * -16px + var(--sy) * 0.34px);
-}
-
-.hero__ring--b {
-  width: clamp(240px, 26vw, 420px);
-  right: clamp(-140px, -6vw, -60px);
-  bottom: 6%;
-  border: 1.5px dashed rgba(185, 154, 102, 0.55);
-  animation: ring-drehen 70s linear infinite;
-  translate: calc(var(--mx) * -46px) calc(var(--my) * -24px + var(--sy) * 0.16px);
-}
-
-@keyframes ring-schweben {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  100% {
-    transform: translate3d(2%, 4%, 0) scale(1.05);
-  }
-}
-
-@keyframes ring-drehen {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Holzfoto ganz leise darunter — die Herkunft der alten Seite.
-   Etwas groesser als der Hero, damit die Parallaxe keine Raender freilegt. */
-.hero__texture {
-  position: absolute;
-  inset: -4% -3%;
-  z-index: -4;
-  background: url("../img/holz.webp") center / cover no-repeat;
-  opacity: 0.13;
-  filter: saturate(0.75);
-  mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 70%, transparent);
-  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 70%, transparent);
-  pointer-events: none;
-  translate: calc(var(--mx) * -12px) calc(var(--sy) * 0.1px);
-}
-
-/* Der Inhalt verlaesst den Hero etwas langsamer als die Seite scrollt und
-   verblasst dabei — das gibt dem Uebergang zum ersten Abschnitt Tiefe. */
-.hero__inner {
+  --p: 0;
   position: relative;
-  text-align: center;
+  isolation: isolate;
+  overflow: hidden;
+  /* Ruhe-Layout: die Wand steht im Quelltext hinter dem Inhalt (sie liegt in
+     der bewegten Fassung darueber), gehoert optisch aber nach oben */
+  display: flex;
+  flex-direction: column;
+  --oben: var(--header-h); /* Abstand der Wand zum oberen Rand der Buehne */
+  padding-top: var(--oben);
+}
+
+.hero__buehne > .hero__wand {
+  order: -1;
+}
+
+/* Bewegt: die Buehne fuellt den kleinen Bildschirm (svh), die Wand reicht bis
+   zur grossen Bildschirmhoehe (lvh). Am Handy verschwindet beim Scrollen die
+   Adressleiste; die angeheftete Buehne waechst dann nicht mit, und ohne den
+   Ueberstand der Wand bliebe unten ein heller Streifen. Seitlich schneidet die
+   Buehne weiter ab (clip), nach unten darf die Wand ueberstehen. Browser ohne
+   "clip" (Safari vor 16) verwerfen die Angabe und behalten "hidden" von oben. */
+.js.bewegt .hero__buehne {
+  --oben: 0px;
+  --wand-h: max(100lvh, 600px);
+  --logo: clamp(200px, min(26vw, 38svh), 340px);
+  min-height: max(100svh, 600px);
+  display: grid;
+  align-items: center;
+  overflow: clip visible;
+}
+
+/* Warmer Schein hinter dem Inhalt, damit die geoeffnete Buehne nicht leer wirkt */
+.hero__licht {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(60% 46% at 50% 0%, rgba(255, 255, 255, 0.95), transparent 70%),
+    radial-gradient(48% 40% at 12% 22%, rgba(240, 226, 201, 0.9), transparent 66%),
+    radial-gradient(52% 44% at 90% 28%, rgba(209, 178, 128, 0.5), transparent 68%),
+    radial-gradient(120% 60% at 50% 100%, rgba(209, 178, 128, 0.42), transparent 76%);
+  pointer-events: none;
+}
+
+/* Bewegt: der Schein reicht wie die Wand bis zur grossen Bildschirmhoehe und
+   laeuft unten weich in den naechsten Abschnitt aus — sonst stuende nach dem
+   Loesen der Anheftung eine harte Kante am Ende der Buehne. */
+.js.bewegt .hero__licht {
+  bottom: auto;
+  height: calc(var(--wand-h) + 28vh);
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 38vh), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 38vh), transparent);
+}
+
+/* ---------- Inhalt hinter der Wand ------------------------- */
+
+.hero__inhalt {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  translate: 0 calc(var(--sy) * 0.18px);
-  opacity: calc(1 - var(--sy) / 820);
+  text-align: center;
+  padding-block: clamp(2.5rem, 6vw, 4rem);
 }
 
-/* Kreis-Logo als Blickfang; Kopf- und Fusszeile tragen den Schriftzug */
-.hero__mark {
-  width: clamp(88px, 10vw, 128px);
-  height: auto;
-  margin-bottom: clamp(1.25rem, 2.4vw, 1.8rem);
-  filter: drop-shadow(0 10px 26px rgba(89, 77, 70, 0.24));
+.js.bewegt .hero__inhalt {
+  padding-block: calc(var(--header-h) + 1.25rem) clamp(1.5rem, 4svh, 3rem);
 }
 
-.hero .eyebrow {
-  margin-bottom: 1.25rem;
+/* Landeplatz des Logos. Im Ruhe-Layout bleibt das Logo auf dem Band. */
+.hero__logoplatz {
+  display: none;
+  width: clamp(84px, min(9vw, 13svh), 120px);
+  aspect-ratio: 1;
+  margin-bottom: clamp(1rem, 2.4svh, 1.6rem);
 }
 
-.hero h1 {
-  max-width: 17ch;
+.js.bewegt .hero__logoplatz {
+  display: block;
+}
+
+/* Im Ruhe-Layout steht der Leitsatz schon auf dem Band */
+.hero__etikett {
+  display: none;
+}
+
+.js.bewegt .hero__etikett {
+  display: inline-flex;
+  margin-bottom: clamp(0.9rem, 2.2svh, 1.3rem);
+}
+
+.hero__titel {
+  max-width: 16.5em;
+  font-size: clamp(2.05rem, min(1rem + 3.2vw, 7.4svh), 3.9rem);
 }
 
 .hero__lead {
-  margin-top: clamp(1.2rem, 2.4vw, 1.65rem);
+  margin-top: clamp(1rem, 2.4svh, 1.5rem);
   max-width: 58ch;
-  color: var(--text);
 }
 
-.hero__actions {
-  margin-top: clamp(1.6rem, 3vw, 2.25rem);
+.hero__aktionen {
+  margin-top: clamp(1.25rem, 3.2svh, 2.1rem);
   display: flex;
   flex-wrap: wrap;
   gap: 0.85rem;
@@ -739,120 +752,273 @@ a:hover {
   flex: none;
 }
 
-/* ---------- 8b. Hero-Auftritt ------------------------------ */
+.hero__trust {
+  margin-top: clamp(1.4rem, 3.6svh, 2.75rem);
+  padding-top: clamp(1rem, 2.4svh, 1.6rem);
+}
 
-/* Gestaffelter Aufbau beim Laden. Die Startwerte gelten nur unter .js;
-   main.js setzt .is-ready an den Hero und loest damit die Kette aus.
-   --h bestimmt die Position in der Choreografie (steht im HTML). */
-.js .hero [data-intro] {
+/* Startwerte der Freigabe. Gelten nur in der bewegten Betriebsart; faellt
+   das Skript aus, nimmt es .bewegt wieder weg und alles steht sichtbar da. */
+.js.bewegt .hero__inhalt [data-freigabe] {
   opacity: 0;
-  transform: translate3d(0, 30px, 0);
-  filter: blur(7px);
-  transition: opacity 0.85s var(--ease-inout), transform 0.95s var(--ease), filter 0.85s var(--ease-inout);
-  transition-delay: calc(0.1s + var(--h, 0) * 0.16s);
 }
 
-.js .hero.is-ready [data-intro] {
-  opacity: 1;
-  transform: none;
-  filter: none;
+/* Hinter der geschlossenen Wand nimmt der unsichtbare Inhalt keine Klicks an
+   (die Bretter selbst lassen Klicks durch). main.js setzt .ist-offen, sobald
+   die Bretter weit genug weg sind. */
+.js.bewegt .hero__buehne:not(.ist-offen) .hero__inhalt {
+  pointer-events: none;
 }
 
-/* Das Logo kommt zusaetzlich leicht vergroessert an und behaelt seinen
-   Schatten (die allgemeine Regel oben wuerde ihn mit filter: none loeschen). */
-.js .hero__mark[data-intro] {
-  transform: translate3d(0, 26px, 0) scale(0.86);
-  filter: blur(6px) drop-shadow(0 10px 26px rgba(89, 77, 70, 0.24));
+/* ---------- Wand und Bretter ------------------------------- */
+
+.hero__wand {
+  position: relative;
+  height: var(--wand-h);
+  overflow: hidden;
 }
 
-.js .hero.is-ready .hero__mark[data-intro] {
-  transform: none;
-  filter: drop-shadow(0 10px 26px rgba(89, 77, 70, 0.24));
-  animation: mark-halo 1.7s var(--ease-inout) 1.15s 1;
+.js.bewegt .hero__wand {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 2;
+  height: max(100%, 100lvh);
+  overflow: visible;
+  pointer-events: none;
 }
 
-/* Einmaliger Goldschein, sobald das Logo steht */
-@keyframes mark-halo {
-  0% {
-    filter: drop-shadow(0 10px 26px rgba(89, 77, 70, 0.24)) drop-shadow(0 0 0 rgba(209, 178, 128, 0));
-  }
-  45% {
-    filter: drop-shadow(0 10px 26px rgba(89, 77, 70, 0.24)) drop-shadow(0 0 30px rgba(209, 178, 128, 0.85));
-  }
-  100% {
-    filter: drop-shadow(0 10px 26px rgba(89, 77, 70, 0.24)) drop-shadow(0 0 0 rgba(209, 178, 128, 0));
-  }
+/* Aeussere Huelle: hier greifen GSAP (transform) und der Zeiger (translate).
+   Der Zeiger-Anteil laeuft mit dem Oeffnen (--p) gegen null. */
+.hero__brett {
+  position: absolute;
+  left: calc(var(--ueber) * -100%);
+  width: calc(100% + var(--ueber) * 200%);
+  top: calc(var(--von) * var(--bgh) - (var(--bgh) - var(--wand-h)) / 2);
+  height: calc((var(--bis) - var(--von)) * var(--bgh) + 0.6px);
+  translate: calc(var(--mx) * var(--tiefe, 0) * (1 - var(--p)) * 1px) 0;
+  will-change: transform;
 }
 
-/* Die Eintraege der Vertrauensleiste folgen einzeln, nachdem die Leiste
-   selbst (data-intro am Container) ihre Linie eingeblendet hat. */
-.js .hero .trustbar__item {
-  opacity: 0;
-  transform: translate3d(0, 14px, 0);
-  transition: opacity 0.7s var(--ease-inout), transform 0.8s var(--ease);
-  transition-delay: calc(1.08s + var(--i, 0) * 0.12s);
+/* Innere Flaeche: traegt das Foto und den Auftritt beim Laden */
+.hero__holz {
+  position: absolute;
+  inset: 0;
+  background-image: url("../img/holz.webp");
+  background-repeat: no-repeat;
+  background-size: var(--bgw) var(--bgh);
+  background-position: calc((var(--wand-b) - var(--bgw)) / 2 + var(--wand-b) * var(--ueber)) calc(var(--von) * var(--bgh) * -1);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -2px 5px rgba(36, 24, 14, 0.5),
+    0 4px 14px rgba(36, 24, 14, 0.38);
 }
 
-.js .hero.is-ready .trustbar__item {
-  opacity: 1;
-  transform: none;
+/* Hirnholz und Schrauben an beiden Brettenden — sichtbar, sobald ein Brett
+   beim Weggleiten mit seinem Ende durchs Bild faehrt */
+.hero__holz::before,
+.hero__holz::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 58px;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.5) 0 1.2px, transparent 1.6px) 30px 26% / 12px 12px no-repeat,
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.5) 0 1.2px, transparent 1.6px) 30px 74% / 12px 12px no-repeat,
+    radial-gradient(circle at 50% 50%, var(--holz-900) 0 4.4px, transparent 5px) 30px 26% / 12px 12px no-repeat,
+    radial-gradient(circle at 50% 50%, var(--holz-900) 0 4.4px, transparent 5px) 30px 74% / 12px 12px no-repeat;
 }
 
-/* Scroll-Hinweis unter der Vertrauensleiste; verblasst ueber --sy beim
-   ersten Scrollen. Bewusst im Textfluss statt am Sektionsrand — absolut
-   positioniert ueberlappte er auf flachen Fenstern die Leiste darueber. */
-.hero__hint {
-  margin-top: clamp(1.75rem, 3.5vw, 2.75rem);
+.hero__holz::before {
+  left: 0;
+  border-left: 7px solid var(--holz-800);
+}
+
+.hero__holz::after {
+  right: 0;
+  transform: scaleX(-1);
+  border-left: 7px solid var(--holz-800);
+}
+
+/* ---------- Logo, Leitsatz, Hinweis ------------------------ */
+
+.hero__logo {
+  --hoehe: 1; /* 1 = schwebt vor der Wand, 0 = liegt am Platz; setzt GSAP */
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: calc(var(--oben) + var(--wand-h) * 0.44);
+  width: var(--logo);
+  aspect-ratio: 1;
+  margin: calc(var(--logo) / -2) 0 0 calc(var(--logo) / -2);
+  translate: calc(var(--mx) * -16px * (1 - var(--p))) calc(var(--my) * -9px * (1 - var(--p)));
+  will-change: transform;
+}
+
+/* Die Buchstaben der Bilddatei sind durchsichtig. Dahinter liegt eine halb
+   deckende helle Ebene, leicht weichgezeichnet: die Schrift wird lesbar, das
+   Holz schimmert noch durch. Sie reicht bis 98 % des Durchmessers, weil die
+   Buchstaben bis 97,4 % an den Rand gehen; der Rest liegt unter der deckenden
+   Scheibe. Der Schlagschatten sitzt hier als box-shadow statt als filter am
+   Bild — ein Bildschatten schiene durch die Buchstaben und machte sie trueb,
+   ein box-shadow wird nur ausserhalb der Ebene gemalt. */
+.hero__logo::before {
+  content: "";
+  position: absolute;
+  inset: 1%;
+  border-radius: 50%;
+  background: rgba(253, 251, 247, 0.5);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 calc(5px + var(--hoehe) * 21px) calc(12px + var(--hoehe) * 28px) rgba(36, 24, 14, calc(0.22 + var(--hoehe) * 0.24));
+}
+
+.hero__logo img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.hero__leitsatz {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  top: calc(var(--oben) + var(--wand-h) * 0.44 + var(--logo) / 2 + 0.6rem);
+  margin: 0;
+  padding-inline: var(--gutter);
+  text-align: center;
+  font-family: Raleway, sans-serif;
+  font-weight: 400;
+  font-size: clamp(1.05rem, 0.8rem + 1.2vw, 1.5rem);
+  letter-spacing: 0.02em;
+  color: var(--taupe-900);
+  translate: calc(var(--mx) * -8px * (1 - var(--p))) 0;
+}
+
+.js.bewegt .hero__leitsatz {
+  top: calc(var(--wand-h) * 0.44 + var(--logo) / 2 + clamp(1rem, 3svh, 2rem));
+  font-size: clamp(1.25rem, 0.9rem + 1.6vw, 2.1rem);
+}
+
+/* Dezent hellere Ebene hinter dem Leitsatz: halb deckend und dahinter leicht
+   weichgezeichnet, damit die Maserung die Buchstaben nicht zerschneidet */
+.hero__leitsatz span {
+  display: inline-block;
+  padding: 0.28em 0.95em 0.36em;
+  border-radius: var(--r-pill);
+  background: rgba(253, 251, 247, 0.5);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+}
+
+.hero__hinweis {
+  display: none;
+}
+
+.js.bewegt .hero__hinweis {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  bottom: clamp(1rem, 3.4svh, 2.2rem);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.55rem;
-  text-decoration: none;
   font-family: Raleway, sans-serif;
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.18em;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--taupe-600);
-  opacity: calc(1 - var(--sy) / 130);
+  color: var(--sand-50);
 }
 
-.js .hero__hint {
-  animation: hint-zeigen 1s var(--ease-inout) 2.1s backwards;
+/* Dunkle, halb deckende Ebene hinter dem Wort — auf hellem wie dunklem Holz
+   lesbar. Rechts weniger Innenabstand: der Buchstabenabstand haengt hinter
+   dem letzten Buchstaben noch einmal an. */
+.hero__hinweis-wort {
+  padding: 0.5em 0.85em 0.5em 1.05em;
+  border-radius: var(--r-pill);
+  background: rgba(36, 24, 14, 0.42);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
 }
 
-@keyframes hint-zeigen {
-  from {
-    opacity: 0;
-  }
-}
-
-.hero__hint-linie {
+.hero__hinweis-linie {
   position: relative;
   width: 1px;
-  height: 44px;
+  height: 42px;
   overflow: hidden;
-  background: linear-gradient(to bottom, rgba(185, 154, 102, 0.6), rgba(185, 154, 102, 0.08));
+  background: rgba(253, 251, 247, 0.4);
 }
 
 /* Ein Lichtpunkt laeuft die Linie hinab */
-.hero__hint-linie::after {
+.hero__hinweis-linie::after {
   content: "";
   position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
+  inset: 0 0 auto;
   height: 16px;
-  background: var(--gold-600);
-  animation: hint-lauf 2.3s var(--ease-inout) infinite;
+  background: var(--sand-50);
+  animation: hinweis-lauf 2.3s var(--ease-inout) infinite;
 }
 
-@keyframes hint-lauf {
+@keyframes hinweis-lauf {
   0% {
     transform: translateY(-18px);
   }
   100% {
-    transform: translateY(48px);
+    transform: translateY(46px);
+  }
+}
+
+/* ---------- 8b. Hero-Auftritt ------------------------------ */
+
+/* Die Bretter fahren abwechselnd von links und rechts herein. Der Auftritt
+   sitzt auf der inneren Flaeche — die Huelle gehoert GSAP.
+   Fuellmodus bewusst "backwards" statt "both": eine Animation, die nach dem
+   Ende weiter fuellt, schlaegt Inline-Styles — GSAP koennte Leitsatz und
+   Hinweis dann nicht mehr ausblenden. */
+.js.bewegt .hero__holz {
+  animation: brett-einfahren 1.2s var(--ease) backwards;
+  animation-delay: calc(0.05s + var(--n) * 0.075s);
+}
+
+@keyframes brett-einfahren {
+  from {
+    transform: translate3d(calc(var(--seite) * 104%), 0, 0);
+  }
+}
+
+.js.bewegt .hero__logo img,
+.js.bewegt .hero__logo::before {
+  animation: logo-auf 1.15s var(--ease) 0.85s backwards;
+}
+
+@keyframes logo-auf {
+  from {
+    opacity: 0;
+    scale: 0.8;
+  }
+}
+
+/* Leitsatz und Hinweis blenden an den Kindern ein, nicht am Rahmen: ein
+   Rahmen mit Deckkraft unter 1 schneidet die Weichzeichnung der hellen und
+   dunklen Ebene ab, sie spraenge dann am Ende des Auftritts sichtbar um. */
+.js.bewegt .hero__leitsatz span,
+.js.bewegt .hero__hinweis > span {
+  animation: wandtext-zeigen 0.9s var(--ease-inout) 1.5s backwards;
+}
+
+.js.bewegt .hero__hinweis > span {
+  animation-delay: 2s;
+}
+
+@keyframes wandtext-zeigen {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
   }
 }
 
@@ -1804,10 +1970,21 @@ a:hover {
     font-size: 0.82rem;
   }
 
-  /* Auf kleinen Bildschirmen sitzt die Vertrauensleiste nah am unteren
-     Rand — der Scroll-Hinweis wuerde sich mit ihr ueberlagern. */
-  .hero__hint {
+  /* Hero: mehr Ueberstand der Bretter, sonst ragen Hirnholz und Schrauben der
+     Brettenden schon im Ruhezustand ins schmale Bild */
+  .hero__buehne {
+    --ueber: 0.2;
+  }
+
+  /* In der angehefteten Buehne muss alles auf einen Schirm passen */
+  .js.bewegt .hero__lead,
+  .js.bewegt .hero__trust-weit {
     display: none;
+  }
+
+  .hero__aktionen .btn {
+    padding: 0.95rem 1.5rem;
+    font-size: 0.98rem;
   }
 }
 
@@ -1828,8 +2005,6 @@ a:hover {
 
   .js .reveal,
   .js .reveal-group > *,
-  .js .hero [data-intro],
-  .js .hero .trustbar__item,
   .js [data-worte] .wort,
   .js .shot {
     opacity: 1 !important;
@@ -1837,15 +2012,8 @@ a:hover {
     filter: none !important;
   }
 
-  /* Das Logo behaelt seinen Schatten, auch wenn oben filter geloescht wird */
-  .js .hero__mark[data-intro] {
-    filter: drop-shadow(0 10px 26px rgba(89, 77, 70, 0.24)) !important;
-  }
-
-  /* Ohne Bewegung ergeben Zeiger-Parallaxe und Lichtpunkt keinen Sinn */
-  .hero__hint-linie::after {
-    display: none;
-  }
+  /* Die Bretterwand im Hero braucht hier keine Regel: bei ruhiger Darstellung
+     setzt der Kopf der Seite kein .bewegt, sie ist dann ein ruhiges Holzband. */
 }
 
 /* ---------- 18. Druck ------------------------------------- */
@@ -1854,13 +2022,22 @@ a:hover {
   .header,
   .nav,
   .scrollspur,
-  .hero__glow,
-  .hero__ring,
-  .hero__hint,
-  .hero__texture,
+  .hero__wand,
+  .hero__logo,
+  .hero__logoplatz,
+  .hero__leitsatz,
+  .hero__hinweis,
   .rail,
   .form {
     display: none !important;
+  }
+
+  /* Im Druck steht der Hero-Inhalt einfach da, auch mitten im Oeffnen */
+  .hero__inhalt [data-freigabe] {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    filter: none !important;
   }
 
   body {

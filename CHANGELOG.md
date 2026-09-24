@@ -4,6 +4,38 @@ Alle nennenswerten Änderungen an dieser Website. Format nach SemVer (MAJOR.MINO
 Die Version steht als Single Source of Truth in `assets/js/config.js` und erscheint in der
 Fußzeile.
 
+## 0.4.0 — 2026-09-24
+
+Neuer Startbereich: die Bretterwand aus Hero-Entwurf 2, von Gabriel ausgewählt und für bessere
+Lesbarkeit überarbeitet.
+
+**Hero „Bretterwand“**
+
+- Beim Laden steht eine Wand aus acht Holzbrettern mit dem Kreis-Logo davor; die Teilung folgt
+  den echten Fugen im Holzfoto. Beim Scrollen bleibt der Bereich stehen, die Bretter gleiten
+  abwechselnd nach links und rechts weg, das Logo wandert an seinen Platz über der Überschrift,
+  und Überschrift, Text, Knöpfe und Vertrauensleiste blenden ein. Mit der Maus verschieben sich
+  die Bretter leicht gegeneinander.
+- Lesbarkeit des ersten Bildes: hinter dem Leitsatz „ressourcen- und zeiteffizient“ liegt eine
+  halb deckende, leicht weichgezeichnete helle Kapsel, hinter den Buchstaben des Logos eine
+  ebensolche helle Ebene, hinter „Scrollen“ eine dunkle. Gemessener Kontrast an den dunkelsten
+  Stellen: Leitsatz 2,5 → 8,1, Logo-Buchstaben 1,8 → 4,5 (Median 2,3 → 5,1), Hinweis 2,2 → 6,0.
+  Der Schatten des Logos schien vorher durch die durchsichtigen Buchstaben und machte sie trüb.
+- Tastatur: springt der Fokus in den noch verdeckten Inhalt, öffnet sich die Wand sofort.
+  Klicks auf die geschlossene Wand lösen keine unsichtbaren Links mehr aus.
+- Am Handy reicht die Wand bis zur vollen Bildschirmhöhe, damit beim Einklappen der
+  Adressleiste unten kein heller Streifen entsteht; Größenwechsel durch die Adressleiste lösen
+  keine Neuberechnung mitten im Scrollen aus.
+- Ohne JavaScript und bei ruhiger Darstellung steht die Wand als ruhiges Holzband über dem
+  sichtbaren Inhalt.
+
+**Aufgeräumt**
+
+- Die drei Entwürfe (`hero-varianten/`) samt Werkzeug für die Holzebenen sind aus dem Repo
+  entfernt. Eine startbare Kopie liegt bei Gabriel lokal; im Repo stecken sie im Commit ef41e2e.
+- Neues Werkzeug `tools/regression.mjs`: prüft Hero, Projektbahn, Reiter, Formular, Regler,
+  Menü, Lesbarkeit, ohne JavaScript und ruhige Darstellung im Chrome ohne Fenster.
+
 ## 0.3.0 — 2026-09-13
 
 Feinschliff an Bewegung und Übergängen nach dem Vorbild fora.so und der Midsummer-Seite,

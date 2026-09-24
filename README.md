@@ -27,6 +27,16 @@ Die Prüfung meldet fehlende Dateien, Verweise auf fremde Server und eine Versio
 mehr zum CHANGELOG passt. Sie läuft auch in GitHub Actions, bevor die Seite veröffentlicht
 wird.
 
+Nach Änderungen an Startbereich, Projektbahn oder Skript zusätzlich den Regressionscheck
+(rund zwei Minuten, der Vorschau-Server muss laufen):
+
+```bash
+node tools/regression.mjs
+```
+
+Er spielt Scrollen, Klicks und Tastatur im installierten Chrome durch, misst die Lesbarkeit des
+ersten Bildes und prüft die Seite ohne JavaScript und bei ruhiger Darstellung.
+
 ## Sichtkontrolle
 
 ```bash
@@ -59,11 +69,11 @@ datenschutz.html      Datenschutzerklärung
 formular/senden.php   Empfänger des Kontaktformulars — läuft bei All-Inkl, nicht auf GitHub
 assets/css/style.css  Design-System; alle Farben und Abstände als CSS-Variablen
 assets/js/config.js   Version und Formular-Ziel — die einzige Stelle für diese Werte
-assets/js/main.js     Verhalten: Reiter, Einblendungen, Projektbahn, Formular
+assets/js/main.js     Verhalten: Bretterwand im Hero, Reiter, Einblendungen, Projektbahn, Formular
 assets/fonts/         Raleway und Open Sans, lokal (kein Google-Server)
 assets/vendor/gsap/   GSAP 3.12.5 mit ScrollTrigger, lokal
 assets/img/           Bilder als WebP
-tools/                Vorschau-Server, Prüfung, Screenshots, Formular-Test, Schriften holen
+tools/                Vorschau-Server, Prüfung, Regressionscheck, Screenshots, Formular-Test, Schriften holen
 ```
 
 Die Seite lädt **nichts** von fremden Servern nach. Das ist Absicht und wird von

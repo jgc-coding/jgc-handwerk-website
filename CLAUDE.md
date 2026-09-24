@@ -35,10 +35,10 @@ Analyse. `tools/pruefen.mjs` bricht ab, wenn doch ein externer Verweis hineinger
 - Sichtkontrolle: `node tools/screenshots.mjs <ordner> [breite] [hoehe]` — steuert das
   installierte Chrome fern und legt Bilder aller Abschnitte ab. Server muss laufen.
 - Schriften erneuern: `node tools/fonts-holen.mjs` (nur bei Schriftwechsel noetig)
-- Hero-Entwuerfe: `hero-varianten/index.html` (lokal http://localhost:4173/hero-varianten/) —
-  Alternativen fuer den Startbereich, jede auf eigener Seite mit Testflaeche zum Scrollen,
-  alle mit `noindex`. Die Holzebenen von Entwurf 1 erzeugt `node tools/hero-schichten.mjs`
-  aus festem Zufall neu (`assets/img/hero/`); `pruefen.mjs` prueft den Ordner mit.
+- Regressionscheck: `node tools/regression.mjs` (Server muss laufen, dauert ~2 min) — spielt
+  Bretterwand, Projektbahn, Reiter, Formular, Regler, Menue und Tastatur im Chrome ohne Fenster
+  durch, misst den Kontrast im ersten Bild und prueft ohne JavaScript und ruhige Darstellung.
+  Nach jeder Aenderung an Hero, Projektbahn oder `main.js`. Zu langsam fuer `pruefen.txt`.
 
 ## Konventionen
 
@@ -61,9 +61,9 @@ Analyse. `tools/pruefen.mjs` bricht ab, wenn doch ein externer Verweis hineinger
 ## Stolperfallen
 
 - **Ohne JavaScript muss alles sichtbar bleiben.** Die Startwerte der Einblendungen haengen
-  an `.js` am `<html>`, gesetzt von einem Inline-Script im `<head>`. Wer eine neue
-  `.reveal`-Regel schreibt, muss sie ebenfalls unter `.js` haengen — sonst ist die Seite bei
-  einem Script-Fehler leer.
+  an `.js` am `<html>`, die der Bretterwand an `.js.bewegt` — beides setzt ein Inline-Script im
+  `<head>`. Wer eine neue `.reveal`-Regel schreibt, muss sie ebenfalls unter `.js` haengen —
+  sonst ist die Seite bei einem Script-Fehler leer.
 - **Screenshots aus der Browser-Pane sind unbrauchbar**, sobald die Pane ausgeblendet ist:
   der Bereich ausserhalb des zuletzt gezeichneten Ausschnitts kommt weiss zurueck. Fuer
   Sichtkontrollen `tools/screenshots.mjs` nehmen.
@@ -74,19 +74,31 @@ Analyse. `tools/pruefen.mjs` bricht ab, wenn doch ein externer Verweis hineinger
 - Die Projektbahn (`#rail`) wird von ScrollTrigger angeheftet. Aendert sich die Kartenzahl
   oder -breite, aendert sich die Scrollstrecke der ganzen Seite mit.
 - **Keine CSS-Transition auf `transform` von Elementen, die ScrollTrigger anheftet oder
-  schiebt** (`#rail`, `#railTrack`, alles Gepinnte): die gesetzten Inline-Transforms werden
+  schiebt** (`#rail`, `#railTrack`, `.hero__buehne`, `.hero__brett`, `.hero__logo`, alles
+  Gepinnte): die gesetzten Inline-Transforms werden
   sonst animiert nachgezogen, und die Bildleiste springt sichtbar beim Loesen der Anheftung
   (Fehler in 0.2.0, behoben in 0.3.0 — 577 px Nachlauf). Einblendungen gehoeren auf die
   Karten oder Inhalte DARIN, nie auf die transformierten Container.
 - **ScrollTrigger-Timelines beim Seitenaufbau: Startwerte mit `fromTo` setzen.** Laeuft beim
   Aufbau noch ein CSS-Auftritt mit Deckkraft 0, schreibt GSAP diese 0 als Startwert fest und
-  das Element bleibt fuer immer unsichtbar (Leitsatz in Hero-Entwurf 2). Dazu Auftritte nur mit
+  das Element bleibt fuer immer unsichtbar (Leitsatz der Bretterwand). Dazu Auftritte nur mit
   `animation-fill-mode: backwards` — `both`/`forwards` schlagen Inline-Styles, GSAP kommt dann
   nicht mehr an das Element heran.
+- **Lesbarkeit der Bretterwand haengt an zwei Ebenen.** Die Logo-Buchstaben sind im Bild
+  durchsichtig; lesbar macht sie die halb deckende helle Ebene dahinter (`.hero__logo::before`).
+  Ein Schatten als `filter: drop-shadow` am Bild schiene durch die Buchstaben und machte sie
+  trueb — darum sitzt er als `box-shadow` auf dieser Ebene. `backdrop-filter` (Weichzeichnung
+  hinter Leitsatz und Hinweis) faellt aus, solange ein Vorfahr `opacity < 1` oder `filter` hat:
+  Auftritte und Ausblenden darum an die Kapsel selbst haengen, nie an ihren Rahmen. Nach jeder
+  Aenderung `tools/regression.mjs` laufen lassen, es misst den Kontrast.
+- **Bretterwand am Handy: Buehne `svh`, Wand und Schein `lvh`.** Die angeheftete Buehne waechst
+  nicht mit, wenn die Adressleiste einklappt; ohne den Ueberstand der Wand stuende unten ein
+  heller Streifen. Aus demselben Grund misst `main.js` auf Touch-Geraeten nur bei neuer Breite
+  neu. Nie auf `100vh` "vereinfachen".
 - **CSS-3D (`transform-style: preserve-3d`) wird von `opacity < 1`, `filter`, `overflow` und
   `mask` aufgehoben.** Solche Eigenschaften und Auftritts-Animationen nur auf Blaettern
   (Flaechen, Kanten), nie auf Modell oder Ebenen — sonst fallen die Ebenen flach zusammen
-  (Hero-Entwurf 3).
+  (Hero-Entwurf 3, archiviert im Commit ef41e2e).
 - **Das Formular-Skript liegt nicht auf GitHub.** `formular/senden.php` wird von Hand direkt in
   den Ordner der Subdomain `formular.jgc-handwerk.de` geladen, mit einem FTP-Nutzer nur fuer
   diesen Ordner. Der Deploy-Workflow bringt Aenderungen nicht dorthin — nach jeder Aenderung

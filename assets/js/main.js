@@ -70,59 +70,219 @@
     });
   }
 
-  /* ---------- Hero: Auftritt und Parallaxe ------------------ */
+  /* ---------- Hero: Bretterwand ----------------------------- */
 
-  function heroAuftritt() {
+  // Die Buehne bleibt beim Scrollen stehen (ScrollTrigger heftet sie an), die
+  // Bretter gleiten abwechselnd nach links und rechts weg, das Logo reist an
+  // seinen Platz ueber der Ueberschrift, der Inhalt blendet ein. Ob sich die
+  // Wand bewegt, entscheidet die Klasse .bewegt, die der Kopf der Seite setzt
+  // (nicht bei ruhiger Darstellung). Faellt etwas aus, nimmt der Baustein sie
+  // wieder weg: dann steht die Wand als Band oben und der Inhalt sichtbar da.
+  function bretterwand() {
     var hero = document.querySelector(".hero");
-    if (!hero) return;
+    var buehne = hero && hero.querySelector(".hero__buehne");
+    if (!buehne) return;
 
-    // Auftritt ausloesen: zwei Frames warten, damit die Startwerte der
-    // Choreografie sicher gemalt sind, bevor die Uebergaenge loslaufen.
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () {
-        hero.classList.add("is-ready");
-      });
-    });
+    var wurzel = document.documentElement;
+    var wand = buehne.querySelector(".hero__wand");
+    var logo = buehne.querySelector(".hero__logo");
+    var platz = buehne.querySelector(".hero__logoplatz");
+    var inhalt = buehne.querySelector(".hero__inhalt");
+    var bretter = Array.prototype.slice.call(buehne.querySelectorAll(".hero__brett"));
+    var freigaben = Array.prototype.slice.call(buehne.querySelectorAll(".hero__inhalt [data-freigabe]"));
+    // Leitsatz und Hinweis blenden an den Kindern aus, nicht am Rahmen (style.css, 8b)
+    var wandtexte = Array.prototype.slice.call(buehne.querySelectorAll(".hero__leitsatz span, .hero__hinweis > span"));
 
-    if (ruhig) return;
+    if (!wand || !logo || !platz || !inhalt) {
+      console.warn(LOG + " [WARN] Bretterwand unvollstaendig im HTML — Ruhe-Layout.");
+      wurzel.classList.remove("bewegt");
+      return;
+    }
 
-    // Scrollweg als --sy an den Hero melden (Ebenen-Parallaxe und Ausblenden
-    // rechnet das CSS). Gebuendelt auf einen Frame, geschrieben nur am Hero
-    // selbst — nie an :root, das wuerde die ganze Seite neu stylen.
-    var angefragt = false;
-    var letzt = -1;
-    function messe() {
-      angefragt = false;
-      var grenze = hero.offsetHeight + 120;
-      var sy = Math.max(0, Math.min(window.scrollY, grenze));
-      if (sy !== letzt) {
-        letzt = sy;
-        hero.style.setProperty("--sy", String(sy));
+    // Breite und Hoehe der Wand in Pixeln an das CSS melden. Die Hoehe nur in
+    // der bewegten Fassung: dort reicht die Wand bis zur grossen Bildschirmhoehe.
+    function messeWand() {
+      buehne.style.removeProperty("--wand-h");
+      buehne.style.setProperty("--wand-b", buehne.clientWidth + "px");
+      if (wurzel.classList.contains("bewegt")) {
+        buehne.style.setProperty("--wand-h", wand.offsetHeight + "px");
       }
     }
-    window.addEventListener(
-      "scroll",
-      function () {
-        if (!angefragt) {
-          angefragt = true;
-          requestAnimationFrame(messe);
-        }
-      },
-      { passive: true }
-    );
-    messe();
 
-    // Zeiger-Parallaxe nur mit echter Maus; geglaettet, damit die Ebenen
-    // dem Zeiger weich hinterherschwingen statt zu kleben.
+    /** Zurueck ins Ruhe-Layout: die Wand wird zum Band, der Inhalt steht sichtbar da. */
+    function ruheLayout(grund) {
+      console.warn(LOG + " [WARN] Bretterwand im Ruhe-Layout: " + grund);
+      wurzel.classList.remove("bewegt");
+      messeWand();
+    }
+
+    messeWand();
+
+    var bewegt = wurzel.classList.contains("bewegt");
+    if (bewegt && (typeof window.gsap === "undefined" || typeof window.ScrollTrigger === "undefined")) {
+      ruheLayout("GSAP wurde nicht geladen.");
+      bewegt = false;
+    }
+
+    // Am Handy aendert die Adressleiste beim Scrollen laufend die Fensterhoehe.
+    // Die Wand haengt dort nur an der Breite (die Hoehen rechnet das CSS mit
+    // svh/lvh), darum auf Touch-Geraeten nur bei neuer Breite neu messen.
+    var nurTouch = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+    var letzteBreite = window.innerWidth;
+    var wecker = 0;
+    window.addEventListener("resize", function () {
+      if (nurTouch && window.innerWidth === letzteBreite) return;
+      letzteBreite = window.innerWidth;
+      clearTimeout(wecker);
+      wecker = setTimeout(function () {
+        messeWand();
+        if (bewegt) window.ScrollTrigger.refresh();
+      }, 180);
+    });
+
+    if (!bewegt) return;
+
+    var gsap = window.gsap;
+    var ScrollTrigger = window.ScrollTrigger;
+
+    /** Lage eines Elements innerhalb der Buehne, ohne Transforms mitzumessen. */
+    function lage(el) {
+      var x = 0, y = 0;
+      while (el && el !== buehne) {
+        x += el.offsetLeft;
+        y += el.offsetTop;
+        el = el.offsetParent;
+      }
+      return { x: x, y: y };
+    }
+
+    /** Weg und Verkleinerung des Logos von der Wandmitte zu seinem Platz. */
+    function logoWeg() {
+      var p = lage(platz), l = lage(logo);
+      return {
+        x: p.x + platz.offsetWidth / 2 - (l.x + logo.offsetWidth / 2),
+        y: p.y + platz.offsetHeight / 2 - (l.y + logo.offsetHeight / 2),
+        s: platz.offsetWidth / Math.max(1, logo.offsetWidth),
+      };
+    }
+
+    var zeitplan = null;
+    try {
+      gsap.registerPlugin(ScrollTrigger);
+      // Die Adressleiste am Handy aendert die Hoehe staendig — nicht jedes Mal neu messen
+      ScrollTrigger.config({ ignoreMobileResize: true });
+
+      // Die Wand oeffnet sich von der Mitte her, dort wo das Logo sitzt
+      var rang = [3, 2, 1, 0, 0, 1, 2, 3];
+
+      zeitplan = gsap.timeline({
+        defaults: { ease: "none" },
+        scrollTrigger: {
+          trigger: hero,
+          start: "top top",
+          end: function () {
+            return "+=" + Math.round(window.innerHeight * 1.6);
+          },
+          pin: buehne,
+          scrub: 0.7,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onUpdate: function (self) {
+            buehne.style.setProperty("--p", self.progress.toFixed(3));
+            // Hinter der geschlossenen Wand ist der Inhalt unsichtbar — dort
+            // soll ihn auch kein Mausklick durch die Bretter hindurch treffen.
+            buehne.classList.toggle("ist-offen", self.progress > 0.7);
+          },
+        },
+      });
+
+      // 1. Leitsatz und Hinweis gehen, sobald gescrollt wird. Startwerte
+      //    ausdruecklich angeben: beim Aufbau laeuft noch ihr Lade-Auftritt mit
+      //    Deckkraft 0 — GSAP wuerde sonst diese 0 als Startwert festschreiben
+      //    und beide blieben fuer immer unsichtbar.
+      zeitplan.fromTo(wandtexte, { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: -18, duration: 0.09 }, 0);
+
+      // 2. Bretter gleiten weg: abwechselnd links/rechts, leicht verkantet
+      bretter.forEach(function (brett, i) {
+        var seite = i % 2 === 0 ? -1 : 1;
+        zeitplan.to(
+          brett,
+          {
+            xPercent: seite * 108,
+            rotation: seite * (1.2 + rang[i] * 0.55),
+            y: (i - 3.5) * 9,
+            ease: "power2.inOut",
+            duration: 0.46,
+          },
+          0.05 + rang[i] * 0.05
+        );
+      });
+
+      // 3. Logo reist an seinen Platz und legt sich ab (Schatten wird flacher)
+      zeitplan.to(
+        logo,
+        {
+          x: function () { return logoWeg().x; },
+          y: function () { return logoWeg().y; },
+          scale: function () { return logoWeg().s; },
+          "--hoehe": 0,
+          ease: "power2.inOut",
+          duration: 0.42,
+        },
+        0.27
+      );
+
+      // 4. Inhalt blendet gestaffelt ein
+      freigaben.forEach(function (el, i) {
+        zeitplan.fromTo(
+          el,
+          { opacity: 0, y: 46, filter: "blur(8px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", ease: "power2.out", duration: 0.22 },
+          0.4 + i * 0.055
+        );
+      });
+
+      // 5. Halt: der weiche Nachlauf des Scrubs schwingt aus, bevor sich die
+      //    Anheftung loest (Lehre aus dem Sprung der Projektbahn in 0.2.0).
+      zeitplan.to({}, { duration: 0.16 });
+
+      // Schriften und Bilder verschieben die Masse nach dem Laden
+      window.addEventListener("load", function () {
+        messeWand();
+        ScrollTrigger.refresh();
+      });
+    } catch (fehler) {
+      console.error(LOG + " [ERROR] Bretterwand: Scroll-Szene fehlgeschlagen:", fehler);
+      // Angefangene Anheftung und gesetzte Inline-Werte zuruecknehmen
+      try {
+        if (zeitplan) zeitplan.revert();
+      } catch (e) {
+        /* nichts mehr zu retten — das Ruhe-Layout greift trotzdem */
+      }
+      ruheLayout("Fehler beim Aufbau der Scroll-Szene.");
+      return;
+    }
+
+    // Tastatur: springt der Fokus in den Inhalt hinter der geschlossenen Wand
+    // (Tab auf "Anfrage senden"), die Wand ganz oeffnen — sonst laege der
+    // fokussierte Knopf unsichtbar hinter den Brettern.
+    inhalt.addEventListener("focusin", function () {
+      var st = zeitplan.scrollTrigger;
+      if (st && st.progress < 1) window.scrollTo({ top: Math.ceil(st.end), behavior: "instant" });
+    });
+
+    /* Zeiger: nur mit echter Maus. Die Bretter verschieben sich leicht
+       gegeneinander, das Logo schwebt davor; geglaettet, damit nichts am
+       Zeiger klebt. Unterhalb des Heros ruht die Rechnung. */
     if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
 
     var zielX = 0, zielY = 0, mx = 0, my = 0, laeuft = false;
 
     function takt() {
-      mx += (zielX - mx) * 0.08;
-      my += (zielY - my) * 0.08;
-      hero.style.setProperty("--mx", mx.toFixed(4));
-      hero.style.setProperty("--my", my.toFixed(4));
+      mx += (zielX - mx) * 0.075;
+      my += (zielY - my) * 0.075;
+      buehne.style.setProperty("--mx", mx.toFixed(4));
+      buehne.style.setProperty("--my", my.toFixed(4));
       if (Math.abs(zielX - mx) + Math.abs(zielY - my) > 0.002) requestAnimationFrame(takt);
       else laeuft = false;
     }
@@ -134,9 +294,11 @@
       }
     }
 
-    hero.addEventListener(
+    window.addEventListener(
       "pointermove",
       function (e) {
+        if (e.pointerType && e.pointerType !== "mouse") return;
+        if (window.scrollY > zeitplan.scrollTrigger.end) return;
         zielX = (e.clientX / Math.max(1, window.innerWidth)) * 2 - 1;
         zielY = (e.clientY / Math.max(1, window.innerHeight)) * 2 - 1;
         stosseAn();
@@ -144,7 +306,7 @@
       { passive: true }
     );
 
-    hero.addEventListener("pointerleave", function () {
+    wurzel.addEventListener("pointerleave", function () {
       zielX = 0;
       zielY = 0;
       stosseAn();
@@ -209,15 +371,7 @@
     );
 
     koepfe.forEach(function (kopf) {
-      if (kopf.getAttribute("data-worte") === "sofort") {
-        // Der Hero-Titel wartet nicht auf Sicht, sondern reiht sich in die
-        // Auftritts-Choreografie ein (nach Logo und Etikett).
-        setTimeout(function () {
-          kopf.classList.add("ist-da");
-        }, 480);
-      } else {
-        beobachter.observe(kopf);
-      }
+      beobachter.observe(kopf);
     });
   }
 
@@ -759,7 +913,9 @@
   function los() {
     starte("Kopfzeile", kopfzeile);
     starte("Menue", menue);
-    starte("HeroAuftritt", heroAuftritt);
+    // Die Bretterwand vor der Projektbahn: ScrollTrigger rechnet Anheftungen in
+    // der Reihenfolge ihres Aufbaus, sie muss der Reihenfolge auf der Seite folgen.
+    starte("Bretterwand", bretterwand);
     starte("Einblenden", einblenden);
     starte("Worte", worte);
     starte("Scrollspur", scrollspur);

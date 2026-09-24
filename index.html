@@ -34,9 +34,16 @@
 
     <link rel="preload" as="font" type="font/woff2" href="assets/fonts/raleway-latin.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="assets/fonts/open-sans-latin.woff2" crossorigin />
-    <!-- Schaltet die Einblendungen frei. Ohne JavaScript bleibt alles sofort sichtbar. -->
+    <link rel="preload" as="image" href="assets/img/holz.webp" />
+    <!-- "js" schaltet die Einblendungen frei, "bewegt" die Bretterwand im Hero. Beides schon
+         hier im Kopf, damit die Seite nicht erst im Ruhe-Layout erscheint und dann umspringt.
+         Ohne JavaScript bleibt alles sofort sichtbar; ohne JavaScript oder bei ruhiger
+         Darstellung ist die Bretterwand ein ruhiges Holzband ueber dem Inhalt. -->
     <script>
       document.documentElement.classList.add("js");
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.classList.add("bewegt");
+      }
     </script>
     <link rel="stylesheet" href="assets/css/style.css" />
 
@@ -107,81 +114,100 @@
     </header>
 
     <main id="main">
-      <!-- ============ Hero ============ -->
-      <section class="hero" id="home">
-        <div class="hero__glow" aria-hidden="true"></div>
-        <!-- Zwei feine Ringe schweben im Hintergrund und folgen leicht dem Zeiger -->
-        <div class="hero__ring hero__ring--a" aria-hidden="true"></div>
-        <div class="hero__ring hero__ring--b" aria-hidden="true"></div>
-        <div class="hero__texture" aria-hidden="true"></div>
+      <!-- ============ Hero: Bretterwand ============
+           Beim Laden steht eine Wand aus Holzbrettern mit dem Logo davor. Beim Scrollen
+           bleibt die Buehne stehen (ScrollTrigger heftet sie an), die Bretter gleiten
+           abwechselnd nach links und rechts weg, das Logo reist an seinen Platz ueber der
+           Ueberschrift, und der Inhalt dahinter blendet ein (main.js, Baustein Bretterwand).
+           WICHTIG: keine CSS-Transition auf transform der Bretter, des Logos oder der
+           Buehne — GSAP setzt dort Inline-Transforms (siehe CLAUDE.md, Stolperfallen). -->
+      <section class="hero" id="home" aria-labelledby="hero-titel">
+        <div class="hero__buehne">
+          <!-- Inhalt: liegt hinter der Wand und wird beim Oeffnen sichtbar -->
+          <div class="hero__licht" aria-hidden="true"></div>
 
-        <div class="shell hero__inner">
-          <img
-            class="hero__mark"
-            data-intro
-            style="--h: 0"
-            src="assets/img/logo-kreis.webp"
-            alt="Logo JGC Handwerk"
-            width="88"
-            height="88"
-          />
+          <div class="shell hero__inhalt">
+            <div class="hero__logoplatz" aria-hidden="true"></div>
 
-          <p class="eyebrow" data-intro style="--h: 1">ressourcen- und zeiteffizient</p>
+            <p class="eyebrow hero__etikett" data-freigabe>ressourcen- und zeiteffizient</p>
 
-          <h1 class="h-display" data-worte="sofort">
-            Ihr zuverlässiger Partner für <span class="text-accent">Trockenbau, Montage und Zuarbeit.</span>
-          </h1>
+            <h1 class="h-display hero__titel" id="hero-titel" data-freigabe>
+              Ihr zuverlässiger Partner für <span class="text-accent">Trockenbau, Montage und Zuarbeit.</span>
+            </h1>
 
-          <p class="lead hero__lead" data-intro style="--h: 3">
-            Ich bin sowohl für Privatkunden als auch für Zimmereien als Subunternehmer in und rund um Freiburg tätig —
-            als Handwerker mit ingenieurtechnischem Hintergrund und mehrjähriger Erfahrung.
-          </p>
+            <p class="lead hero__lead" data-freigabe>
+              Ich bin sowohl für Privatkunden als auch für Zimmereien als Subunternehmer in und rund um Freiburg tätig —
+              als Handwerker mit ingenieurtechnischem Hintergrund und mehrjähriger Erfahrung.
+            </p>
 
-          <div class="hero__actions" data-intro style="--h: 4">
-            <a class="btn btn--lg" href="#kontakt">
-              Anfrage senden
-              <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
-                <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-            </a>
-            <a class="btn btn--ghost btn--lg" href="#leistungen">Leistungen ansehen</a>
+            <div class="hero__aktionen" data-freigabe>
+              <a class="btn btn--lg" href="#kontakt">
+                Anfrage senden
+                <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                  <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </a>
+              <a class="btn btn--ghost btn--lg" href="#leistungen">Leistungen ansehen</a>
+            </div>
+
+            <div class="trustbar hero__trust" data-freigabe>
+              <span class="trustbar__item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                Freiburg und Umgebung
+              </span>
+              <span class="trustbar__item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                  <path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Privatkunden und Zimmereien
+              </span>
+              <span class="trustbar__item hero__trust-weit">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                  <path d="M22 10 12 5 2 10l10 5 10-5Z" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Wirtschaftsingenieur (M.Sc.)
+              </span>
+              <span class="trustbar__item hero__trust-weit">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                  <path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 3l7 3v6c0 4.5-3 8.3-7 9-4-.7-7-4.5-7-9V6l7-3Z" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Handwerkskammer Freiburg
+              </span>
+            </div>
           </div>
 
-          <div class="trustbar" data-intro style="--h: 5">
-            <span class="trustbar__item" style="--i: 0">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
-                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="12" cy="10" r="3" />
-              </svg>
-              Freiburg und Umgebung
-            </span>
-            <span class="trustbar__item" style="--i: 1">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
-                <path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              Privatkunden und Zimmereien
-            </span>
-            <span class="trustbar__item" style="--i: 2">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
-                <path d="M22 10 12 5 2 10l10 5 10-5Z" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              Wirtschaftsingenieur (M.Sc.)
-            </span>
-            <span class="trustbar__item" style="--i: 3">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
-                <path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M12 3l7 3v6c0 4.5-3 8.3-7 9-4-.7-7-4.5-7-9V6l7-3Z" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              Handwerkskammer Freiburg
-            </span>
+          <!-- Bretterwand: die Teilung folgt den echten Fugen im Holzfoto
+               (--von/--bis = Anteil der Bildhoehe). --seite gibt an, von wo das Brett
+               beim Laden hereinfaehrt, --tiefe wie stark es dem Zeiger folgt. -->
+          <div class="hero__wand" aria-hidden="true">
+            <div class="hero__brett" style="--von: 0; --bis: 0.1479; --n: 0; --seite: -1; --tiefe: 7"><div class="hero__holz"></div></div>
+            <div class="hero__brett" style="--von: 0.1479; --bis: 0.2857; --n: 1; --seite: 1; --tiefe: -9"><div class="hero__holz"></div></div>
+            <div class="hero__brett" style="--von: 0.2857; --bis: 0.4106; --n: 2; --seite: -1; --tiefe: 12"><div class="hero__holz"></div></div>
+            <div class="hero__brett" style="--von: 0.4106; --bis: 0.5385; --n: 3; --seite: 1; --tiefe: -6"><div class="hero__holz"></div></div>
+            <div class="hero__brett" style="--von: 0.5385; --bis: 0.6294; --n: 4; --seite: -1; --tiefe: 10"><div class="hero__holz"></div></div>
+            <div class="hero__brett" style="--von: 0.6294; --bis: 0.8062; --n: 5; --seite: 1; --tiefe: -11"><div class="hero__holz"></div></div>
+            <div class="hero__brett" style="--von: 0.8062; --bis: 0.9461; --n: 6; --seite: -1; --tiefe: 8"><div class="hero__holz"></div></div>
+            <div class="hero__brett" style="--von: 0.9461; --bis: 1; --n: 7; --seite: 1; --tiefe: -7"><div class="hero__holz"></div></div>
           </div>
 
-          <!-- Leiser Hinweis, dass es unten weitergeht; verblasst beim ersten Scrollen -->
-          <a class="hero__hint" href="#willkommen">
-            <span>Scrollen</span>
-            <span class="hero__hint-linie" aria-hidden="true"></span>
-          </a>
+          <!-- Logo: die Buchstaben der Bilddatei sind durchsichtig; eine halb deckende
+               helle Ebene dahinter macht sie lesbar, das Holz schimmert noch durch -->
+          <div class="hero__logo">
+            <img src="assets/img/logo-kreis.webp" alt="Logo JGC Handwerk" width="565" height="566" />
+          </div>
+
+          <!-- Auf der Wand steht der Leitsatz; hinter der Wand uebernimmt das Etikett -->
+          <p class="hero__leitsatz" aria-hidden="true"><span>ressourcen- und zeiteffizient</span></p>
+
+          <div class="hero__hinweis" aria-hidden="true">
+            <span class="hero__hinweis-wort">Scrollen</span>
+            <span class="hero__hinweis-linie"></span>
+          </div>
         </div>
       </section>
 
