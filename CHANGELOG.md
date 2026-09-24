@@ -4,6 +4,17 @@ Alle nennenswerten Änderungen an dieser Website. Format nach SemVer (MAJOR.MINO
 Die Version steht als Single Source of Truth in `assets/js/config.js` und erscheint in der
 Fußzeile.
 
+## 0.5.0 — 2026-09-24
+
+Gabriels Rückmeldungen zu 0.4.0.
+
+- **Leistungen am Handy und Tablet:** Statt der Reiterleiste mit einem einzigen Bild darunter
+  steht jetzt jede Leistung als eigene Karte da — Nummer, Titel und Kurztext, darunter ihr
+  Bild mit der ausführlichen Beschreibung. Am PC bleiben die Reiter mit dem Bild daneben.
+  Die Karten entstehen aus den Reitern selbst, die Texte stehen weiterhin nur einmal im HTML.
+- **„bewusst-werken“ entfernt:** die Kachel „Gründungsmitglied“ im Abschnitt „Über mich“ und
+  der Link in der Fußzeile.
+
 ## 0.4.0 — 2026-09-24
 
 Neuer Startbereich: die Bretterwand aus Hero-Entwurf 2, von Gabriel ausgewählt und für bessere

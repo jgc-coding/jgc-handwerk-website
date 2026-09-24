@@ -1195,6 +1195,92 @@ a:hover {
   }
 }
 
+/* Schmale Bildschirme: Liste statt Reiter. main.js setzt .tabs--liste, sobald
+   die Reiter einspaltig stehen, und baut jeder Leistung einen Kopf aus ihrem
+   Reiter. Dann steht jede Leistung als Karte da: Nummer, Titel, Kurztext und
+   darunter ihr Bild. Ohne JavaScript bleibt es bei Reiterleiste und erstem Bild. */
+.panel__kopf {
+  display: none;
+}
+
+.tabs--liste .tabs__list {
+  display: none;
+}
+
+.tabs--liste .tabs__panels {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: none;
+}
+
+.tabs--liste .panel {
+  position: relative;
+  inset: auto;
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  padding: 0.75rem;
+  border: 1px solid rgba(209, 178, 128, 0.4);
+  border-radius: var(--r-lg);
+  background: var(--glass-bg);
+  box-shadow: var(--shadow-sm);
+}
+
+.tabs--liste .panel__kopf {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 0.6rem 0.6rem 1rem;
+  color: var(--ink);
+}
+
+.tabs--liste .panel__kopf .tab__num {
+  color: var(--gold-600);
+}
+
+.tabs--liste .panel__media {
+  border-radius: var(--r-md);
+}
+
+/* Schmal bricht die Bildunterschrift in mehr Zeilen um und reicht hoeher ins
+   Bild — der dunkle Verlauf muss darum weiter hinauf und kraeftiger sein */
+.tabs--liste .panel__media::after {
+  background: linear-gradient(to top, rgba(47, 42, 38, 0.92) 0%, rgba(47, 42, 38, 0.74) 48%, rgba(47, 42, 38, 0.2) 80%, transparent 94%);
+}
+
+/* Der Titel steht schon im Kopf der Karte; fuer Vorleseprogramme bleibt er
+   in der Bildunterschrift erhalten, nur unsichtbar */
+.tabs--liste .panel__caption h3 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.tabs--liste .panel__caption p {
+  margin-top: 0;
+}
+
+/* In der Liste sind alle Bilder zugleich zu sehen — kein Auftritt je Wechsel */
+.tabs--liste .panel .panel__media img,
+.tabs--liste .panel .panel__caption {
+  animation: none;
+}
+
+/* Auf Tablets wird das Bild sonst sehr hoch */
+@media (min-width: 600px) {
+  .tabs--liste .panel__media {
+    aspect-ratio: 16 / 9;
+  }
+}
+
 .area-note {
   margin-top: clamp(2rem, 4vw, 3rem);
   display: flex;

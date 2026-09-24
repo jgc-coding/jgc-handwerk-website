@@ -40,7 +40,6 @@ for (const seite of seiten) {
     if (/^https?:\/\//i.test(v)) {
       const erlaubt = [
         "https://jgc-handwerk.de", // eigene kanonische Adresse
-        "https://bewusstwerken.de", // vom Kunden gewuenschter Verweis
         "https://schema.org",
         "https://docs.github.com", // Quellenangabe im Datenschutztext
         "https://all-inkl.com", // Quellenangabe im Datenschutztext

@@ -367,6 +367,38 @@ if (!chromePfad) {
       await pause(700);
       const nach = await werte(`({ ende: ScrollTrigger.getAll()[0].end, wandH: document.querySelector(".hero__buehne").style.getPropertyValue("--wand-h") })`);
       pruefe("Handy: Groessenwechsel ohne neue Breite rechnet nicht neu", vor.ende === nach.ende && vor.wandH === nach.wandH, { vor, nach });
+
+      // Leistungen: am Handy eine Liste, jede Leistung mit Kopf und eigenem Bild
+      const leistungen = `(() => {
+        const panels = [...document.querySelectorAll(".tabs__panels .panel")];
+        const sichtbar = (p) => { const s = getComputedStyle(p); return s.display !== "none" && s.visibility === "visible" && p.getBoundingClientRect().height > 100; };
+        return {
+          liste: document.querySelector(".tabs").classList.contains("tabs--liste"),
+          leiste: getComputedStyle(document.querySelector(".tabs__list")).display,
+          sichtbar: panels.filter(sichtbar).length,
+          koepfe: panels.filter((p) => p.querySelector(".panel__kopf") && getComputedStyle(p.querySelector(".panel__kopf")).display !== "none").length,
+          bilder: panels.filter((p) => p.querySelector("img") && p.querySelector("img").getBoundingClientRect().height > 100).length,
+          untereinander: panels.every((p, i) => i === 0 || p.getBoundingClientRect().top >= panels[i - 1].getBoundingClientRect().bottom),
+          rollen: panels.filter((p) => p.getAttribute("role") === "tabpanel").length,
+          ueberlauf: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+        };
+      })()`;
+      const liste = await werte(leistungen);
+      pruefe(
+        "Handy: Leistungen als Liste, jede mit Kopf und Bild",
+        liste.liste && liste.leiste === "none" && liste.sichtbar === 5 && liste.koepfe === 5 && liste.bilder === 5 && liste.untereinander && liste.rollen === 0,
+        liste
+      );
+
+      // Dreht jemand das Tablet oder zieht das Fenster breit, kommen die Reiter zurueck
+      await sende("Emulation.setDeviceMetricsOverride", { width: 1280, height: 800, deviceScaleFactor: 1, mobile: false });
+      await pause(900);
+      const breit = await werte(leistungen);
+      pruefe(
+        "Breiter Bildschirm danach: wieder Reiter mit einem Bild",
+        !breit.liste && breit.leiste !== "none" && breit.sichtbar === 1 && breit.koepfe === 0 && breit.rollen === 5,
+        breit
+      );
     });
     pruefe("Handy: keine Konsolenfehler oder -warnungen", konsole.length === 0, konsole);
 

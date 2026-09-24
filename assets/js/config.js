@@ -5,7 +5,7 @@
 window.JGC = {
   /** Version der Seite. Single Source of Truth, erscheint in der Fusszeile.
    *  Beim Aendern: CHANGELOG.md mitziehen (tools/pruefen.mjs bewacht das). */
-  version: "0.4.0",
+  version: "0.5.0",
 
   /** Zieladresse des Kontaktformulars: das PHP-Skript formular/senden.php, bei All-Inkl
    *  auf der Subdomain formular.jgc-handwerk.de (gleiches Muster wie formular.jgc-lumen.de).

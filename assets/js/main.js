@@ -501,8 +501,10 @@
 
     var tabs = Array.prototype.slice.call(liste.querySelectorAll('[role="tab"]'));
     if (!tabs.length) return;
+    var gewaehlt = 0;
 
     function waehle(index, fokussieren) {
+      gewaehlt = index;
       tabs.forEach(function (tab, i) {
         var aktiv = i === index;
         tab.setAttribute("aria-selected", String(aktiv));
@@ -538,6 +540,50 @@
     });
 
     waehle(0, false);
+
+    /* Schmale Bildschirme (einspaltig, wie im CSS ab 980 px): Liste statt Reiter.
+       Jede Leistung steht als Karte mit Nummer, Titel, Kurztext und ihrem Bild
+       untereinander, die Reiterleiste ist ausgeblendet. Den Kopf jeder Karte
+       baut das Skript aus dem Reiter — so stehen die Texte nur einmal im HTML. */
+    var box = liste.parentElement;
+    var schmal = window.matchMedia("(max-width: 980px)");
+
+    function setzeAnsicht() {
+      var alsListe = schmal.matches;
+      box.classList.toggle("tabs--liste", alsListe);
+
+      tabs.forEach(function (tab) {
+        var panel = document.getElementById(tab.getAttribute("aria-controls"));
+        if (!panel) return;
+
+        if (!alsListe) {
+          panel.setAttribute("role", "tabpanel");
+          panel.setAttribute("aria-labelledby", tab.id);
+          return;
+        }
+
+        if (!panel.querySelector(".panel__kopf")) {
+          // Nur fuers Auge: Vorleseprogramme bekommen Titel und Text aus der Bildunterschrift
+          var kopf = document.createElement("div");
+          kopf.className = "panel__kopf";
+          kopf.setAttribute("aria-hidden", "true");
+          Array.prototype.forEach.call(tab.childNodes, function (kind) {
+            kopf.appendChild(kind.cloneNode(true));
+          });
+          panel.insertBefore(kopf, panel.firstChild);
+        }
+        // Ohne Reiterleiste ist das Panel ein gewoehnlicher Abschnitt der Liste
+        panel.removeAttribute("hidden");
+        panel.removeAttribute("role");
+        panel.removeAttribute("aria-labelledby");
+      });
+
+      if (!alsListe) waehle(gewaehlt, false);
+    }
+
+    setzeAnsicht();
+    if (typeof schmal.addEventListener === "function") schmal.addEventListener("change", setzeAnsicht);
+    else if (typeof schmal.addListener === "function") schmal.addListener(setzeAnsicht);
   }
 
   /* ---------- Lichtfleck folgt dem Zeiger ------------------- */
