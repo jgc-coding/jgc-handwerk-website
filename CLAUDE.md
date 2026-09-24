@@ -25,7 +25,11 @@ Analyse. `tools/pruefen.mjs` bricht ab, wenn doch ein externer Verweis hineinger
 
 ## Befehle
 
-- Vorschau: `node tools/server.mjs` → http://localhost:4173
+- Vorschau: `node tools/server.mjs` → http://localhost:4173. Ist der Port von einer anderen
+  Sitzung belegt, stirbt der neue Server still und man prueft den alten Stand: dann
+  `PORT=4180` davor und die Werkzeuge mit `BASIS=http://localhost:4180`; Gegenprobe ist die
+  Version in der Fusszeile. Der Server aus der Browser-Pane stirbt zwischen den Zuegen — vor
+  jeder Aufnahme-Serie kurz per `curl` pruefen.
 - Pruefen: `node tools/pruefen.mjs` (fehlende Dateien, fremde Server, Versionsabgleich)
 - Formular-Skript testen: `node tools/formular-test.mjs` — PHP in Docker, 13 Faelle; Mails
   landen in `tools/formular-test/post/` statt im Postfach. Docker muss laufen, andere
@@ -36,8 +40,9 @@ Analyse. `tools/pruefen.mjs` bricht ab, wenn doch ein externer Verweis hineinger
   installierte Chrome fern und legt Bilder aller Abschnitte ab. Server muss laufen.
 - Schriften erneuern: `node tools/fonts-holen.mjs` (nur bei Schriftwechsel noetig)
 - Regressionscheck: `node tools/regression.mjs` (Server muss laufen, dauert ~2 min) — spielt
-  Bretterwand, Projektbahn, Reiter, Formular, Regler, Menue und Tastatur im Chrome ohne Fenster
-  durch, misst den Kontrast im ersten Bild und prueft ohne JavaScript und ruhige Darstellung.
+  Bretterwand, Projektbahn, Reiter samt Handy-Karten, Formular, Regler, Menue und Tastatur im
+  Chrome ohne Fenster durch, misst den Kontrast im ersten Bild und prueft ohne JavaScript und
+  ruhige Darstellung.
   Nach jeder Aenderung an Hero, Projektbahn oder `main.js`. Zu langsam fuer `pruefen.txt`.
 
 ## Konventionen
@@ -70,15 +75,20 @@ Analyse. `tools/pruefen.mjs` bricht ab, wenn doch ein externer Verweis hineinger
 - `scroll-behavior: smooth` verschluckt `window.scrollTo(0, y)` in ferngesteuerten Browsern.
   Beim Testen immer `scrollTo({ top: y, behavior: "instant" })`.
 - Bash-Heredocs fressen doppelte Backslashes — regulaere Ausdruecke in `tools/*.mjs` nie per
-  Heredoc schreiben, sondern mit dem Edit-Werkzeug.
+  Heredoc schreiben, sondern mit dem Edit-Werkzeug. Umlaute aus Python erscheinen in Git Bash
+  als Ersatzzeichen: erst `PYTHONIOENCODING=utf-8` setzen, dann an einen Kodierungsfehler glauben.
 - Die Projektbahn (`#rail`) wird von ScrollTrigger angeheftet. Aendert sich die Kartenzahl
   oder -breite, aendert sich die Scrollstrecke der ganzen Seite mit.
+- **Leistungen bis 980 px: Karten statt Reiter.** Der Baustein Reiter in `main.js` setzt
+  `.tabs--liste` und baut jeder Karte den Kopf aus ihrem Reiter — Texte nur in Reiter und
+  Panel pflegen, nie einen zweiten Kopf ins HTML schreiben. Der dunkle Bildverlauf ist dort
+  bewusst kraeftiger, weil die Unterschrift hoeher ins Bild reicht; nicht angleichen.
 - **Keine CSS-Transition auf `transform` von Elementen, die ScrollTrigger anheftet oder
   schiebt** (`#rail`, `#railTrack`, `.hero__buehne`, `.hero__brett`, `.hero__logo`, alles
-  Gepinnte): die gesetzten Inline-Transforms werden
-  sonst animiert nachgezogen, und die Bildleiste springt sichtbar beim Loesen der Anheftung
-  (Fehler in 0.2.0, behoben in 0.3.0 — 577 px Nachlauf). Einblendungen gehoeren auf die
-  Karten oder Inhalte DARIN, nie auf die transformierten Container.
+  Gepinnte): die gesetzten Inline-Transforms werden sonst animiert nachgezogen, und die
+  Bildleiste springt sichtbar beim Loesen der Anheftung (Fehler in 0.2.0, behoben in 0.3.0 —
+  577 px Nachlauf). Einblendungen gehoeren auf die Karten oder Inhalte DARIN, nie auf die
+  transformierten Container.
 - **ScrollTrigger-Timelines beim Seitenaufbau: Startwerte mit `fromTo` setzen.** Laeuft beim
   Aufbau noch ein CSS-Auftritt mit Deckkraft 0, schreibt GSAP diese 0 als Startwert fest und
   das Element bleibt fuer immer unsichtbar (Leitsatz der Bretterwand). Dazu Auftritte nur mit
@@ -105,7 +115,9 @@ Analyse. `tools/pruefen.mjs` bricht ab, wenn doch ein externer Verweis hineinger
   neu hochladen, sonst laeuft dort der alte Stand weiter.
 - **Der FTP-Nutzer `formular` im KAS gehoert zu JGC Lumen** (Ordner `formular.jgc-lumen.de`).
   Nicht fuer diese Seite verwenden und sein Passwort nicht aendern — das Hochlade-Skript der
-  Stilprobe-Automatik meldet sich vermutlich damit an.
+  Stilprobe-Automatik meldet sich vermutlich damit an. Zugangsdaten und Skript liegen im
+  privaten Repo `C:\Projekte\Stilprobe-Automatik`: nur lesen, nichts uebernehmen — dieses Repo
+  ist oeffentlich.
 - **Formular, Herkunft und Datenschutztext haengen zusammen.** `JGC.formularEndpunkt` in
   `assets/js/config.js` zeigt auf das Skript (bei `null` prueft das Formular nur und sagt das
   offen). Das Skript nimmt nur Einsendungen von Adressen in `ERLAUBTE_HERKUNFT` an: Zieht die
