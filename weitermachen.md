@@ -1,7 +1,7 @@
 # Weitermachen
 
 Stand: 29.09.2026 · Version 0.5.0 **veröffentlicht** · Tags `v0.1.0` bis `v0.5.0` gesetzt und gepusht
-· **Kontaktformular live**, Test-Mail angekommen
+· **Kontaktformular live**, Test-Mail angekommen · Rückkehrpunkt vor diesem save-state: `main` auf 7449ea7
 
 - **Vorschau:** https://jgc-coding.github.io/jgc-handwerk-website/ (zeigt 0.5.0)
 - **Repo:** https://github.com/jgc-coding/jgc-handwerk-website
@@ -16,7 +16,8 @@ hochgeladen (Login-Symbol des Hauptnutzers, ohne Passwort). Selbsttest grün:
 `405 {"ok":false,"grund":"methode"}`, Zertifikat gültig, Vorabfrage von der Vorschau erlaubt,
 fremde Herkunft 403. Eine echte Test-Anfrage über die Vorschau kam laut Gabriel im Postfach
 kontakt@ an. Der AVV ist Teil des Hosting-Vertrags (seit 05.02.2024). Den FTP-Nutzer
-„formular-handwerk“ (nur dieser Ordner) hat Gabriel mit eigenem Passwort angelegt.
+„formular-handwerk“ (nur dieser Ordner) hat Gabriel mit eigenem Passwort angelegt. Aufgeräumt:
+die drei gemergten Branches der alten Worktrees sind gelöscht.
 
 Davor (24.09.): 0.4.0 Bretterwand als Startbereich, 0.5.0 Leistungs-Karten am Handy und
 „bewusst-werken“ entfernt — Details im `CHANGELOG.md`.
@@ -35,9 +36,6 @@ Davor (24.09.): 0.4.0 Bretterwand als Startbereich, 0.5.0 Leistungs-Karten am Ha
 3. I2 mit Gabriel klären: Entwurf 3 als Erklärbild im Reiter Trockenbau?
 4. V4, dann Umzug auf die eigene Domain (V6): `noindex` und `robots.txt` entfernen,
    Datenschutz Abschnitt 2, `og:image`. Porträtfoto klären (offen seit 0.1.0).
-5. Mit Gabriels OK die gemergten Branches ohne Worktree löschen (`git branch -d`):
-   `claude/handwerk-hero-sections-986d61`, `claude/jgc-handwerk-seite-24482a`,
-   `claude/website-hero-transitions-a730c7`.
 
 ## Offen
 

@@ -110,12 +110,16 @@ Analyse. `tools/pruefen.mjs` bricht ab, wenn doch ein externer Verweis hineinger
   (Flaechen, Kanten), nie auf Modell oder Ebenen — sonst fallen die Ebenen flach zusammen
   (Hero-Entwurf 3, archiviert im Commit ef41e2e).
 - **Das Formular-Skript liegt nicht auf GitHub.** `formular/senden.php` wird von Hand direkt in
-  den Ordner der Subdomain `formular.jgc-handwerk.de` geladen, mit einem FTP-Nutzer nur fuer
-  diesen Ordner (im KAS „formular-handwerk“, das Passwort hat nur Gabriel). Der Deploy-Workflow bringt Aenderungen nicht dorthin — nach jeder Aenderung
-  neu hochladen, sonst laeuft dort der alte Stand weiter. Ohne FTP-Passwort geht es, wenn Gabriel
-  im KAS angemeldet ist: KAS → FTP → Login-Symbol eines Nutzers oeffnet WebFTP ueber die Sitzung
-  (Link hat `target=_blank`, im Tab der Claude-Gruppe per `target=_self` oeffnen). Ordner
-  `/formular.jgc-handwerk.de/`, PHP 8.5, Let's-Encrypt-Zertifikat verlaengert sich selbst.
+  den Ordner der Subdomain `formular.jgc-handwerk.de` geladen (`/formular.jgc-handwerk.de/`,
+  PHP 8.5, Let's-Encrypt-Zertifikat verlaengert sich selbst), mit einem FTP-Nutzer nur fuer
+  diesen Ordner (im KAS „formular-handwerk“, das Passwort hat nur Gabriel). Der Deploy-Workflow
+  bringt Aenderungen nicht dorthin — nach jeder Aenderung neu hochladen, sonst laeuft dort der
+  alte Stand weiter.
+- **KAS per Chrome:** Anmelden tut Gabriel selbst, im Tab der Claude-Gruppe — Claude schickt nie
+  ein Passwort ab. Die Sitzung haengt am `?l=`-Token der URL und laeuft nach einiger Zeit ab; die
+  MembersArea hat eine eigene Anmeldung. Hochladen ohne FTP-Passwort: KAS → FTP → Login-Symbol
+  eines Nutzers oeffnet WebFTP ueber die Sitzung (Link hat `target=_blank`, im Claude-Tab per
+  `target=_self` oeffnen).
 - **Der FTP-Nutzer `formular` im KAS gehoert zu JGC Lumen** (Ordner `formular.jgc-lumen.de`).
   Nicht fuer diese Seite verwenden und sein Passwort nicht aendern — das Hochlade-Skript der
   Stilprobe-Automatik meldet sich vermutlich damit an. Zugangsdaten und Skript liegen im
