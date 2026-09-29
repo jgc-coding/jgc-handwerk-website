@@ -112,7 +112,10 @@ Analyse. `tools/pruefen.mjs` bricht ab, wenn doch ein externer Verweis hineinger
 - **Das Formular-Skript liegt nicht auf GitHub.** `formular/senden.php` wird von Hand direkt in
   den Ordner der Subdomain `formular.jgc-handwerk.de` geladen, mit einem FTP-Nutzer nur fuer
   diesen Ordner. Der Deploy-Workflow bringt Aenderungen nicht dorthin — nach jeder Aenderung
-  neu hochladen, sonst laeuft dort der alte Stand weiter.
+  neu hochladen, sonst laeuft dort der alte Stand weiter. Ohne FTP-Passwort geht es, wenn Gabriel
+  im KAS angemeldet ist: KAS → FTP → Login-Symbol eines Nutzers oeffnet WebFTP ueber die Sitzung
+  (Link hat `target=_blank`, im Tab der Claude-Gruppe per `target=_self` oeffnen). Ordner
+  `/formular.jgc-handwerk.de/`, PHP 8.5, Let's-Encrypt-Zertifikat verlaengert sich selbst.
 - **Der FTP-Nutzer `formular` im KAS gehoert zu JGC Lumen** (Ordner `formular.jgc-lumen.de`).
   Nicht fuer diese Seite verwenden und sein Passwort nicht aendern — das Hochlade-Skript der
   Stilprobe-Automatik meldet sich vermutlich damit an. Zugangsdaten und Skript liegen im
@@ -130,6 +133,8 @@ Analyse. `tools/pruefen.mjs` bricht ab, wenn doch ein externer Verweis hineinger
   `formular` bleibt samt SSL-Zertifikat bei All-Inkl, so wie bei jgc-lumen.de.
 - **Hoster und Formular-Empfaenger stehen in `datenschutz.html` Abschnitt 2** (GitHub Pages fuer
   die Seite, All-Inkl fuer Formular und E-Mail). Zieht die Seite um, muss der Abschnitt mit.
+  Der AVV mit All-Inkl ist Teil des Hosting-Vertrags (seit 05.02.2024, MembersArea → Stammdaten
+  → Auftragsverarbeitung, nur als PDF abrufbar) — dort gibt es nichts abzuschliessen.
 - `docker run` aus Git Bash mit Pfaden wie `/app` braucht `MSYS_NO_PATHCONV=1`, sonst macht
   Bash daraus einen Windows-Pfad. `tools/formular-test.mjs` startet Docker direkt aus Node und
   ist davon nicht betroffen.

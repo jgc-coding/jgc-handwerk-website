@@ -1,24 +1,24 @@
 # Verbesserungen und offene Befunde
 
-Stand: 24.09.2026. Jeder Punkt hat eine Nummer, damit `weitermachen.md` und Commits darauf
+Stand: 29.09.2026. Jeder Punkt hat eine Nummer, damit `weitermachen.md` und Commits darauf
 verweisen können, ohne die Beschreibung zu wiederholen. Erledigtes steht im `CHANGELOG.md`
 (V1 und V2 mit Version 0.2.0). Der Sessionstart-Hook lädt nur den Abschnitt „Offen“ — neue
 Befunde darum als `###` darunter eintragen.
 
 ## Offen
 
-### V3 · Formular bei All-Inkl einrichten und live testen · hoch · S
+### V3 · Formular: Eingang der Test-Mail bestätigen, FTP-Nutzer fertig anlegen · mittel · S
 
-**Gefahr:** Seit Version 0.4.0 ist die Seite mit eingeschaltetem Formular veröffentlicht. Solange
-es die Subdomain `formular.jgc-handwerk.de` mit gültigem Zertifikat und dort die Datei
-`senden.php` nicht gibt, bekommt jeder Besucher beim Absenden eine Fehlermeldung — die Anfrage
-kommt nicht an, und nur wer anruft, erreicht dich. Selbsttest am 24.09.2026: Zertifikat
-ungültig, `senden.php` fehlt.
+**Gefahr:** Am 29.09.2026 im KAS eingerichtet: Subdomain `formular.jgc-handwerk.de` (Ordner
+`/formular.jgc-handwerk.de/`, PHP 8.5), Let's-Encrypt-Zertifikat, `senden.php` hochgeladen.
+Selbsttest grün, eine echte Test-Anfrage über die Vorschau meldete „Vielen Dank“. Ob die Mail
+wirklich im Postfach ankommt, lässt sich von außen nicht sehen — bleibt sie aus, gehen Anfragen
+still verloren.
 
-**Bezug:** Betrifft dich jetzt. Das Skript ist lokal in 13 Fällen mit PHP 8.3 und 8.5 geprüft.
-Offen sind vier Schritte im KAS, wie bei formular.jgc-lumen.de: die Subdomain mit SSL anlegen,
-einen FTP-Nutzer nur für ihren Ordner anlegen, `senden.php` direkt in diesen Ordner laden und
-den AVV mit All-Inkl bestätigen. Danach eine Test-Anfrage.
+**Bezug:** Betrifft dich einmal. Test-Mail im Postfach kontakt@ suchen, Betreff „Anfrage über
+jgc-handwerk.de von Claude Testanfrage“. Der FTP-Nutzer „formular-handwerk“ ist im KAS
+vorbereitet und braucht nur dein Passwort; er dient künftigen Updates von `senden.php`. Den AVV
+gibt es schon als Teil des Hosting-Vertrags (seit 05.02.2024).
 
 ### V4 · Datenschutzerklärung fachlich prüfen lassen · mittel · S
 
