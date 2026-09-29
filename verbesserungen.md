@@ -2,23 +2,11 @@
 
 Stand: 29.09.2026. Jeder Punkt hat eine Nummer, damit `weitermachen.md` und Commits darauf
 verweisen können, ohne die Beschreibung zu wiederholen. Erledigtes steht im `CHANGELOG.md`
-(V1 und V2 mit Version 0.2.0). Der Sessionstart-Hook lädt nur den Abschnitt „Offen“ — neue
-Befunde darum als `###` darunter eintragen.
+(V1 und V2 mit Version 0.2.0). V3 (Formular bei All-Inkl) ist seit 29.09.2026 erledigt — reine
+Einrichtung im KAS ohne Code, darum ohne CHANGELOG-Eintrag. Der Sessionstart-Hook lädt nur den
+Abschnitt „Offen“ — neue Befunde darum als `###` darunter eintragen.
 
 ## Offen
-
-### V3 · Formular: Eingang der Test-Mail bestätigen, FTP-Nutzer fertig anlegen · mittel · S
-
-**Gefahr:** Am 29.09.2026 im KAS eingerichtet: Subdomain `formular.jgc-handwerk.de` (Ordner
-`/formular.jgc-handwerk.de/`, PHP 8.5), Let's-Encrypt-Zertifikat, `senden.php` hochgeladen.
-Selbsttest grün, eine echte Test-Anfrage über die Vorschau meldete „Vielen Dank“. Ob die Mail
-wirklich im Postfach ankommt, lässt sich von außen nicht sehen — bleibt sie aus, gehen Anfragen
-still verloren.
-
-**Bezug:** Betrifft dich einmal. Test-Mail im Postfach kontakt@ suchen, Betreff „Anfrage über
-jgc-handwerk.de von Claude Testanfrage“. Der FTP-Nutzer „formular-handwerk“ ist im KAS
-vorbereitet und braucht nur dein Passwort; er dient künftigen Updates von `senden.php`. Den AVV
-gibt es schon als Teil des Hosting-Vertrags (seit 05.02.2024).
 
 ### V4 · Datenschutzerklärung fachlich prüfen lassen · mittel · S
 

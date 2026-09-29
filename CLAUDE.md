@@ -111,7 +111,7 @@ Analyse. `tools/pruefen.mjs` bricht ab, wenn doch ein externer Verweis hineinger
   (Hero-Entwurf 3, archiviert im Commit ef41e2e).
 - **Das Formular-Skript liegt nicht auf GitHub.** `formular/senden.php` wird von Hand direkt in
   den Ordner der Subdomain `formular.jgc-handwerk.de` geladen, mit einem FTP-Nutzer nur fuer
-  diesen Ordner. Der Deploy-Workflow bringt Aenderungen nicht dorthin — nach jeder Aenderung
+  diesen Ordner (im KAS „formular-handwerk“, das Passwort hat nur Gabriel). Der Deploy-Workflow bringt Aenderungen nicht dorthin — nach jeder Aenderung
   neu hochladen, sonst laeuft dort der alte Stand weiter. Ohne FTP-Passwort geht es, wenn Gabriel
   im KAS angemeldet ist: KAS → FTP → Login-Symbol eines Nutzers oeffnet WebFTP ueber die Sitzung
   (Link hat `target=_blank`, im Tab der Claude-Gruppe per `target=_self` oeffnen). Ordner
