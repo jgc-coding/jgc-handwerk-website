@@ -4,6 +4,23 @@ Alle nennenswerten Änderungen an dieser Website. Format nach SemVer (MAJOR.MINO
 Die Version steht als Single Source of Truth in `assets/js/config.js` und erscheint in der
 Fußzeile.
 
+## 0.5.1 — 2026-09-30
+
+Datenschutzerklärung und Impressum für den Umzug auf GitHub Pages mit eigener Domain
+überarbeitet (V4, Teil Claude).
+
+- **Datenschutz, Hosting GitHub:** Die Übermittlung in die USA stützt sich jetzt auf die
+  Zertifizierung von GitHub nach dem EU-US Data Privacy Framework (Art. 45 DSGVO), die
+  Standardvertragsklauseln stehen als Ergänzung daneben. Der Link auf GitHubs Vertragswerk zur
+  Auftragsverarbeitung ist entfallen; für Einzelheiten verweist der Text auf die
+  Datenschutzerklärung von GitHub, die DPF und Standardvertragsklauseln nennt. Neu: GitHub speichert Besucher-IPs nach eigenen Angaben aus Sicherheitsgründen. Der
+  Einwilligungs-Baustein ist ersetzt durch den Satz, warum keine Einwilligung nötig ist.
+- **Datenschutz, Genauigkeit:** Schriften und Seitenteile kommen vom Hoster, nicht mehr
+  „vom eigenen Server“. Beim Kontaktformular stehen jetzt Protokolldateien des Servers und
+  welche Angaben Pflicht und welche freiwillig sind. Unten steht ein Stand-Datum.
+- **Impressum:** Firmenname über dem Namen, der Satz zum Impressumsservice sprachlich
+  korrigiert, Verweis auf die Handwerksordnung als berufsrechtliche Regelung ergänzt.
+
 ## 0.5.0 — 2026-09-24
 
 Gabriels Rückmeldungen zu 0.4.0.

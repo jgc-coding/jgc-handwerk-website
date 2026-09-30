@@ -43,6 +43,7 @@ for (const seite of seiten) {
         "https://schema.org",
         "https://docs.github.com", // Quellenangabe im Datenschutztext
         "https://all-inkl.com", // Quellenangabe im Datenschutztext
+        "https://www.gesetze-im-internet.de", // Handwerksordnung im Impressum
       ];
       const istLink = new RegExp(`href="${v.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"`).test(html);
       if (!erlaubt.some((e) => v.startsWith(e))) {
