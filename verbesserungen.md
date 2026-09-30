@@ -1,23 +1,84 @@
 # Verbesserungen und offene Befunde
 
-Stand: 29.09.2026. Jeder Punkt hat eine Nummer, damit `weitermachen.md` und Commits darauf
+Stand: 30.09.2026. Jeder Punkt hat eine Nummer, damit `weitermachen.md` und Commits darauf
 verweisen können, ohne die Beschreibung zu wiederholen. Erledigtes steht im `CHANGELOG.md`
 (V1 und V2 mit Version 0.2.0). V3 (Formular bei All-Inkl) ist seit 29.09.2026 erledigt — reine
-Einrichtung im KAS ohne Code, darum ohne CHANGELOG-Eintrag. Der Sessionstart-Hook lädt nur den
-Abschnitt „Offen“ — neue Befunde darum als `###` darunter eintragen.
+Einrichtung im KAS ohne Code, darum ohne CHANGELOG-Eintrag. V4 (Datenschutz) hat Claude auf
+Gabriels Wunsch statt einer externen Prüfung selbst überarbeitet (0.5.1); was dabei unsicher
+blieb, steht als V8 und V9 unten. V6 ist entschieden: Die Seite bleibt bei GitHub Pages
+(Gabriel, 30.09.2026). Der Sessionstart-Hook lädt nur den Abschnitt „Offen“ — neue Befunde
+darum als `###` darunter eintragen. Der Ablauf des Umzugs steht in
+[docs/umzug-plan.md](docs/umzug-plan.md).
 
 ## Offen
 
-### V4 · Datenschutzerklärung fachlich prüfen lassen · mittel · S
+### V8 · Impressum-Anschrift klären · hoch · S
 
-**Gefahr:** Ich habe die Erklärung an die neue Technik angepasst: GitHub für die Seite, All-Inkl
-für Formular und E-Mail, keine Cookies, keine Besucherzählung, Schriften vom eigenen Server.
-Das beschreibt den tatsächlichen Zustand — ich bin aber kein Anwalt, und ein Fehler in diesem
-Text ist teurer als der Text selbst.
+**Gefahr:** Ein Mitbewerber kann abmahnen, wenn das Impressum nur eine Weiterleitungsadresse
+zeigt statt der Adresse, unter der der Betrieb niedergelassen ist. Das Gesetz (§ 5 DDG)
+verlangt genau diese Adresse.
 
-**Bezug:** Betrifft dich vor dem Livegang; am 13.09.2026 bestätigt. Sinnvoll erst nach V3, weil
-die Abschnitte zu All-Inkl und zum Kontaktformular neu sind. Datei:
-[datenschutz.html](datenschutz.html).
+**Bezug:** Betrifft dich vor dem Umzug. [impressum.html](impressum.html) zeigt „c/o
+Autorenglück“ in Hoyerswerda, eingetragen bist du bei der Handwerkskammer Freiburg. Claude ist
+hier nicht sicher. Empfehlung: die Rechtsberatung der Handwerkskammer fragen, für Mitglieder
+meist kostenlos.
+
+### V9 · Steuernummer ins Impressum · hoch · S
+
+**Gefahr:** Fehlt eine Pflichtangabe im Impressum, ist das ein klassischer Abmahngrund. Eine
+vorhandene Umsatzsteuer-Identifikationsnummer oder Wirtschafts-Identifikationsnummer gehört
+laut § 5 DDG hinein.
+
+**Bezug:** Offen, ob du eine hast — Gabriel liefert sie oder sagt „keine“. Dann trägt Claude
+sie in [impressum.html](impressum.html) ein.
+
+### V10 · Alte Adressen der WordPress-Seite weiterleiten · hoch · S
+
+**Gefahr:** Google kennt `/leistungen/`, `/ueber-mich/`, `/impressum/`, `/datenschutz/` und
+`/sample-page/`. Nach dem Umzug landen Besucher dort auf einer Fehlerseite, und die
+gesammelte Sichtbarkeit verfällt.
+
+**Bezug:** Betrifft den Umzug. GitHub kann nicht serverseitig weiterleiten, darum je eine
+kleine Seite mit sofortiger Weiterleitung. Zielzuordnung im Umzugsplan, Schritt 4.
+
+### V11 · Umzug in der Reihenfolge für Google · hoch · S
+
+**Gefahr:** Wird die Suchmaschinen-Sperre gelöst, bevor Sitemap, Titel und Weiterleitungen
+stehen, liest Google eine halbfertige Seite ein und merkt sich diesen Stand.
+
+**Bezug:** Betrifft den Umzug. Es fehlen noch `sitemap.xml`, die endgültige `robots.txt`
+und Seitentitel mit dem Suchbegriff vorn. Die Sperre wird als Letztes gelöst (Umzugsplan,
+Schritte 5 und 10).
+
+### V12 · Google-Unternehmensprofil mit Einsatzgebiet · hoch · S
+
+**Gefahr:** Wer „Trockenbau Freiburg“ sucht, sieht zuerst eine Karte mit drei Betrieben. Ohne
+Eintrag dort bleibst du für diese Kunden unsichtbar, egal wie gut die Website ist.
+
+**Bezug:** Offen, ob du schon eins hast. Im Profil lässt sich die Adresse verbergen und
+Freiburg als Einsatzgebiet angeben. Aus demselben Grund gehört die Anschrift in Hoyerswerda
+nicht in die Firmenangaben im Quelltext von [index.html](index.html).
+
+### V13 · Eine eigene Seite je Leistung · mittel · M
+
+**Gefahr:** Eine Sammelseite mit fünf Leistungen wird für keine davon weit oben gefunden.
+Laut dem SEO-Learning (Auswertung der Arbeit von Fedor Brotkorb) ist das der häufigste teure
+Fehler.
+
+**Bezug:** Betrifft dich: alle fünf Leistungen stehen auf der Startseite. Empfehlung: erst mit
+echten Suchdaten prüfen, welche Leistung gesucht wird (DataForSEO, wenige Euro), dann mit der
+stärksten anfangen, vermutlich Trockenbau. Suchbegriff in Titel und Adresse, Überschriften
+bleiben Markensätze, unter jeder Zwischenüberschrift sofort eine Antwort in 20 bis 40 Wörtern.
+Höchstens ein, zwei Seiten für Nachbarorte, keine Seitenfabrik.
+
+### V14 · Projekte mit Ort und Umfang beschriften · mittel · S
+
+**Gefahr:** „Trockenbau“ unter einem Foto sagt Google nichts. „Dachgeschoss, 40 m²,
+Freiburg-Wiehre“ belegt echte Erfahrung vor Ort — das bewertet Google hoch, und kein
+Mitbewerber kann es kopieren.
+
+**Bezug:** Betrifft die Projektbahn in [index.html](index.html). Gabriel liefert je Projekt
+Ort, Größe und was gemacht wurde.
 
 ### V5 · Vorher/Nachher-Paare zeigen unterschiedliche Ausschnitte · niedrig · M
 
@@ -28,17 +89,6 @@ Nachher-Bild quer aufgenommen. Der Regler schiebt dadurch zwei verschiedene Blic
 **Bezug:** Betrifft nur die Wirkung, nichts funktioniert falsch. Die Originalbilder auf deiner
 alten Seite haben schon diese Ausschnitte. Beim nächsten Projekt beide Bilder vom selben
 Standpunkt aufnehmen, dann wird der Regler zum stärksten Element der Seite.
-
-### V6 · Hosting beim Umzug bewusst wählen: GitHub oder All-Inkl · mittel · M
-
-**Gefahr:** Solange die Seite bei GitHub liegt, geht bei jedem Besuch die IP-Adresse an ein
-US-Unternehmen. Das ist erlaubt und in der Erklärung genannt, aber angreifbarer als ein
-deutscher Hoster.
-
-**Bezug:** Betrifft dich beim Umzug auf jgc-handwerk.de. JGC Lumen liegt bereits bei GitHub,
-das Formular auf einer Subdomain bei All-Inkl — dasselbe Muster geht hier ohne Änderung am
-Formular. Soll alles in Deutschland liegen, kommt die Seite zu All-Inkl, und Abschnitt 2 der
-Datenschutzerklärung wird kürzer.
 
 ### V7 · Goldener Schein hinter dem Porträt ragt am Handy über den Rand · niedrig · S
 
@@ -60,12 +110,11 @@ Seitenrand fängt am Handy aber nur 20 Pixel ab. Empfehlung: `.about` seitlich a
   nur im Reiter „Zuarbeit Dach- und Gaubenbau".
 - **Kundenstimmen.** Drei Sätze von zufriedenen Auftraggebern wirken bei Handwerksleistungen
   stärker als jede Selbstbeschreibung. Platz dafür wäre zwischen Projekten und Kontakt.
-- **Projekte mit Ort und Umfang beschriften.** „Trockenbau, Dachgeschoss, 40 m², Freiburg-Wiehre"
-  sagt mehr als „Trockenbau" und hilft auch bei der Auffindbarkeit in Suchmaschinen.
-- **Eigene Seite je Leistung.** Fünf Unterseiten mit je 300 Wörtern werden von Google deutlich
-  besser gefunden als fünf Stichpunkte auf einer Seite. Sinnvoll erst, wenn die Texte stehen.
 - **Fotos vom Arbeitsprozess.** Das Porträt wirkt stark, weil man ein Gesicht sieht. Zwei, drei
   Bilder von dir bei der Arbeit hätten denselben Effekt für die Projektgalerie.
+
+Aus dieser Liste wurden „Projekte mit Ort und Umfang beschriften“ (jetzt V14) und „Eigene
+Seite je Leistung“ (jetzt V13) zu Befunden hochgestuft.
 
 ### I2 · Hero-Entwurf 3 „Schicht für Schicht“ weiterverwenden
 
