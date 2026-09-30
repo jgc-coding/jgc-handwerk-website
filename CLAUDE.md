@@ -136,7 +136,10 @@ Analyse. `tools/pruefen.mjs` bricht ab, wenn doch ein externer Verweis hineinger
   spaeter auf GitHub Pages, nur die Eintraege der Hauptdomain und von `www` umstellen —
   `formular` bleibt samt SSL-Zertifikat bei All-Inkl, so wie bei jgc-lumen.de.
 - **Hoster und Formular-Empfaenger stehen in `datenschutz.html` Abschnitt 2** (GitHub Pages fuer
-  die Seite, All-Inkl fuer Formular und E-Mail). Zieht die Seite um, muss der Abschnitt mit.
+  die Seite, All-Inkl fuer Formular und E-Mail). Die Seite bleibt auch auf der eigenen Domain bei
+  GitHub Pages (Gabriels Entscheidung 30.09.2026). Die USA-Uebermittlung stuetzt sich auf GitHubs
+  Zertifizierung nach dem EU-US Data Privacy Framework — kippt der EuGH es (C-703/25 P), den
+  Absatz nachziehen.
   Der AVV mit All-Inkl ist Teil des Hosting-Vertrags (seit 05.02.2024, MembersArea → Stammdaten
   → Auftragsverarbeitung, nur als PDF abrufbar) — dort gibt es nichts abzuschliessen.
 - `docker run` aus Git Bash mit Pfaden wie `/app` braucht `MSYS_NO_PATHCONV=1`, sonst macht

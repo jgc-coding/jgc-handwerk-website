@@ -44,6 +44,8 @@ geben oder sagen, dass du keine hast.**
      Handwerk“; die sichtbaren Überschriften bleiben Markensätze
    - Firmenangaben im Quelltext: Freiburg als Einsatzgebiet, **keine** Anschrift in
      Hoyerswerda (würde Google einen falschen Ort melden)
+   - Vorschaubild für geteilte Links (`og:image`) prüfen — stand schon im alten Plan, zeigt
+     derzeit `p-trockenbau.webp`
 6. Eigene Domain bei GitHub eintragen. Der Deploy läuft über GitHub Actions, darum wirkt
    eine `CNAME`-Datei nicht — die Domain kommt in die Repo-Einstellungen (Pages → Custom
    domain, oder `gh api`). Domain im GitHub-Konto bestätigen (TXT-Eintrag), damit niemand
