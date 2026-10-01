@@ -1,6 +1,6 @@
 # Weitermachen
 
-Stand: 30.09.2026 · Version 0.5.1 gepusht · Rückkehrpunkt vor diesem save-state: `main` auf 393dbb2
+Stand: 01.10.2026 · Version 0.5.2 veröffentlicht (Vorschau geprüft) · Rückkehrpunkt vor 0.5.2: `main` auf 6d486b1
 · **Umzug auf jgc-handwerk.de kommt in der nächsten Sitzung — Ablauf in [docs/umzug-plan.md](docs/umzug-plan.md)**
 
 - **Vorschau:** https://jgc-coding.github.io/jgc-handwerk-website/
@@ -8,6 +8,15 @@ Stand: 30.09.2026 · Version 0.5.1 gepusht · Rückkehrpunkt vor diesem save-sta
 - **Lokal:** `node tools/server.mjs` → http://localhost:4173 (Port belegt? siehe `CLAUDE.md`)
 
 ## Stand
+
+**01.10.2026: 0.5.2 — Gabriels Wünsche und Umzugsvorbereitung.** Projektsatz „eigene Aufträge
+ebenso wie Projekte, an denen ich im Team … mitgewirkt habe“, Fußzeile mit Link auf JGC Lumen
+(Link und Ziel auf der Vorschau geprüft). Vorbereitet ohne Sperre zu lösen: Weiterleitungen der
+fünf alten Adressen (im echten Browser geprüft), `404.html`, `sitemap.xml`, Titel, Vorschaubild,
+V7. Regressionscheck 31/31 grün. Alte WordPress-Seite gesichert in `_archiv/` (offline geprüft,
+lädt mit Bildern). Gabriel fand die Seite am Handy „sehr gut“; die Testliste hat er nicht
+ausdrücklich abgehakt. Für den Umzug fehlen nur noch Gabriels Angaben (V8, V9, Porträt) und
+seine KAS-Anmeldung — Plan in [docs/umzug-plan.md](docs/umzug-plan.md).
 
 **30.09.2026: Rechtstexte für GitHub-Hosting überarbeitet (0.5.1), Umzug geplant.** Gabriel hat
 entschieden: Die Seite bleibt bei GitHub Pages (V6 erledigt), und Claude überarbeitet
@@ -39,8 +48,8 @@ echte Test-Mail über das Formular geschickt.
 
 ## Nächste Schritte (Claude)
 
-1. Umzug nach [docs/umzug-plan.md](docs/umzug-plan.md), inklusive V7, V10 und V11 — wartet auf
-   V8 und V9 von Gabriel.
+1. Umzug nach [docs/umzug-plan.md](docs/umzug-plan.md), ab Schritt 1 (Schritte 3 bis 5 sind
+   erledigt) — wartet auf V8, V9 und Porträt von Gabriel und auf seine KAS-Anmeldung am PC.
 2. Rückmeldungen aus Gabriels Handy-Test (`docs/tests/handy-0.5.0.md`) einarbeiten.
 3. I2 mit Gabriel klären: Entwurf 3 als Erklärbild im Reiter Trockenbau?
 4. Nach dem Umzug: V13 (erst echte Suchdaten, dann Leistungsseite Trockenbau), V14 sobald
@@ -55,7 +64,7 @@ echte Test-Mail über das Formular geschickt.
 - [ ] **[blockiert Claude] STEUERNUMMER FÜRS IMPRESSUM: Umsatzsteuer-IdNr. oder Wirtschafts-IdNr. an Claude geben — oder sagen, dass du keine hast (V9)** (seit 2026-09-30)
 - [ ] [blockiert Claude] Impressum-Anschrift klären, am besten mit der Rechtsberatung der Handwerkskammer Freiburg (V8) (seit 2026-09-30)
 - [ ] [blockiert Claude] Claude Rueckmeldung geben: Portraetfoto im Ueber-mich-Bereich freigeben oder entfernen lassen (seit 2026-09-13)
-- [ ] Version 0.5.0 am Handy durchklicken, Liste in docs/tests/handy-0.5.0.md (seit 2026-09-24)
+- [ ] Version 0.5.0 am Handy durchklicken, Liste in docs/tests/handy-0.5.0.md (seit 2026-09-24) — gilt auch für 0.5.2, besonders „seitlich wischen“
 - [ ] Sagen, ob es ein Google-Unternehmensprofil für JGC Handwerk gibt; sonst anlegen (V12) (seit 2026-09-30)
 - [ ] Entscheiden: SEO-Learning als Datei in Claude-Skills\grundlagen ablegen? (seit 2026-09-30)
 - [ ] Alte WordPress-Seite: Dresden-Anschrift in der Datenschutzerklaerung durch Hoyerswerda ersetzen (seit 2026-09-13)

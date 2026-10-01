@@ -1,6 +1,6 @@
 # Verbesserungen und offene Befunde
 
-Stand: 30.09.2026. Jeder Punkt hat eine Nummer, damit `weitermachen.md` und Commits darauf
+Stand: 01.10.2026. V7 und V10 sind mit 0.5.2 erledigt (siehe `CHANGELOG.md`). Jeder Punkt hat eine Nummer, damit `weitermachen.md` und Commits darauf
 verweisen können, ohne die Beschreibung zu wiederholen. Erledigtes steht im `CHANGELOG.md`
 (V1 und V2 mit Version 0.2.0). V3 (Formular bei All-Inkl) ist seit 29.09.2026 erledigt — reine
 Einrichtung im KAS ohne Code, darum ohne CHANGELOG-Eintrag. V4 (Datenschutz) hat Claude auf
@@ -32,23 +32,14 @@ laut § 5 DDG hinein.
 **Bezug:** Offen, ob du eine hast — Gabriel liefert sie oder sagt „keine“. Dann trägt Claude
 sie in [impressum.html](impressum.html) ein.
 
-### V10 · Alte Adressen der WordPress-Seite weiterleiten · hoch · S
-
-**Gefahr:** Google kennt `/leistungen/`, `/ueber-mich/`, `/impressum/`, `/datenschutz/` und
-`/sample-page/`. Nach dem Umzug landen Besucher dort auf einer Fehlerseite, und die
-gesammelte Sichtbarkeit verfällt.
-
-**Bezug:** Betrifft den Umzug. GitHub kann nicht serverseitig weiterleiten, darum je eine
-kleine Seite mit sofortiger Weiterleitung. Zielzuordnung im Umzugsplan, Schritt 4.
-
 ### V11 · Umzug in der Reihenfolge für Google · hoch · S
 
 **Gefahr:** Wird die Suchmaschinen-Sperre gelöst, bevor Sitemap, Titel und Weiterleitungen
 stehen, liest Google eine halbfertige Seite ein und merkt sich diesen Stand.
 
-**Bezug:** Betrifft den Umzug. Es fehlen noch `sitemap.xml`, die endgültige `robots.txt`
-und Seitentitel mit dem Suchbegriff vorn. Die Sperre wird als Letztes gelöst (Umzugsplan,
-Schritte 5 und 10).
+**Bezug:** Betrifft den Umzug. Sitemap, Titel, Vorschaubild und Weiterleitungen (V10) stehen
+seit 0.5.2. Offen ist nur noch das Scharfschalten ganz am Ende: neue `robots.txt` und
+`noindex` aus `index.html` entfernen (Umzugsplan, Schritt 10).
 
 ### V12 · Google-Unternehmensprofil mit Einsatzgebiet · hoch · S
 
@@ -89,17 +80,6 @@ Nachher-Bild quer aufgenommen. Der Regler schiebt dadurch zwei verschiedene Blic
 **Bezug:** Betrifft nur die Wirkung, nichts funktioniert falsch. Die Originalbilder auf deiner
 alten Seite haben schon diese Ausschnitte. Beim nächsten Projekt beide Bilder vom selben
 Standpunkt aufnehmen, dann wird der Regler zum stärksten Element der Seite.
-
-### V7 · Goldener Schein hinter dem Porträt ragt am Handy über den Rand · niedrig · S
-
-**Gefahr:** Auf 390 Pixel breiten Handys ist die Seite 391 Pixel breit. Das Handy verkleinert
-die Ansicht dadurch minimal, und die Seite lässt sich unter Umständen einen Pixel seitwärts
-wischen.
-
-**Bezug:** Betrifft nur schmale Handys und besteht schon vor 0.4.0. Ursache ist der Ring
-`.about__media::before` in `assets/css/style.css`: er sitzt 6 % rechts über dem Bild, der
-Seitenrand fängt am Handy aber nur 20 Pixel ab. Empfehlung: `.about` seitlich abschneiden
-(`overflow-x: clip`) oder den Ring nach innen setzen, danach `tools/regression.mjs`.
 
 ## Ideen
 

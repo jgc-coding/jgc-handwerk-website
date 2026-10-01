@@ -26,10 +26,14 @@ geben oder sagen, dass du keine hast.**
 
 ## Schritte (Claude)
 
+**Erledigt am 01.10.2026 mit 0.5.2:** Schritte 3 und 4 komplett, Schritt 5 bis auf die
+`robots.txt`. Die alte Seite ist gesichert (`_archiv/`, siehe `CLAUDE.md`). Offen sind die
+Schritte 1, 2 und ab 6.
+
 1. Rückkehrpunkt-Commit.
 2. Impressum nach V8 und V9 anpassen; Porträt nach Gabriels Entscheidung.
-3. V7 beheben (1 px Überlauf am Handy), danach `node tools/regression.mjs`.
-4. **V10 Alte Adressen weiterleiten.** GitHub kann nicht serverseitig weiterleiten, darum je
+3. ✓ V7 beheben (1 px Überlauf am Handy), danach `node tools/regression.mjs`.
+4. ✓ **V10 Alte Adressen weiterleiten.** GitHub kann nicht serverseitig weiterleiten, darum je
    eine kleine Seite mit sofortiger Weiterleitung (Meta-Refresh 0, `canonical`, JS-Fallback):
    - `/leistungen/` → `/#leistungen`
    - `/ueber-mich/` → `/#ueber-mich`
@@ -38,14 +42,14 @@ geben oder sagen, dass du keine hast.**
    - `/sample-page/` → `/`
    Dazu eine eigene `404.html`. Prüfen, ob `tools/pruefen.mjs` die neuen Seiten mitprüft.
 5. **V11 Reihenfolge für Google**, Sperre bleibt dabei noch drin:
-   - `sitemap.xml` mit den endgültigen Adressen (nur Seiten ohne `noindex`, also `/`)
-   - neue `robots.txt` vorbereiten: alles erlaubt, Verweis auf die Sitemap
-   - Seitentitel mit dem Suchbegriff vorn, etwa „Trockenbau & Montage in Freiburg | JGC
-     Handwerk“; die sichtbaren Überschriften bleiben Markensätze
-   - Firmenangaben im Quelltext: Freiburg als Einsatzgebiet, **keine** Anschrift in
+   - ✓ `sitemap.xml` mit den endgültigen Adressen (nur Seiten ohne `noindex`, also `/`)
+   - neue `robots.txt` erst in Schritt 10 einsetzen: `User-agent: *`, `Allow: /`,
+     `Sitemap: https://jgc-handwerk.de/sitemap.xml`
+   - ✓ Seitentitel mit dem Suchbegriff vorn: „Trockenbau, Montage und Zuarbeit in Freiburg |
+     JGC Handwerk“; die sichtbaren Überschriften bleiben Markensätze
+   - ✓ Firmenangaben im Quelltext: Freiburg als Einsatzgebiet, **keine** Anschrift in
      Hoyerswerda (würde Google einen falschen Ort melden)
-   - Vorschaubild für geteilte Links (`og:image`) prüfen — stand schon im alten Plan, zeigt
-     derzeit `p-trockenbau.webp`
+   - ✓ Vorschaubild für geteilte Links: `og-bild.jpg`, 1200 × 630
 6. Eigene Domain bei GitHub eintragen. Der Deploy läuft über GitHub Actions, darum wirkt
    eine `CNAME`-Datei nicht — die Domain kommt in die Repo-Einstellungen (Pages → Custom
    domain, oder `gh api`). Domain im GitHub-Konto bestätigen (TXT-Eintrag), damit niemand

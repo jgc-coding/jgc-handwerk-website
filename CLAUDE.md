@@ -145,6 +145,14 @@ Analyse. `tools/pruefen.mjs` bricht ab, wenn doch ein externer Verweis hineinger
 - `docker run` aus Git Bash mit Pfaden wie `/app` braucht `MSYS_NO_PATHCONV=1`, sonst macht
   Bash daraus einen Windows-Pfad. `tools/formular-test.mjs` startet Docker direkt aus Node und
   ist davon nicht betroffen.
+- **Die Ordner `leistungen/`, `ueber-mich/`, `impressum/`, `datenschutz/` und `sample-page/` sind
+  Weiterleitungen** der Adressen der alten WordPress-Seite — nicht loeschen. Ziele darin relativ
+  (`../impressum.html`), damit sie auf Vorschau und Domain gleich funktionieren. `404.html` dagegen
+  braucht Pfade ab der Wurzel (`/assets/...`), weil GitHub sie fuer jede Tiefe ausliefert; auf der
+  Vorschau-Adresse erscheint sie darum ungestaltet.
+- **Sicherung der alten WordPress-Seite** liegt in `_archiv/alte-wordpress-seite-2026-10-01/`
+  (gitignoriert, oeffnen per `jgc-handwerk.de/index.html`). Die WordPress-Dateien selbst bleiben
+  nach der DNS-Umstellung unangetastet bei All-Inkl liegen.
 - **Vorschau-Sperre an zwei Stellen.** Solange die Seite auf der GitHub-Adresse liegt, halten
   ein `noindex`-Tag in `index.html` und `robots.txt` sie aus den Suchmaschinen heraus — sonst
   taucht sie neben der echten Seite auf jgc-handwerk.de auf und nimmt ihr Sichtbarkeit. Beim
