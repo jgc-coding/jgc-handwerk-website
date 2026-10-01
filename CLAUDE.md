@@ -132,9 +132,13 @@ Analyse. `tools/pruefen.mjs` bricht ab, wenn doch ein externer Verweis hineinger
   Empfaenger oder Weg der Daten aendert, zieht `datenschutz.html` im selben Zug mit.
 - **All-Inkl verschickt Skript-Mails nur mit echtem Absender.** `ABSENDER` in `senden.php` muss
   ein Postfach im All-Inkl-Paket sein; es geht per `-f` an `mail()`.
-- **Beim Umzug der Hauptdomain bleibt die Subdomain bei All-Inkl.** Zeigt jgc-handwerk.de
-  spaeter auf GitHub Pages, nur die Eintraege der Hauptdomain und von `www` umstellen —
-  `formular` bleibt samt SSL-Zertifikat bei All-Inkl, so wie bei jgc-lumen.de.
+- **DNS (KAS → Tools → DNS-Einstellungen), seit 01.10.2026:** Hauptdomain mit vier A-Eintraegen
+  auf GitHub (`185.199.108-111.153`), `www` als CNAME auf `jgc-coding.github.io.`. Der
+  Platzhalter `*` zeigt weiter auf All-Inkl (`85.13.154.127`) und haelt damit `formular` samt
+  Zertifikat dort — **nie aendern**, auch nicht per Haken „Wildcard soll ebenfalls…“ beim
+  Bearbeiten der Hauptdomain. MX, SPF, DKIM und DMARC unberuehrt. Die Domain ist im GitHub-Konto
+  bestaetigt (TXT `_github-pages-challenge-jgc-coding`, nicht loeschen). Der Stand davor liegt in
+  `_archiv/dns-vorher-2026-10-01.txt`.
 - **Hoster und Formular-Empfaenger stehen in `datenschutz.html` Abschnitt 2** (GitHub Pages fuer
   die Seite, All-Inkl fuer Formular und E-Mail). Die Seite bleibt auch auf der eigenen Domain bei
   GitHub Pages (Gabriels Entscheidung 30.09.2026). Die USA-Uebermittlung stuetzt sich auf GitHubs
@@ -153,7 +157,6 @@ Analyse. `tools/pruefen.mjs` bricht ab, wenn doch ein externer Verweis hineinger
 - **Sicherung der alten WordPress-Seite** liegt in `_archiv/alte-wordpress-seite-2026-10-01/`
   (gitignoriert, oeffnen per `jgc-handwerk.de/index.html`). Die WordPress-Dateien selbst bleiben
   nach der DNS-Umstellung unangetastet bei All-Inkl liegen.
-- **Vorschau-Sperre an zwei Stellen.** Solange die Seite auf der GitHub-Adresse liegt, halten
-  ein `noindex`-Tag in `index.html` und `robots.txt` sie aus den Suchmaschinen heraus — sonst
-  taucht sie neben der echten Seite auf jgc-handwerk.de auf und nimmt ihr Sichtbarkeit. Beim
-  Umzug auf die eigene Domain **beide** entfernen.
+- **Indexierung:** Die Startseite ist seit 01.10.2026 fuer Suchmaschinen offen (`robots.txt`
+  mit Sitemap, kein `noindex`). Impressum, Datenschutz und `404.html` tragen bewusst `noindex`.
+  Die frueheren Vorschau-Adressen unter `jgc-coding.github.io` leiten seitdem auf die Domain um.

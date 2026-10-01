@@ -1,7 +1,6 @@
-# VORSCHAU-SPERRE
-# Diese Fassung liegt auf einer Vorschau-Adresse und darf nicht in Suchmaschinen
-# auftauchen, sonst konkurriert sie mit der echten Seite auf jgc-handwerk.de.
-# Beim Umzug auf die eigene Domain: diese Datei ersetzen und das noindex-Tag in
-# index.html entfernen.
+# Seit 01.10.2026 live auf jgc-handwerk.de - Suchmaschinen sind willkommen.
+# Impressum und Datenschutz halten sich selbst per noindex aus der Suche heraus.
 User-agent: *
-Disallow: /
+Allow: /
+
+Sitemap: https://jgc-handwerk.de/sitemap.xml

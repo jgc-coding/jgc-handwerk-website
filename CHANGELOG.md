@@ -11,6 +11,13 @@ WordPress-Seite ab.
 
 - **Impressum:** Umsatzsteuer-Identifikationsnummer ergänzt (V9, beim EU-Prüfdienst als gültig
   bestätigt). Die Anschrift über den Impressumsservice bleibt auf Gabriels Entscheidung (V8).
+- **Domain:** jgc-handwerk.de und www zeigen per DNS bei All-Inkl auf GitHub Pages, mit
+  HTTPS-Pflicht und Zertifikat für beide Namen. www und die alte Vorschau-Adresse leiten auf
+  die Hauptdomain. Formular-Subdomain und E-Mail bleiben unverändert bei All-Inkl. Die Domain
+  ist im GitHub-Konto bestätigt, damit niemand sie für eine fremde Seite nutzen kann.
+- **Für Google freigegeben:** `noindex` von der Startseite entfernt, `robots.txt` erlaubt alles
+  und nennt die Sitemap (V11 abgeschlossen).
+- Die alte WordPress-Seite ist offline gesichert, ihre Dateien bleiben bei All-Inkl liegen.
 
 ## 0.5.2 — 2026-10-01
 
