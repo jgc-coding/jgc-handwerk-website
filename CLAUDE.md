@@ -158,6 +158,9 @@ Analyse. `tools/pruefen.mjs` bricht ab, wenn doch ein externer Verweis hineinger
 - **Sicherung der alten WordPress-Seite** liegt in `_archiv/alte-wordpress-seite-2026-10-01/`
   (gitignoriert, oeffnen per `jgc-handwerk.de/index.html`). Die WordPress-Dateien selbst bleiben
   nach der DNS-Umstellung unangetastet bei All-Inkl liegen.
+- **Google Search Console ist per Meta-Tag `google-site-verification` in `index.html` bestaetigt**
+  (Code von der alten WordPress-Seite uebernommen). Nie entfernen; bei einem neuen Startseiten-
+  Kopf mitnehmen.
 - **Indexierung:** Die Startseite ist seit 01.10.2026 fuer Suchmaschinen offen (`robots.txt`
   mit Sitemap, kein `noindex`). Impressum, Datenschutz und `404.html` tragen bewusst `noindex`.
   Die frueheren Vorschau-Adressen unter `jgc-coding.github.io` leiten seitdem auf die Domain um.

@@ -20,8 +20,11 @@ Geprüft auf der Domain: Version 0.6.0, Impressum mit USt-ID, alle fünf alten A
 weiter, eigene 404, Sitemap, `robots.txt` offen, kein `noindex` auf der Startseite,
 http/www/Vorschau leiten mit 301 um. Öffentliche DNS (Google, Cloudflare, Quad9) zeigen schon
 auf GitHub. Formular: Vorabfrage von der Domain erlaubt, eine echte Testanfrage
-(„Claude Umzugstest“, ID d0314a) vom Skript angenommen — **ob die Mail ankam, hat Gabriel noch
-nicht bestätigt.** Regressionscheck 31/31 grün.
+(„Claude Umzugstest“, ID d0314a) kam laut Gabriel in kontakt@ an. Regressionscheck 31/31 grün.
+
+0.6.1: Die alte Seite war in der Google Search Console per Meta-Tag bestätigt; der Code steht
+jetzt auch in der neuen `index.html`. Gabriel hat ein Google-Unternehmensprofil (V12 zum Teil
+erledigt — Website-Link und Einsatzgebiet dort noch nicht geprüft).
 
 Davor am selben Tag 0.5.2 (Projektsatz, JGC-Lumen-Link, Umzugsvorbereitung), am 30.09. 0.5.1
 (Rechtstexte) — Details im `CHANGELOG.md`. **Nicht geprüft:** echte Handys, Safari, Firefox.
@@ -55,9 +58,7 @@ Davor am selben Tag 0.5.2 (Projektsatz, JGC-Lumen-Link, Umzugsvorbereitung), am 
 
 ## Was Gabriel selbst tun muss
 
-- [ ] Bestätigen, dass die Testanfrage „Claude Umzugstest“ vom 01.10. in kontakt@ angekommen ist (seit 2026-10-01)
-- [ ] Google Search Console für jgc-handwerk.de einrichten und die Sitemap einreichen, danach Bing Webmaster Tools (seit 2026-10-01)
-- [ ] Sagen, ob es ein Google-Unternehmensprofil für JGC Handwerk gibt; sonst anlegen (V12) (seit 2026-09-30)
+- [ ] In der Google Search Console die Sitemap `https://jgc-handwerk.de/sitemap.xml` einreichen, danach Bing Webmaster Tools (seit 2026-10-01)
 - [ ] Version 0.6.0 am Handy durchklicken, Liste in docs/tests/handy-0.5.0.md (seit 2026-09-24) — besonders „seitlich wischen“
 - [ ] Entscheiden: SEO-Learning als Datei in Claude-Skills\grundlagen ablegen? (seit 2026-09-30)
 - [ ] Alte Worktrees entfernen, sobald darin keine Sitzung mehr laeuft (seit 2026-09-24) — je ein Befehl:

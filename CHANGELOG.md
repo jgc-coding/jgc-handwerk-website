@@ -4,6 +4,12 @@ Alle nennenswerten Änderungen an dieser Website. Format nach SemVer (MAJOR.MINO
 Die Version steht als Single Source of Truth in `assets/js/config.js` und erscheint in der
 Fußzeile.
 
+## 0.6.1 — 2026-10-01
+
+- **Google Search Console:** Den Bestätigungs-Code der alten WordPress-Seite übernommen. Die
+  Search Console war dort per Meta-Tag bestätigt; ohne ihn hätte Google die Bestätigung bei der
+  nächsten Prüfung entzogen.
+
 ## 0.6.0 — 2026-10-01
 
 Umzug: Die neue Website läuft auf jgc-handwerk.de (GitHub Pages) und löst die alte
