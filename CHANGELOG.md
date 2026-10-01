@@ -4,6 +4,14 @@ Alle nennenswerten Änderungen an dieser Website. Format nach SemVer (MAJOR.MINO
 Die Version steht als Single Source of Truth in `assets/js/config.js` und erscheint in der
 Fußzeile.
 
+## 0.6.0 — 2026-10-01
+
+Umzug: Die neue Website läuft auf jgc-handwerk.de (GitHub Pages) und löst die alte
+WordPress-Seite ab.
+
+- **Impressum:** Umsatzsteuer-Identifikationsnummer ergänzt (V9, beim EU-Prüfdienst als gültig
+  bestätigt). Die Anschrift über den Impressumsservice bleibt auf Gabriels Entscheidung (V8).
+
 ## 0.5.2 — 2026-10-01
 
 Gabriels Wünsche nach dem Blick am Handy und Vorbereitung des Umzugs auf jgc-handwerk.de.
