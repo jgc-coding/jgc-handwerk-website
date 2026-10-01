@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Nur Seiten, die in die Suche sollen. Impressum und Datenschutz tragen bewusst noindex,
+     die Ordner der alten WordPress-Adressen sind reine Weiterleitungen. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://jgc-handwerk.de/</loc>
+  </url>
+</urlset>

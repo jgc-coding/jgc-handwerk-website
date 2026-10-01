@@ -10,3 +10,6 @@ assets/img/_original/
 
 # Vollstaendige Code-Kopien
 .claude/worktrees/
+
+# Sicherung der alten WordPress-Seite: privat, gehoert nicht ins oeffentliche Repo
+_archiv/

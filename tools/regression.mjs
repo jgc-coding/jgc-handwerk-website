@@ -386,7 +386,7 @@ if (!chromePfad) {
       const liste = await werte(leistungen);
       pruefe(
         "Handy: Leistungen als Liste, jede mit Kopf und Bild",
-        liste.liste && liste.leiste === "none" && liste.sichtbar === 5 && liste.koepfe === 5 && liste.bilder === 5 && liste.untereinander && liste.rollen === 0,
+        liste.liste && liste.leiste === "none" && liste.sichtbar === 5 && liste.koepfe === 5 && liste.bilder === 5 && liste.untereinander && liste.rollen === 0 && liste.ueberlauf <= 0,
         liste
       );
 

@@ -1310,6 +1310,9 @@ a:hover {
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   gap: clamp(2rem, 5vw, 4.5rem);
   align-items: center;
+  /* Der goldene Schein hinter dem Portraet ragt am Handy sonst 1 px ueber den Seitenrand (V7).
+     clip statt hidden: schneidet nur seitlich und macht keinen Scrollbereich auf. */
+  overflow-x: clip;
 }
 
 .about__media {

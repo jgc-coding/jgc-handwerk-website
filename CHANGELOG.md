@@ -4,6 +4,23 @@ Alle nennenswerten Änderungen an dieser Website. Format nach SemVer (MAJOR.MINO
 Die Version steht als Single Source of Truth in `assets/js/config.js` und erscheint in der
 Fußzeile.
 
+## 0.5.2 — 2026-10-01
+
+Gabriels Wünsche nach dem Blick am Handy und Vorbereitung des Umzugs auf jgc-handwerk.de.
+
+- **Projekte:** Der Einleitungssatz sagt jetzt, dass die Auswahl eigene Aufträge ebenso zeigt
+  wie Projekte, an denen Gabriel im Team mit Zimmereien und Dachdeckern mitgewirkt hat.
+- **Fußzeile:** „Website gestaltet und umgesetzt von JGC Lumen“ mit Link auf jgc-lumen.de, auf
+  allen Seiten. Der Satz zum Impressumsservice auf der Startseite ist sprachlich korrigiert.
+- **Alte Adressen (V10):** Unter `/leistungen/`, `/ueber-mich/`, `/impressum/`,
+  `/datenschutz/` und `/sample-page/` liegen Weiterleitungen an die passende neue Stelle, dazu
+  eine eigene Fehlerseite `404.html`. `tools/pruefen.mjs` prüft die Weiterleitungen mit.
+- **Für Google (V11, Teil 1):** `sitemap.xml` angelegt, Seitentitel mit dem Suchbegriff vorn
+  („Trockenbau, Montage und Zuarbeit in Freiburg | JGC Handwerk“), eigenes Vorschaubild für
+  geteilte Links als JPG im Format 1200 × 630. Die Suchmaschinen-Sperre bleibt bis zum Umzug.
+- **Handy (V7):** Der goldene Schein hinter dem Porträt ragt nicht mehr 1 px über den
+  Seitenrand. `tools/regression.mjs` prüft das jetzt mit.
+
 ## 0.5.1 — 2026-09-30
 
 Datenschutzerklärung und Impressum für den Umzug auf GitHub Pages mit eigener Domain

@@ -10,7 +10,7 @@
  */
 
 import { readFile, access } from "node:fs/promises";
-import { readdirSync } from "node:fs";
+import { readdirSync, existsSync } from "node:fs";
 import { join, dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -18,7 +18,14 @@ const WURZEL = fileURLToPath(new URL("..", import.meta.url));
 const fehler = [];
 const warnungen = [];
 
-const seiten = readdirSync(WURZEL).filter((d) => d.endsWith(".html"));
+// Seiten im Wurzelordner plus die Weiterleitungen der alten WordPress-Adressen
+// (je ein Ordner mit index.html, z. B. leistungen/index.html)
+const seiten = [
+  ...readdirSync(WURZEL).filter((d) => d.endsWith(".html")),
+  ...readdirSync(WURZEL, { withFileTypes: true })
+    .filter((d) => d.isDirectory() && existsSync(join(WURZEL, d.name, "index.html")))
+    .map((d) => `${d.name}/index.html`),
+];
 if (seiten.length === 0) fehler.push("Keine HTML-Seite im Projektordner gefunden.");
 
 /* ---- 1. + 2. + 4. je Seite ------------------------------------ */
@@ -44,6 +51,7 @@ for (const seite of seiten) {
         "https://docs.github.com", // Quellenangabe im Datenschutztext
         "https://all-inkl.com", // Quellenangabe im Datenschutztext
         "https://www.gesetze-im-internet.de", // Handwerksordnung im Impressum
+        "https://jgc-lumen.de", // Hinweis auf die Macher der Website in der Fusszeile
       ];
       const istLink = new RegExp(`href="${v.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"`).test(html);
       if (!erlaubt.some((e) => v.startsWith(e))) {
