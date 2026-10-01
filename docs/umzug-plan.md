@@ -1,5 +1,9 @@
 # Plan: Neue Website läuft auf jgc-handwerk.de (GitHub Pages)
 
+> **Erledigt am 01.10.2026 mit Version 0.6.0.** Dieser Plan bleibt als Nachweis des Ablaufs
+> stehen. Die dauerhaften Fakten (DNS, Weiterleitungen, Indexierung) stehen in `CLAUDE.md`,
+> offen sind nur noch die Gabriel-Punkte unter „Danach“.
+
 Stand: 30.09.2026 · Umsetzung in der nächsten Sitzung · Hosting: GitHub Pages (Gabriels
 Entscheidung vom 30.09.2026, V6)
 

@@ -1,6 +1,8 @@
 # Verbesserungen und offene Befunde
 
-Stand: 01.10.2026. V7 und V10 sind mit 0.5.2 erledigt (siehe `CHANGELOG.md`). Jeder Punkt hat eine Nummer, damit `weitermachen.md` und Commits darauf
+Stand: 01.10.2026. V7 und V10 sind mit 0.5.2 erledigt, V9 und V11 mit dem Umzug in 0.6.0 (siehe
+`CHANGELOG.md`). V8 ist entschieden: Die Anschrift über den Impressumsservice bleibt bewusst
+(Gabriel, 01.10.2026), trotz des Hinweises auf das Abmahnrisiko. Jeder Punkt hat eine Nummer, damit `weitermachen.md` und Commits darauf
 verweisen können, ohne die Beschreibung zu wiederholen. Erledigtes steht im `CHANGELOG.md`
 (V1 und V2 mit Version 0.2.0). V3 (Formular bei All-Inkl) ist seit 29.09.2026 erledigt — reine
 Einrichtung im KAS ohne Code, darum ohne CHANGELOG-Eintrag. V4 (Datenschutz) hat Claude auf
@@ -11,35 +13,6 @@ darum als `###` darunter eintragen. Der Ablauf des Umzugs steht in
 [docs/umzug-plan.md](docs/umzug-plan.md).
 
 ## Offen
-
-### V8 · Impressum-Anschrift klären · hoch · S
-
-**Gefahr:** Ein Mitbewerber kann abmahnen, wenn das Impressum nur eine Weiterleitungsadresse
-zeigt statt der Adresse, unter der der Betrieb niedergelassen ist. Das Gesetz (§ 5 DDG)
-verlangt genau diese Adresse.
-
-**Bezug:** Betrifft dich vor dem Umzug. [impressum.html](impressum.html) zeigt „c/o
-Autorenglück“ in Hoyerswerda, eingetragen bist du bei der Handwerkskammer Freiburg. Claude ist
-hier nicht sicher. Empfehlung: die Rechtsberatung der Handwerkskammer fragen, für Mitglieder
-meist kostenlos.
-
-### V9 · Steuernummer ins Impressum · hoch · S
-
-**Gefahr:** Fehlt eine Pflichtangabe im Impressum, ist das ein klassischer Abmahngrund. Eine
-vorhandene Umsatzsteuer-Identifikationsnummer oder Wirtschafts-Identifikationsnummer gehört
-laut § 5 DDG hinein.
-
-**Bezug:** Offen, ob du eine hast — Gabriel liefert sie oder sagt „keine“. Dann trägt Claude
-sie in [impressum.html](impressum.html) ein.
-
-### V11 · Umzug in der Reihenfolge für Google · hoch · S
-
-**Gefahr:** Wird die Suchmaschinen-Sperre gelöst, bevor Sitemap, Titel und Weiterleitungen
-stehen, liest Google eine halbfertige Seite ein und merkt sich diesen Stand.
-
-**Bezug:** Betrifft den Umzug. Sitemap, Titel, Vorschaubild und Weiterleitungen (V10) stehen
-seit 0.5.2. Offen ist nur noch das Scharfschalten ganz am Ende: neue `robots.txt` und
-`noindex` aus `index.html` entfernen (Umzugsplan, Schritt 10).
 
 ### V12 · Google-Unternehmensprofil mit Einsatzgebiet · hoch · S
 

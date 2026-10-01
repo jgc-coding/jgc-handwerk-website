@@ -116,7 +116,8 @@ Analyse. `tools/pruefen.mjs` bricht ab, wenn doch ein externer Verweis hineinger
   bringt Aenderungen nicht dorthin — nach jeder Aenderung neu hochladen, sonst laeuft dort der
   alte Stand weiter.
 - **KAS per Chrome:** Anmelden tut Gabriel selbst, im Tab der Claude-Gruppe — Claude schickt nie
-  ein Passwort ab. Die Sitzung haengt am `?l=`-Token der URL und laeuft nach einiger Zeit ab; die
+  ein Passwort ab (Chrome fuellt die Login-Seite selbst aus; Gabriel klickt nur „Login“). Seit
+  10/2026 gibt es eine neue KAS-Oberflaeche; die Wege unten stammen teils aus der alten. Die Sitzung haengt am `?l=`-Token der URL und laeuft nach einiger Zeit ab; die
   MembersArea hat eine eigene Anmeldung. Hochladen ohne FTP-Passwort: KAS → FTP → Login-Symbol
   eines Nutzers oeffnet WebFTP ueber die Sitzung (Link hat `target=_blank`, im Claude-Tab per
   `target=_self` oeffnen).

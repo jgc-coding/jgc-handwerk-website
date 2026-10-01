@@ -1,8 +1,9 @@
 # Handy-Test Version 0.5.0
 
 Auf dem eigenen Handy durchklicken — was Claude im Chrome ohne Fenster nicht prüfen kann:
-Adressleiste, echtes Scrollgefühl, Safari. Seite: https://jgc-coding.github.io/jgc-handwerk-website/
-(unten in der Fußzeile muss „Version 0.5.0“ stehen, sonst einmal neu laden).
+Adressleiste, echtes Scrollgefühl, Safari. Seite: https://jgc-handwerk.de/
+(unten in der Fußzeile muss mindestens „Version 0.6.0“ stehen, sonst einmal neu laden). Die
+Liste stammt von 0.5.0 und gilt unverändert weiter.
 
 ## Startbereich (Bretterwand)
 
