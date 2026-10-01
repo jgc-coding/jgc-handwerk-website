@@ -58,7 +58,9 @@ Davor am selben Tag 0.5.2 (Projektsatz, JGC-Lumen-Link, Umzugsvorbereitung), am 
 
 ## Was Gabriel selbst tun muss
 
-- [ ] In der Google Search Console die Sitemap `https://jgc-handwerk.de/sitemap.xml` einreichen, danach Bing Webmaster Tools (seit 2026-10-01)
+- [ ] Search Console: herausfinden, welchem Google-Konto der übernommene Bestätigungs-Code gehört — im Hauptkonto im Browser ist keine Website eingetragen. Gefunden: dort die Sitemap einreichen. Nicht gefunden: mit Claude eine neue Domain-Bestätigung per DNS anlegen und den alten Code entfernen (seit 2026-10-01)
+- [ ] Danach Bing Webmaster Tools einrichten (kann aus der Search Console übernehmen) (seit 2026-10-01)
+- [ ] Im Google-Unternehmensprofil prüfen: Website-Link https://jgc-handwerk.de, Adresse verborgen, Freiburg als Einsatzgebiet (V12) (seit 2026-10-01)
 - [ ] Version 0.6.0 am Handy durchklicken, Liste in docs/tests/handy-0.5.0.md (seit 2026-09-24) — besonders „seitlich wischen“
 - [ ] Entscheiden: SEO-Learning als Datei in Claude-Skills\grundlagen ablegen? (seit 2026-09-30)
 - [ ] Alte Worktrees entfernen, sobald darin keine Sitzung mehr laeuft (seit 2026-09-24) — je ein Befehl:

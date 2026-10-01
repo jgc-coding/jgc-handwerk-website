@@ -19,7 +19,8 @@ darum als `###` darunter eintragen. Der Ablauf des Umzugs steht in
 **Gefahr:** Wer „Trockenbau Freiburg“ sucht, sieht zuerst eine Karte mit drei Betrieben. Ohne
 Eintrag dort bleibst du für diese Kunden unsichtbar, egal wie gut die Website ist.
 
-**Bezug:** Offen, ob du schon eins hast. Im Profil lässt sich die Adresse verbergen und
+**Bezug:** Ein Profil gibt es (Gabriel, 01.10.2026); offen ist nur die Prüfung der Einstellungen.
+Im Profil lässt sich die Adresse verbergen und
 Freiburg als Einsatzgebiet angeben. Aus demselben Grund gehört die Anschrift in Hoyerswerda
 nicht in die Firmenangaben im Quelltext von [index.html](index.html).
 
